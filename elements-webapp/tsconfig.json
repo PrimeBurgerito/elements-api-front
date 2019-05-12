@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "target": "es6",
+    "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": true,
+    "removeComments": true,
+    "strictNullChecks": false,
+    "lib": [ "es6", "es7", "dom" ],
+    "typeRoots": [ "node_modules/@types" ],
+    "baseUrl": "./src",
+    "paths": {
+      "@shared": [ "shared" ],
+      "@shared*": [ "shared*" ],
+      "@type": [ "type" ],
+      "@type*": [ "type*" ],
+      "@component": [ "component" ],
+      "@component*": [ "component*" ],
+      "@constant": [ "constant" ],
+      "@constant*": [ "constant*" ],
+      "@images/*": [ "./assets/img/*" ],
+      "@icons/*": [ "./assets/icon/*" ]
+    }
+  },
+  "include": [ "src/**/*" ],
+  "exclude": [ "node_modules", "dist" ]
+}

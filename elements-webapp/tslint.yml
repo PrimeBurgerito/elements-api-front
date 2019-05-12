@@ -1,0 +1,25 @@
+extends:
+  - "tslint:recommended"
+  - "@blueprintjs/tslint-config/blueprint-rules"
+rules:
+  "quotemark": [true, "single", "jsx-double"]
+  max-line-length:
+    options: [120]
+  new-parens: true
+  no-arg: true
+  no-bitwise: true
+  no-conditional-assignment: true
+  no-consecutive-blank-lines: false
+  blueprint-classes-constants: true
+  no-console:
+    severity: warning
+    options:
+      - debug
+      - info
+      - log
+      - time
+      - timeEnd
+      - trace
+jsRules:
+  max-line-length:
+    options: [120]
