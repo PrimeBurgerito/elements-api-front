@@ -11,7 +11,7 @@ const dev = {
   mode: 'development',
   devtool: 'inline-source-map',
   entry: {
-    main: ['react-hot-loader/patch', join(SRC_PATH, 'main.tsx')]
+    main: ['babel-polyfill', 'react-hot-loader/patch', join(SRC_PATH, 'main.tsx')]
   },
   resolve: {
     alias: {

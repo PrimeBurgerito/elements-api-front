@@ -1,13 +1,22 @@
 import { store } from 'react-easy-state';
 
 export const LoadingStore = store({
-  requests: 0,
-  get isLoading() { return LoadingStore.requests > 0; },
-  addRequest: () => LoadingStore.requests++,
-  endRequest: () => {
-    LoadingStore.requests--;
-    if (LoadingStore.requests < 0) {
-      LoadingStore.requests = 0;
+  requests: new Map<string, number>(),
+  isLoading: (key: string): boolean => !!LoadingStore.requests.get(key),
+
+  addRequest: (key: string): void => {
+    const requestCount = LoadingStore.requests.get(key);
+    if (requestCount) {
+      LoadingStore.requests.set(key, requestCount + 1);
+    } else {
+      LoadingStore.requests.set(key, 1);
+    }
+  },
+
+  endRequest: (key: string): void => {
+    const requestCount = LoadingStore.requests.get(key);
+    if (requestCount) {
+      LoadingStore.requests.set(key, requestCount - 1);
     }
   },
 });

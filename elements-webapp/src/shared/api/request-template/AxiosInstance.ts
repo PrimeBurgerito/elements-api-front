@@ -8,7 +8,7 @@ export const API = (): AxiosInstance => {
   return axios.create({
     baseURL: BASE_URL,
     timeout: 50000,
-    headers: { Authorization: token },
+    headers: { Authorization: `Bearer ${token}` },
     paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'comma' }),
   });
 };

@@ -43,6 +43,7 @@
     "@types/react-router-dom": "^4.3.3",
     "@types/qs": "^6.5.3",
     "babel-loader": "^8.0.6",
+    "babel-polyfill": "^7.0.0-beta.3",
     "clean-webpack-plugin": "^2.0.2",
     "css-loader": "^2.1.1",
     "file-loader": "^3.0.1",

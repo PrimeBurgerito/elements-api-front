@@ -1,7 +1,7 @@
 import Dexie from 'dexie';
 
 class Database extends Dexie {
-  private images: Dexie.Table<IDbImages, number>;
+  public images: Dexie.Table<IDbImages, number>;
 
   constructor() {
     super('Database');
@@ -20,6 +20,6 @@ interface IDbImages {
 
 const db = new Database();
 db.version(1)
-  .stores({images: 'name'});
+  .stores({ images: 'name' });
 
 export default db;
