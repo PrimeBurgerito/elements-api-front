@@ -1,8 +1,5 @@
+import { IUser } from '@type/user';
 import { store } from 'react-easy-state';
-
-interface IUser {
-  username: string;
-}
 
 interface IUserStore {
   user: IUser;
