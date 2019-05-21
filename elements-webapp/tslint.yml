@@ -11,6 +11,7 @@ rules:
   no-conditional-assignment: true
   no-consecutive-blank-lines: false
   blueprint-classes-constants: true
+  object-literal-sort-keys: false
   no-console:
     severity: warning
     options:
