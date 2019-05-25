@@ -7,9 +7,7 @@ module.exports = {
   port: 3000,
   hot: true,
   inline: true,
-  historyApiFallback: {
-    disableDotRule: true,
-  },
+  historyApiFallback: true,
   disableHostCheck: true,
   stats: 'minimal',
 };

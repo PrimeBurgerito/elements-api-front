@@ -1,12 +1,11 @@
-import { IAttribute, IProperty } from '@type/statistics';
-
 export interface IElementsFormProps {
   formStructure: IFormStructure;
-  label: string;
+  onChange: (formState: any) => void;
+  label?: string;
 }
 
 export enum FormElementType {
-  NUMERIC, TEXT, ATTRIBUTE, PROPERTY,
+  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG,
 }
 
 export interface IFormElement {
@@ -24,17 +23,19 @@ export interface IFormText extends IFormElement {
   type: FormElementType.TEXT;
 }
 
+export interface IFormTag extends IFormElement {
+  type: FormElementType.TAG;
+}
+
 export interface IFormAttribute extends IFormElement {
   type: FormElementType.ATTRIBUTE;
-  attributes: IAttribute[];
 }
 
 export interface IFormProperty extends IFormElement {
   type: FormElementType.PROPERTY;
-  properties: IProperty[];
 }
 
 
 export interface IFormStructure {
-  formElements: { [key: string]: IFormProperty | IFormAttribute | IFormText | IFormNumeric };
+  formElements: { [key: string]: IFormProperty | IFormAttribute | IFormText | IFormNumeric | IFormTag };
 }

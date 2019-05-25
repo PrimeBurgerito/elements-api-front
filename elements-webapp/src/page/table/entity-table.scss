@@ -1,0 +1,13 @@
+.entity-table-header {
+  display: flex;
+  margin-bottom: 10px
+}
+
+.entity-table-header h1 {
+  flex-grow: 1;
+}
+
+.entity-table-header button {
+  max-height: 8px;
+  margin: auto auto auto 10px;
+}

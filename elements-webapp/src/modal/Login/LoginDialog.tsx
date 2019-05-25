@@ -22,7 +22,7 @@ const LoginDialog = (): JSX.Element => {
   return (
     <Dialog
       title="Login"
-      isOpen={!UserStore.isAuthenticated()}
+      isOpen={!UserStore.isAuthenticated}
       canOutsideClickClose={false}
       canEscapeKeyClose={false}
       usePortal={false}

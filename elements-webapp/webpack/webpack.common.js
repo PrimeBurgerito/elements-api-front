@@ -78,6 +78,7 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx', '.json'],
     alias: {
       '@component': join(SRC_PATH, 'component'),
+      '@modal': join(SRC_PATH, 'modal'),
       '@constant': join(SRC_PATH, 'constant'),
       '@shared': join(SRC_PATH, 'shared'),
       '@type': join(SRC_PATH, 'type'),

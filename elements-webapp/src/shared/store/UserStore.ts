@@ -3,12 +3,12 @@ import { store } from 'react-easy-state';
 
 interface IUserStore {
   user: IUser;
-  isAuthenticated: () => boolean;
+  isAuthenticated: boolean;
 }
 
 const UserStore = store<IUserStore>({
   user: null,
-  isAuthenticated: () => !!UserStore.user,
+  get isAuthenticated() { return !!UserStore.user; },
 });
 
 export default UserStore;

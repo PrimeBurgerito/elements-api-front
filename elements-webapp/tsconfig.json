@@ -20,6 +20,8 @@
     "paths": {
       "@shared": [ "shared" ],
       "@shared*": [ "shared*" ],
+      "@modal": [ "modal" ],
+      "@modal*": [ "modal*" ],
       "@type": [ "type" ],
       "@type*": [ "type*" ],
       "@component": [ "component" ],
