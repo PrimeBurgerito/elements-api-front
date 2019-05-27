@@ -4,6 +4,7 @@ const BASE_PATH = 'http://localhost';
 export const BASE_URL = `${BASE_PATH}:${API_PORT}`;
 export const AUTH_URL = `${BASE_PATH}:${AUTH_PORT}`;
 export const CHARACTER_TEMPLATE_PATH = '/character-template';
+export const LOCATION_PATH = '/location';
 export const OBJECTIVE_PATH = '/objective';
 export const ATTRIBUTE_PATH = '/attribute';
 export const PROPERTY_PATH = '/property';

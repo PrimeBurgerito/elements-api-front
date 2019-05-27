@@ -1,6 +1,7 @@
 import { Card, Divider, FormGroup, H1, InputGroup, NumericInput, TagInput } from '@blueprintjs/core';
 import { HTMLInputProps } from '@blueprintjs/core/src/common/props';
 import AttributesInput from '@component/ElementsForm/element/AttributesInput';
+import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect'
 import PropertiesInput from '@component/ElementsForm/element/PropertiesInput';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -9,6 +10,7 @@ import {
   IElementsFormProps,
   IFormAttribute,
   IFormElement,
+  IFormMultiSelect,
   IFormNumeric,
   IFormProperty,
 } from './ElementsFormResource';
@@ -71,6 +73,11 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
       case FormElementType.ATTRIBUTE:
         element = formElement as IFormAttribute;
         input = <AttributesInput id={key} onChange={(attr) => onChange(key, attr)} />;
+        break;
+
+      case FormElementType.MULTISELECT:
+        element = formElement as IFormMultiSelect;
+        input = <MultiStringSelect values={element.values} onChange={(values) => onChange(key, values)} />;
         break;
     }
 

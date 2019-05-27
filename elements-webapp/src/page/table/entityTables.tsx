@@ -3,16 +3,23 @@ import { IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import ElementsTable from '@component/ElementsTable/ElementsTable';
 import { IColumnModel } from '@component/ElementsTable/ElementsTableResource';
 import EntityFormDialog from '@modal/form/EntityFormDialog';
-import { attributeFormStructure, objectiveFormStructure, propertyFormStructure } from '@modal/form/entityFormResources';
+import {
+  attributeFormStructure,
+  locationFormStructure,
+  objectiveFormStructure,
+  propertyFormStructure
+} from '@modal/form/entityFormResources';
 import BaseApi from '@shared/api/BaseApi';
+import LocationApi from '@shared/api/LocationApi'
 import AttributeApi from '@shared/api/statistic/AttributeApi';
 import ObjectiveApi from '@shared/api/statistic/ObjectiveApi';
 import PropertyApi from '@shared/api/statistic/PropertyApi';
 import DocumentBase from '@type/DocumentBase';
+import { ILocation } from '@type/location'
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import './entity-table.scss';
-import { attributeColumns, objectiveColumns, propertyColumns } from './entityTableResources';
+import { attributeColumns, locationColumns, objectiveColumns, propertyColumns } from './entityTableResources';
 
 interface IEntityBaseTableProps {
   api: BaseApi;
@@ -83,7 +90,6 @@ export const AttributeTable = () =>
     formStructure={attributeFormStructure}
   />;
 
-
 export const PropertyTable = () =>
   <BaseEntityTable
     title="Property"
@@ -92,7 +98,6 @@ export const PropertyTable = () =>
     formStructure={propertyFormStructure}
   />;
 
-
 export const ObjectiveTable = () =>
   <BaseEntityTable
     title="Objective"
@@ -100,3 +105,20 @@ export const ObjectiveTable = () =>
     columns={objectiveColumns}
     formStructure={objectiveFormStructure}
   />;
+
+export const LocationTable = () => {
+  const locationApi = new LocationApi();
+  const [locations, setLocations] = useState<string[]>(null);
+  useEffect(() => {
+    locationApi.find().then((res: ILocation[]) => {
+      setLocations(res.map((loc) => loc.name));
+    });
+  }, []);
+
+  return locations && <BaseEntityTable
+    title="Location"
+    api={locationApi}
+    columns={locationColumns}
+    formStructure={locationFormStructure(locations)}
+  />;
+};

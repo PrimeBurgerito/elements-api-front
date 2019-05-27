@@ -20,3 +20,10 @@ export const objectiveFormStructure: IFormStructure = {
     name: { label: 'Objective name', type: FormElementType.TEXT },
   },
 };
+
+export const locationFormStructure = (values: string[]): IFormStructure => ({
+  formElements: {
+    name: { label: 'Name', type: FormElementType.TEXT },
+    nearbyLocations: { label: 'Nearby locations', type: FormElementType.MULTISELECT, values },
+  },
+});

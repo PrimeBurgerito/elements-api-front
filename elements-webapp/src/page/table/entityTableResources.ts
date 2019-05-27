@@ -12,3 +12,8 @@ export const propertyColumns = [
 export const objectiveColumns = [
   { name: 'Name', key: 'name' },
 ];
+
+export const locationColumns = [
+  { name: 'Name', key: 'name' },
+  { name: 'Nearby locations', key: 'nearbyLocations' },
+];

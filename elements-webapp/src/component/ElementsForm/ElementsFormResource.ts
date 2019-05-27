@@ -5,7 +5,7 @@ export interface IElementsFormProps {
 }
 
 export enum FormElementType {
-  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG,
+  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG, MULTISELECT,
 }
 
 export interface IFormElement {
@@ -35,7 +35,14 @@ export interface IFormProperty extends IFormElement {
   type: FormElementType.PROPERTY;
 }
 
+export interface IFormMultiSelect extends IFormElement {
+  type: FormElementType.MULTISELECT;
+  values: string[];
+}
+
 
 export interface IFormStructure {
-  formElements: { [key: string]: IFormProperty | IFormAttribute | IFormText | IFormNumeric | IFormTag };
+  formElements: {
+    [key: string]: IFormProperty | IFormAttribute | IFormText | IFormNumeric | IFormTag | IFormMultiSelect
+  };
 }

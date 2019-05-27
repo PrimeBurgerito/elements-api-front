@@ -2,8 +2,8 @@ import { Button, Classes, Dialog } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseApi from '@shared/api/BaseApi';
-import { POST_LOADING } from '@shared/api/request-template/requests'
-import { LoadingStore } from '@shared/store/LoadingStore'
+import { POST_LOADING } from '@shared/api/request-template/requests';
+import { LoadingStore } from '@shared/store/LoadingStore';
 import * as React from 'react';
 import { useState } from 'react';
 

@@ -16,3 +16,7 @@ export interface IProperty extends IStatistic {
 export interface IObjective extends IStatistic {
 
 }
+
+export enum ObjectiveValue {
+  FAIL, SUCCESS,
+}
