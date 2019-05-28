@@ -9,7 +9,7 @@ import {
   objectiveFormStructure,
   propertyFormStructure,
 } from '@modal/form/entityFormResources';
-import ImageAddingDialog from '@modal/form/ImageAddingDialog'
+import ImageAddingDialog from '@modal/form/ImageAddingDialog';
 import BaseApi from '@shared/api/BaseApi';
 import LocationApi from '@shared/api/LocationApi';
 import AttributeApi from '@shared/api/statistic/AttributeApi';
@@ -105,6 +105,7 @@ const BaseEntityTable = (props: IEntityBaseTableProps): JSX.Element => {
 
   const renderImageAddingDialog = (): JSX.Element => {
     return <ImageAddingDialog
+      entityId={selectedEntity.id}
       isOpen={isImageAdderOpen}
       label={props.title}
       onClose={() => setImageAdderOpen(false)}
@@ -115,7 +116,7 @@ const BaseEntityTable = (props: IEntityBaseTableProps): JSX.Element => {
   return (
     <>
       {props.formStructure && renderEntityFormDialog()}
-      {props.imageAdder && renderImageAddingDialog()}
+      {props.imageAdder && selectedEntity && renderImageAddingDialog()}
       <div className="aw-9">
         <div className="entity-table-header">
           <H1>{props.title}</H1>{renderFormOpenButton()}{renderImageAddButton()}{renderEntityDeleteButton()}

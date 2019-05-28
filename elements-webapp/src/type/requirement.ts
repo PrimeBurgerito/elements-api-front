@@ -8,8 +8,8 @@ export interface ITiming {
 }
 
 export interface ITimeRange {
-  start: Date;
-  end: Date;
+  start: Date | string;
+  end: Date | string;
 }
 
 export interface IRequirement {

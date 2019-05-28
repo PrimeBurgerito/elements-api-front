@@ -17,6 +17,7 @@ interface ITimingProps {
 
 const TimingInput = (props: ITimingProps): JSX.Element => {
   const [timing, setTiming] = useState<ITiming>({});
+  const [times, setTimes] = useState<ITimeRange[]>([]);
 
   const handleChange = (key: 'weekdays' | 'monthDays' | 'months' | 'time', values) => {
     const newTiming = { ...timing, [key]: values };
@@ -34,15 +35,28 @@ const TimingInput = (props: ITimingProps): JSX.Element => {
   };
 
   const addTimeRange = () => {
+    setTimes([...times, { start: new Date(), end: new Date() }]);
+
     const newTimeRangeList = timing.time ? timing.time : [];
-    newTimeRangeList.push({ start: new Date(), end: new Date() });
+    const dateString = mapDateToString(new Date());
+    newTimeRangeList.push({ start: dateString, end: dateString });
     handleChange('time', newTimeRangeList);
   };
 
   const changeTimeRange = (idx: number, type: 'start' | 'end', value: Date) => {
-    const newTimeRangeList = [...timing.time];
+    const newTimeRangeList = [...times];
     newTimeRangeList[idx][type] = value;
-    handleChange('time', newTimeRangeList);
+    setTimes(newTimeRangeList);
+
+    const newTimeRangeStringList = [...timing.time];
+    newTimeRangeStringList[idx][type] = mapDateToString(value);
+    handleChange('time', newTimeRangeStringList);
+  };
+
+  const mapDateToString = (date: Date): string => {
+    const hours = date.getHours().toString();
+    const minutes = date.getMinutes().toString();
+    return `${hours.length < 2 ? '0' + hours : hours}:${minutes.length < 2 ? '0' + minutes : minutes}`;
   };
 
   return (
@@ -60,14 +74,14 @@ const TimingInput = (props: ITimingProps): JSX.Element => {
       <Button intent={Intent.PRIMARY} icon="time" onClick={addTimeRange}>New time range</Button>
       <br />
       <OL>
-        {timing.time && timing.time.map((time: ITimeRange, idx) => (
+        {timing.time && times.map((time: ITimeRange, idx) => (
           <li key={`time-range-${idx}`}>
             <div className="time-range-container">
               <FormGroup label="Start time">
-                <TimePicker value={time.start} onChange={(date) => changeTimeRange(idx, 'start', date)} />
+                <TimePicker value={time.start as Date} onChange={(date) => changeTimeRange(idx, 'start', date)} />
               </FormGroup>
               <FormGroup label="End time">
-                <TimePicker value={time.end} onChange={(date) => changeTimeRange(idx, 'end', date)} />
+                <TimePicker value={time.end as Date} onChange={(date) => changeTimeRange(idx, 'end', date)} />
               </FormGroup>
             </div>
           </li>

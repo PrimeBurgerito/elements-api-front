@@ -7,6 +7,12 @@ export interface IImage {
 }
 
 export interface IConditionalImage {
-  image: IImage;
-  requirement: IRequirement;
+  image?: IImage;
+  requirement?: IRequirement;
+}
+
+export interface IConditionalImageDto {
+  entityId: string;
+  imageKey: string;
+  requirement?: IRequirement;
 }

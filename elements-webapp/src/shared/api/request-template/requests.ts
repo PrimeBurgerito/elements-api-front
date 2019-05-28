@@ -33,14 +33,13 @@ export const POST = async (path: string, body = {}, config: AxiosRequestConfig =
 
 export const PUT = async (path: string, body: any, config?: AxiosRequestConfig): Promise<AxiosResponse> => {
   LoadingStore.addRequest(PUT_LOADING);
-  try {
-    return await API().put(path, body, config);
-  } catch (e) {
-    console.log(`postTemplate(): ${e}\n path: ${path}\n body: ${body}`);
-    return null;
-  } finally {
-    LoadingStore.endRequest(PUT_LOADING);
-  }
+  return await API().put(path, body, config)
+    .finally(() => LoadingStore.endRequest(PUT_LOADING))
+    .catch((e: AxiosError) => {
+      requestErrorNotice(e);
+      console.log(`postTemplate(): ${e}\n path: ${path}\n body: ${body}`);
+      return null;
+    });
 };
 
 export const DELETE = async (path: string, config?: AxiosRequestConfig): Promise<AxiosResponse> => {

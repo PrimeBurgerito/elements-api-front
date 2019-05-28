@@ -10,11 +10,13 @@ import './imageAddingDialog.scss';
 
 const imageAddingFormStructure: IFormStructure = {
   formElements: {
+    imageKey: { label: 'Unique image key', type: FormElementType.TEXT },
     requirement: { label: 'Image requirement', type: FormElementType.REQUIREMENT },
   },
 };
 
 interface IImageAddingDialogProps {
+  entityId: string;
   isOpen: boolean;
   label: string;
   onClose: () => void;
@@ -23,20 +25,27 @@ interface IImageAddingDialogProps {
 }
 
 const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
-  const [formState, setFormState] = useState({});
-  const [image, setImage] = useState(null);
+  const [imageDto, setImageDto] = useState({ entityId: props.entityId, imageKey: '' });
+  const [imageFile, setImageFile] = useState(null);
 
   const clickCreate = () => {
-
+    const formData = new FormData();
+    formData.append('imageDto', new Blob([JSON.stringify(imageDto)], { type: 'application/json' }));
+    formData.append('file', imageFile);
+    props.api.putConditionalImage(formData).then(console.log);
   };
 
   const onClose = () => {
-    setFormState({});
+    setImageDto({ entityId: props.entityId, imageKey: '' });
     props.onClose();
   };
 
   const onFileAdd = ({ target }) => {
-    setImage(URL.createObjectURL(target.files[0]));
+    setImageFile(target.files[0]);
+  };
+
+  const handleFormChange = (change: object) => {
+    setImageDto({ ...imageDto, ...change });
   };
 
   return (
@@ -49,13 +58,13 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
       className="image-add-dialog"
     >
       <div className={Classes.DIALOG_BODY}>
-        <ElementsForm formStructure={imageAddingFormStructure} onChange={(change) => setFormState(change)} />
+        <ElementsForm formStructure={imageAddingFormStructure} onChange={handleFormChange} />
         <FileInput fill text="Choose image" onChange={onFileAdd} />
-        {image && <img className="dialog-img" src={image} alt="No image" />}
+        {imageFile && <img className="dialog-img" src={URL.createObjectURL(imageFile)} alt="No image" />}
       </div>
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-          <Button large intent="warning" onClick={() => console.log(formState)}>Test</Button>
+          <Button large intent="warning" onClick={() => console.log(imageDto)}>Test</Button>
           <Button loading={LoadingStore.isLoading(POST_LOADING)} large intent="primary"
                   onClick={clickCreate}>Create</Button>
         </div>
