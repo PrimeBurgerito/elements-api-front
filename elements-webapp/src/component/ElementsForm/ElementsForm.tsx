@@ -3,6 +3,8 @@ import { HTMLInputProps } from '@blueprintjs/core/src/common/props';
 import AttributesInput from '@component/ElementsForm/element/AttributesInput';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect'
 import PropertiesInput from '@component/ElementsForm/element/PropertiesInput';
+import RequirementInput from '@component/ElementsForm/element/RequirementInput'
+import TimingInput from '@component/ElementsForm/element/TimingInput'
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {
@@ -79,6 +81,14 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
         element = formElement as IFormMultiSelect;
         input = <MultiStringSelect values={element.values} onChange={(values) => onChange(key, values)} />;
         break;
+
+      case FormElementType.TIMING:
+        input = <TimingInput onChange={(values) => onChange(key, values)} />;
+        break;
+
+      case FormElementType.REQUIREMENT:
+        input = <RequirementInput onChange={(values) => onChange(key, values)} />;
+        break;
     }
 
     return (
@@ -94,9 +104,7 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
   return (
     <Card>
       {!!props.label && <H1>{props.label}</H1>}
-      <form>
-        {Object.entries(props.formStructure.formElements).map(([key, elem]) => getElement(key, elem))}
-      </form>
+      {Object.entries(props.formStructure.formElements).map(([key, elem]) => getElement(key, elem))}
     </Card>
   );
 };

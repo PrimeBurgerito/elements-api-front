@@ -35,6 +35,7 @@ const MultiStringSelect = (props: IMultiStringSelectProps): JSX.Element => {
   };
 
   return <StringSelect
+    className="string-multi-select"
     items={allValues}
     tagRenderer={(name) => name}
     itemRenderer={valueRenderer}

@@ -9,6 +9,7 @@ import {
   objectiveFormStructure,
   propertyFormStructure,
 } from '@modal/form/entityFormResources';
+import ImageAddingDialog from '@modal/form/ImageAddingDialog'
 import BaseApi from '@shared/api/BaseApi';
 import LocationApi from '@shared/api/LocationApi';
 import AttributeApi from '@shared/api/statistic/AttributeApi';
@@ -28,27 +29,37 @@ interface IEntityBaseTableProps {
   formStructure?: IFormStructure;
   refreshOnEntityChange?: boolean;
   imageAdder?: 'default' | 'conditional';
+  onTableChange?: (entities: object[]) => void;
 }
 
 const BaseEntityTable = (props: IEntityBaseTableProps): JSX.Element => {
-  const [entities, setEntities] = useState([]);
+  const [entities, setEntities] = useState<DocumentBase[]>([]);
   const [selectedEntity, setSelectedEntity] = useState<DocumentBase>(null);
-  const [isFormOpen, setFormOpen] = useState(false);
+  const [isFormOpen, setFormOpen] = useState<boolean>(false);
+  const [isImageAdderOpen, setImageAdderOpen] = useState<boolean>(false);
 
   useEffect(() => {
     props.api.find().then(setEntities);
   }, []);
 
-  const renderFormOpenButton = (): JSX.Element =>
-    <Button icon="new-object" intent={Intent.PRIMARY} large onClick={() => setFormOpen(true)}>
-      Create new
+  useEffect(() => {
+    if (props.onTableChange) {
+      props.onTableChange(entities);
+    }
+  }, [entities]);
+
+  const renderFormOpenButton = (): JSX.Element => {
+    return props.formStructure && <Button
+      icon="new-object" intent={Intent.PRIMARY} large onClick={() => setFormOpen(true)}>Create new
     </Button>;
+  };
 
   const renderImageAddButton = (): JSX.Element => {
-    if (props.imageAdder) {
-      const isSelected = selectedEntity && selectedEntity.id;
-      return <Button disabled={!isSelected} icon="media" large intent={Intent.PRIMARY}>Add image</Button>;
-    }
+    const isSelected = selectedEntity && selectedEntity.id;
+    return props.imageAdder && <Button
+      large disabled={!isSelected} onClick={() => setImageAdderOpen(true)} icon="media" intent={Intent.PRIMARY}>
+      Add image
+    </Button>;
   };
 
   const renderEntityDeleteButton = (): JSX.Element => {
@@ -73,7 +84,7 @@ const BaseEntityTable = (props: IEntityBaseTableProps): JSX.Element => {
     setSelectedEntity(entity);
   };
 
-  const onEntityAdd = (newEntity: object) => {
+  const onEntityAddSuccess = (newEntity: object) => {
     if (props.refreshOnEntityChange) {
       props.api.find().then(setEntities);
     } else {
@@ -81,25 +92,36 @@ const BaseEntityTable = (props: IEntityBaseTableProps): JSX.Element => {
     }
   };
 
+  const renderEntityFormDialog = () => {
+    return <EntityFormDialog
+      api={props.api}
+      formStructure={props.formStructure}
+      label={props.title}
+      isOpen={isFormOpen}
+      onSuccess={onEntityAddSuccess}
+      onClose={() => setFormOpen(false)}
+    />;
+  };
+
+  const renderImageAddingDialog = (): JSX.Element => {
+    return <ImageAddingDialog
+      isOpen={isImageAdderOpen}
+      label={props.title}
+      onClose={() => setImageAdderOpen(false)}
+      api={props.api}
+    />;
+  };
+
   return (
     <>
-      {props.formStructure &&
-      <EntityFormDialog
-        api={props.api}
-        formStructure={props.formStructure}
-        label={props.title}
-        isOpen={isFormOpen}
-        onSuccess={onEntityAdd}
-        onClose={() => setFormOpen(false)}
-      />}
+      {props.formStructure && renderEntityFormDialog()}
+      {props.imageAdder && renderImageAddingDialog()}
       <div className="aw-9">
         <div className="entity-table-header">
-          <H1>{props.title}</H1>{props.formStructure && renderFormOpenButton()}{renderImageAddButton()}
-          {renderEntityDeleteButton()}
+          <H1>{props.title}</H1>{renderFormOpenButton()}{renderImageAddButton()}{renderEntityDeleteButton()}
         </div>
         <ElementsTable data={entities} columns={props.columns} onSelect={onEntitySelect} />
       </div>
-
     </>
   );
 };
@@ -130,19 +152,29 @@ export const ObjectiveTable = () =>
 
 export const LocationTable = () => {
   const locationApi = new LocationApi();
-  const [locations, setLocations] = useState<string[]>(null);
+  const [formStructure, setFormStructure] = useState<IFormStructure>(null);
+
   useEffect(() => {
     locationApi.find().then((res: ILocation[]) => {
-      setLocations(res.map((loc) => loc.name));
+      setFormStructure(locationFormStructure(mapLocationNames(res)));
     });
   }, []);
 
-  return locations && <BaseEntityTable
+  const mapLocationNames = (res: ILocation[]): string[] => {
+    return res.map((loc) => loc.name);
+  };
+
+  const onTableChange = (locations: ILocation[]) => {
+    setFormStructure(locationFormStructure(mapLocationNames(locations)));
+  };
+
+  return formStructure && <BaseEntityTable
     title="Location"
     imageAdder="conditional"
     api={locationApi}
     columns={locationColumns}
-    formStructure={locationFormStructure(locations)}
+    formStructure={formStructure}
     refreshOnEntityChange
+    onTableChange={onTableChange}
   />;
 };

@@ -1,3 +1,18 @@
 .statistic-changer {
   margin: 10px 0 0 10px;
 }
+
+.string-multi-select {
+  display: grid;
+  width: 100%;
+}
+
+.time-range-container {
+  display: flex;
+  flex-direction: row;
+  text-align: -webkit-center;
+
+  .bp3-form-group {
+    margin-left: 10px;
+  }
+}
