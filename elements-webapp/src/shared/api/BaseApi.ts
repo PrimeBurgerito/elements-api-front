@@ -22,6 +22,10 @@ export default abstract class BaseApi {
       { headers: { 'Content-Type': undefined } });
     return await response ? response.data : null;
   }
+  public putImage = async (entityId: string, imageKey: string, body: FormData): Promise<any> => {
+    const response: AxiosResponse = await PUT(`${this.PATH}/image/${entityId}/${imageKey}`, body);
+    return await response ? response.data : null;
+  }
   public find = async (): Promise<any> => {
     const response: AxiosResponse = await GET(this.PATH);
     return await response ? response.data : null;
