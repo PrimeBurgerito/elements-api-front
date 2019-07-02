@@ -8,3 +8,4 @@ export const LOCATION_PATH = '/location';
 export const OBJECTIVE_PATH = '/objective';
 export const ATTRIBUTE_PATH = '/attribute';
 export const PROPERTY_PATH = '/property';
+export const EVENT_PATH = '/event';

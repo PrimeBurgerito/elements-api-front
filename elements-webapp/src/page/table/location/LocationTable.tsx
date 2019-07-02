@@ -17,7 +17,7 @@ const locationFormStructure = (values: string[]): IFormStructure => ({
   },
 });
 
-const LocationTable = () => {
+const LocationTable = (): JSX.Element => {
   const locationApi = new LocationApi();
   const [formStructure, setFormStructure] = useState<IFormStructure>(null);
 
