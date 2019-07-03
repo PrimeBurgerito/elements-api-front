@@ -1,10 +1,10 @@
 import { Card, Divider, FormGroup, H1, InputGroup, NumericInput, TagInput } from '@blueprintjs/core';
 import { HTMLInputProps } from '@blueprintjs/core/src/common/props';
 import AttributesInput from '@component/ElementsForm/element/AttributesInput';
-import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect'
+import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import PropertiesInput from '@component/ElementsForm/element/PropertiesInput';
-import RequirementInput from '@component/ElementsForm/element/RequirementInput'
-import TimingInput from '@component/ElementsForm/element/TimingInput'
+import RequirementInput from '@component/ElementsForm/element/RequirementInput';
+import TimingInput from '@component/ElementsForm/element/TimingInput';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {

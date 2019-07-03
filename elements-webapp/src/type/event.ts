@@ -5,18 +5,18 @@ export interface IEvent {
   requirement: IRequirement;
 }
 
-interface ISceneOption {
+export interface ISceneOption {
   text: string;
-  next: number;
-  requirement: IRequirement;
+  next?: number;
+  requirement?: IRequirement;
 }
 
 export type SceneType = 'DEFAULT' | 'OPTION';
 
 export interface IScene {
-  next: number;
-  test: string;
-  type: SceneType;
-  options: ISceneOption[];
+  text: string;
+  next?: number;
+  type?: SceneType;
+  options?: ISceneOption[];
 }
 

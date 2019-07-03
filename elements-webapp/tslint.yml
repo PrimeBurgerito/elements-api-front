@@ -1,8 +1,12 @@
 extends:
   - "tslint:recommended"
   - "@blueprintjs/tslint-config/blueprint-rules"
+linterOptions:
+  exclude:
+    - "node_modules/**"
 rules:
-  "quotemark": [true, "single", "jsx-double"]
+  #no-unused-variable: false
+  quotemark: [true, "single", "jsx-double"]
   max-line-length:
     options: [120]
   new-parens: true
