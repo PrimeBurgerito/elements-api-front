@@ -24,6 +24,12 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
     props.onChange(formState);
   }, []);
 
+  useEffect(() => {
+    if (props.initialFormState) {
+      setFormState(props.initialFormState);
+    }
+  }, [props.initialFormState]);
+
   const onChange = (key, change) => {
     const newFormState = {
       ...formState,

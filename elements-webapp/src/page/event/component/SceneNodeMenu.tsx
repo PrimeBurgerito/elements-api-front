@@ -21,8 +21,14 @@ const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
 
   return (
     <>
+      {props.node.name}
       <Button onClick={() => console.log(props.node.scene)}>Test node</Button>
-      <ElementsForm formStructure={sceneForm} onChange={handleChange} label="Scene configuration" />
+      <ElementsForm
+        initialFormState={props.node.scene}
+        formStructure={sceneForm}
+        onChange={handleChange}
+        label="Scene configuration"
+      />
     </>
   );
 };

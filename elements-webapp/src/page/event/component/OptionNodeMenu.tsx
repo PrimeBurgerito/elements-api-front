@@ -35,6 +35,7 @@ const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
     return (
       <>
         <ElementsForm
+          initialFormState={props.node.scene.options[idx]}
           key={`option-${idx + 1}-configuration`}
           formStructure={optionForm}
           onChange={handleChange}
@@ -46,7 +47,7 @@ const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
   return (
     <>
       <SceneNodeMenu node={props.node} />
-      <Button onClick={addOptionClick}>Add option</Button>
+      <Button large intent="primary" onClick={addOptionClick}>Add option</Button>
       {props.node.scene.options.map(renderOption)}
     </>
   );

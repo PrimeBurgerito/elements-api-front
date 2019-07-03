@@ -4,11 +4,11 @@ import DiagramUtils from '@shared/diagram/DiagramUtils';
 import OptionNodeFactory from '@shared/diagram/option/OptionNodeFactory';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
 import SceneNodeFactory from '@shared/diagram/scene/SceneNodeFactory';
-import { IEvent } from '@type/event'
+import { IEvent } from '@type/event';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { DiagramEngine, DiagramModel, DiagramWidget } from 'storm-react-diagrams';
-import { LinkModel } from 'storm-react-diagrams/src/models/LinkModel'
+import { LinkModel } from 'storm-react-diagrams/src/models/LinkModel';
 import './body-widget.scss';
 import OptionNodeMenu from './OptionNodeMenu';
 import SceneNodeMenu from './SceneNodeMenu';
@@ -32,10 +32,6 @@ const BodyWidget = (): JSX.Element => {
     engine.registerNodeFactory(new OptionNodeFactory());
     engine.setDiagramModel(model);
   }, []);
-
-  useEffect(() => {
-    forceUpdate();
-  }, [selectedNode]);
 
   const handleNodeDrop = (event) => {
     const data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
@@ -62,16 +58,15 @@ const BodyWidget = (): JSX.Element => {
     const keys = Object.keys(nodes);
 
     const assignNextScene = (link: LinkModel) => {
-      const out = nodes[link.getSourcePort().parent.id];
-      const input = nodes[link.getTargetPort().parent.id];
-      const nextSceneIdx = keys.indexOf(input.id);
-      switch (out.scene.type) {
+      const current = nodes[link.getSourcePort().parent.id];
+      const nextSceneIdx = keys.indexOf(nodes[link.getTargetPort().parent.id].id);
+      switch (current.scene.type) {
         case 'DEFAULT':
-          out.scene.next = nextSceneIdx;
+          current.scene.next = nextSceneIdx;
           break;
         case 'OPTION':
           const idx = parseInt(link.getSourcePort().getName(), 10);
-          out.scene.options[idx].next = nextSceneIdx;
+          current.scene.options[idx].next = nextSceneIdx;
           break;
       }
     };
@@ -87,8 +82,7 @@ const BodyWidget = (): JSX.Element => {
   const renderSelectedNode = (): JSX.Element => {
     return selectedNode && (
       <>
-        {selectedNode.name}
-        {selectedNode.type === 'OPTION' &&
+        {selectedNode.type === 'OPTION' && selectedNode.constructor.name === 'OptionNodeModel' &&
         <OptionNodeMenu node={selectedNode as OptionNodeModel} update={forceUpdate} />}
         {selectedNode.type === 'DEFAULT' && <SceneNodeMenu node={selectedNode} />}
       </>
