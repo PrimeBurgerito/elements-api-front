@@ -1,4 +1,4 @@
-import { Button, FileInput } from '@blueprintjs/core';
+import { Button, Card, Collapse, FileInput, H2, H3 } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
@@ -17,6 +17,7 @@ interface ISceneNodeMenu {
 
 const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
   const [imageFile, setImageFile] = useState<File>(null);
+  const [showImage, setShowImage] = useState<boolean>(true);
 
   useEffect(() => {
     setImageFile(props.node.image);
@@ -33,17 +34,22 @@ const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
 
   return (
     <>
-      {props.node.name}
       <Button onClick={() => console.log(props.node.scene)}>Test node</Button>
+      <H2>Scene Configuration</H2>
       <ElementsForm
         key="default-scene"
         initialFormState={props.node.scene}
         formStructure={sceneForm}
         onChange={handleChange}
-        label="Scene configuration"
       />
-      <FileInput fill text="Choose image" onChange={onImageAdd} />
-      {imageFile && <img className="dialog-img" src={URL.createObjectURL(imageFile)} alt="No image" />}
+      <Card>
+        <H3>Image</H3>
+        <FileInput fill text="Choose Image" onChange={onImageAdd} />
+        <Button fill disabled={!imageFile} onClick={() => setShowImage(!showImage)} text="Toggle image" />
+        <Collapse isOpen={showImage}>
+          {imageFile && <img className="dialog-img" src={URL.createObjectURL(imageFile)} alt="No image" />}
+        </Collapse>
+      </Card>
     </>
   );
 };

@@ -1,6 +1,6 @@
-import { Button } from '@blueprintjs/core';
+import { Button, H1 } from '@blueprintjs/core';
 import EventApi from '@shared/api/EventApi';
-import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance'
+import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance';
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import DiagramUtils from '@shared/diagram/DiagramUtils';
 import OptionNodeFactory from '@shared/diagram/option/OptionNodeFactory';
@@ -10,11 +10,11 @@ import { IEventDto, IImageToSceneMap } from '@type/event';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { DiagramEngine, DiagramModel, DiagramWidget, LinkModel } from 'storm-react-diagrams';
-import './body-widget.scss';
-import OptionNodeMenu from './OptionNodeMenu';
-import SceneNodeMenu from './SceneNodeMenu';
-import TrayItemWidget from './TrayItemWidget';
-import TrayWidget from './TrayWidget';
+import '../event-component.scss';
+import OptionNodeMenu from '../option-node-menu/OptionNodeMenu';
+import SceneNodeMenu from '../SceneNodeMenu';
+import TrayItemWidget from '../TrayItemWidget';
+import TrayWidget from '../TrayWidget';
 
 const FORM_DATA_FILES = 'files';
 const FORM_DATA_IMAGE_TO_SCENE = 'imageToSceneMap';
@@ -25,7 +25,7 @@ const useForceUpdate = () => {
   return () => set(!value);
 };
 
-const BodyWidget = (): JSX.Element => {
+const EventPageBody = (): JSX.Element => {
   const forceUpdate = useForceUpdate();
   const [engine] = useState(new DiagramEngine());
   const [model] = useState(new DiagramModel());
@@ -57,9 +57,6 @@ const BodyWidget = (): JSX.Element => {
     console.log(model.getNodes());
     console.log(model.getLinks());
     console.log(collectEvent());
-    console.log(collectFormData().getAll('files'));
-    console.log(collectFormData().getAll('imageToSceneMap'));
-    console.log(collectFormData().getAll('eventDto'));
   };
 
   const collectEvent = (): IEventDto => {
@@ -102,17 +99,22 @@ const BodyWidget = (): JSX.Element => {
 
     formData.append(FORM_DATA_IMAGE_TO_SCENE, new Blob([JSON.stringify(imageToSceneMap)], APPLICATION_JSON_OPTION));
     formData.append(FORM_DATA_EVENT_DTO, new Blob([JSON.stringify(eventDto)], APPLICATION_JSON_OPTION));
-    EventApi.post(formData).then(console.log);
     return formData;
+  };
+
+  const handleSubmit = () => {
+    EventApi.post(collectFormData()).then(console.log);
   };
 
   const renderSelectedNode = (): JSX.Element => {
     return selectedNode && (
-      <>
+      <div>
+        <H1>{selectedNode.name}</H1>
+        <Button intent="primary" large onClick={handleSubmit}>Submit</Button>
         {selectedNode.type === 'OPTION' && selectedNode.constructor.name === 'OptionNodeModel' &&
         <OptionNodeMenu node={selectedNode as OptionNodeModel} update={forceUpdate} />}
         {selectedNode.type === 'DEFAULT' && <SceneNodeMenu node={selectedNode} />}
-      </>
+      </div>
     );
   };
 
@@ -120,7 +122,7 @@ const BodyWidget = (): JSX.Element => {
     <>
       <div className="diagram-body">
         <div className="header">
-          <div className="title">Storm React Diagrams - Demo 5</div>
+          <div className="title">Elements Event Diagram</div>
           <Button onClick={handleTest}>Test</Button>
         </div>
         <div className="content">
@@ -139,4 +141,4 @@ const BodyWidget = (): JSX.Element => {
   );
 };
 
-export default BodyWidget;
+export default EventPageBody;

@@ -1,6 +1,6 @@
 import { NodeType } from '@shared/diagram/DiagramUtils';
 import * as React from 'react';
-import './body-widget.scss';
+import './event-component.scss';
 
 export interface ITrayItemWidgetProps {
   model: { type: NodeType };

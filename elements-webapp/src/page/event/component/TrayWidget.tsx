@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './body-widget.scss';
+import './event-component.scss';
 
 interface ITrayWidgetProps {
   children: React.ReactChild[];
