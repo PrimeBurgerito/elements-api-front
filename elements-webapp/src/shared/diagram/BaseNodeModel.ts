@@ -1,12 +1,13 @@
-import { IScene, SceneType } from '@type/event';
+import { ISceneDto, SceneType } from '@type/event';
 import { DefaultPortModel, DiagramEngine, NodeModel, Toolkit } from 'storm-react-diagrams';
 
 export default class BaseNodeModel extends NodeModel {
   public ports: { [s: string]: DefaultPortModel };
   public name: string;
   public color: string;
-  public scene: IScene;
+  public scene: ISceneDto;
   public type: SceneType;
+  public image: File;
 
   constructor(type: SceneType) {
     super(type);

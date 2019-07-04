@@ -1,19 +1,24 @@
 import { Button } from '@blueprintjs/core';
+import EventApi from '@shared/api/EventApi';
+import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance'
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import DiagramUtils from '@shared/diagram/DiagramUtils';
 import OptionNodeFactory from '@shared/diagram/option/OptionNodeFactory';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
 import SceneNodeFactory from '@shared/diagram/scene/SceneNodeFactory';
-import { IEvent } from '@type/event';
+import { IEventDto, IImageToSceneMap } from '@type/event';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { DiagramEngine, DiagramModel, DiagramWidget } from 'storm-react-diagrams';
-import { LinkModel } from 'storm-react-diagrams/src/models/LinkModel';
+import { DiagramEngine, DiagramModel, DiagramWidget, LinkModel } from 'storm-react-diagrams';
 import './body-widget.scss';
 import OptionNodeMenu from './OptionNodeMenu';
 import SceneNodeMenu from './SceneNodeMenu';
 import TrayItemWidget from './TrayItemWidget';
 import TrayWidget from './TrayWidget';
+
+const FORM_DATA_FILES = 'files';
+const FORM_DATA_IMAGE_TO_SCENE = 'imageToSceneMap';
+const FORM_DATA_EVENT_DTO = 'eventDto';
 
 const useForceUpdate = () => {
   const [value, set] = useState(true);
@@ -31,6 +36,7 @@ const BodyWidget = (): JSX.Element => {
     engine.registerNodeFactory(new SceneNodeFactory());
     engine.registerNodeFactory(new OptionNodeFactory());
     engine.setDiagramModel(model);
+    model.setZoomLevel(model.getZoomLevel() * 2);
   }, []);
 
   const handleNodeDrop = (event) => {
@@ -51,9 +57,12 @@ const BodyWidget = (): JSX.Element => {
     console.log(model.getNodes());
     console.log(model.getLinks());
     console.log(collectEvent());
+    console.log(collectFormData().getAll('files'));
+    console.log(collectFormData().getAll('imageToSceneMap'));
+    console.log(collectFormData().getAll('eventDto'));
   };
 
-  const collectEvent = (): IEvent => {
+  const collectEvent = (): IEventDto => {
     const nodes = model.getNodes() as { [s: string]: BaseNodeModel };
     const keys = Object.keys(nodes);
 
@@ -77,6 +86,24 @@ const BodyWidget = (): JSX.Element => {
 
     const scenes = Object.values(nodes).map((node) => node.scene);
     return { scenes, requirement: null };
+  };
+
+  const collectFormData = (): FormData => {
+    const formData = new FormData();
+    const eventDto = collectEvent();
+    const imageToSceneMap: IImageToSceneMap[] = [];
+    Object.values(model.getNodes())
+      .filter((node: BaseNodeModel) => node.image)
+      .forEach((node: BaseNodeModel, imageIndex: number) => {
+        formData.append(FORM_DATA_FILES, node.image);
+        const sceneIndex = eventDto.scenes.indexOf(node.scene);
+        imageToSceneMap.push({ imageIndex, sceneIndex });
+      });
+
+    formData.append(FORM_DATA_IMAGE_TO_SCENE, new Blob([JSON.stringify(imageToSceneMap)], APPLICATION_JSON_OPTION));
+    formData.append(FORM_DATA_EVENT_DTO, new Blob([JSON.stringify(eventDto)], APPLICATION_JSON_OPTION));
+    EventApi.post(formData).then(console.log);
+    return formData;
   };
 
   const renderSelectedNode = (): JSX.Element => {

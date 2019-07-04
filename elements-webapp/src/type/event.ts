@@ -6,6 +6,11 @@ export interface IEvent {
   requirement: IRequirement;
 }
 
+export interface IEventDto {
+  scenes: ISceneDto[];
+  requirement: IRequirement;
+}
+
 export interface ISceneOption {
   text: string;
   next?: number;
@@ -21,3 +26,16 @@ export interface IScene {
   type?: SceneType;
   options?: ISceneOption[];
 }
+
+export interface ISceneDto {
+  text: string;
+  next?: number;
+  type?: SceneType;
+  options?: ISceneOption[];
+}
+
+export interface IImageToSceneMap {
+  imageIndex: number;
+  sceneIndex: number;
+}
+

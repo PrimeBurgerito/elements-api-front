@@ -2,11 +2,15 @@ import { Button, Classes, Dialog, FileInput } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseApi from '@shared/api/BaseApi';
+import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance'
 import { POST_LOADING } from '@shared/api/request-template/requests';
 import { LoadingStore } from '@shared/store/LoadingStore';
 import * as React from 'react';
 import { useState } from 'react';
 import './imageAddingDialog.scss';
+
+const FORM_DATA_FILE = 'file';
+const FORM_DATA_IMAGE_DTO = 'imageDto';
 
 const defaultStructure: IFormStructure = {
   formElements: {
@@ -33,13 +37,13 @@ interface IImageAddingDialogProps {
 
 const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
   const [imageDto, setImageDto] = useState({ entityId: props.entityId, imageKey: '' });
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File>(null);
 
   const clickCreate = () => {
     const formData = new FormData();
-    formData.append('file', imageFile);
+    formData.append(FORM_DATA_FILE, imageFile);
     if (props.type === 'conditional') {
-      formData.append('imageDto', new Blob([JSON.stringify(imageDto)], { type: 'application/json' }));
+      formData.append(FORM_DATA_IMAGE_DTO, new Blob([JSON.stringify(imageDto)], APPLICATION_JSON_OPTION));
       props.api.putConditionalImage(formData).then(console.log);
     } else {
       props.api.putImage(imageDto.entityId, imageDto.imageKey, formData).then(console.log);

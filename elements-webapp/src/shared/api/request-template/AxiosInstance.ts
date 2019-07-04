@@ -3,6 +3,8 @@ import { AUTH_URL, BASE_URL } from '@constant/paths';
 import axios, { AxiosInstance } from 'axios';
 import * as qs from 'qs';
 
+export const APPLICATION_JSON_OPTION = { type: 'application/json' };
+
 export const API = (): AxiosInstance => {
   const token = sessionStorage.getItem(TOKEN_STORAGE_KEY);
   return axios.create({
