@@ -35,8 +35,10 @@ const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
 
   return (
     <>
-      <Button onClick={() => console.log(props.node.scene)}>Test node</Button>
-      <H2>Scene Configuration</H2>
+      <div className="scene-header">
+        <Button onClick={() => console.log(props.node.scene)}>Test node</Button>
+        <H2>Scene Configuration</H2>
+      </div>
       <ElementsForm
         key="default-scene"
         initialFormState={props.node.scene}

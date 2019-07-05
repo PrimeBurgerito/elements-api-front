@@ -1,4 +1,6 @@
-import { Button, H1 } from '@blueprintjs/core';
+import { Button, Classes, Drawer, H1 } from '@blueprintjs/core';
+import ElementsForm from '@component/ElementsForm/ElementsForm'
+import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource'
 import EventApi from '@shared/api/EventApi';
 import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance';
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
@@ -20,16 +22,26 @@ const FORM_DATA_FILES = 'files';
 const FORM_DATA_IMAGE_TO_SCENE = 'imageToSceneMap';
 const FORM_DATA_EVENT_DTO = 'eventDto';
 
+const eventForm: IFormStructure = {
+  formElements: {
+    requirement: { label: 'Requirement', type: FormElementType.REQUIREMENT },
+  },
+};
+
 const useForceUpdate = () => {
   const [value, set] = useState(true);
   return () => set(!value);
 };
+
+type PartialEventDto = Pick<IEventDto, 'requirement'>;
 
 const EventPageBody = (): JSX.Element => {
   const forceUpdate = useForceUpdate();
   const [engine] = useState(new DiagramEngine());
   const [model] = useState(new DiagramModel());
   const [selectedNode, setSelectedNode] = useState<BaseNodeModel>(null);
+  const [configurationOpen, setConfigurationOpen] = useState<boolean>(false);
+  const [eventFormState, setEventFormState] = useState<PartialEventDto>(null);
 
   useEffect(() => {
     engine.installDefaultFactories();
@@ -82,7 +94,7 @@ const EventPageBody = (): JSX.Element => {
       .forEach(assignNextScene);
 
     const scenes = Object.values(nodes).map((node) => node.scene);
-    return { scenes, requirement: null };
+    return { scenes, ...eventFormState };
   };
 
   const collectFormData = (): FormData => {
@@ -110,11 +122,32 @@ const EventPageBody = (): JSX.Element => {
     return selectedNode && (
       <div className="selected-node">
         <H1>{selectedNode.name}</H1>
-        <Button intent="primary" large onClick={handleSubmit}>Submit</Button>
         {selectedNode.type === 'OPTION' && selectedNode.constructor.name === 'OptionNodeModel' &&
         <OptionNodeMenu node={selectedNode as OptionNodeModel} update={forceUpdate} />}
         {selectedNode.type === 'DEFAULT' && <SceneNodeMenu node={selectedNode} />}
       </div>
+    );
+  };
+
+  const renderEventConfiguration = (): JSX.Element => {
+    const onEventChange = (formState: any) => {
+      setEventFormState({ ...eventFormState, ...formState });
+    };
+
+    return (
+      <Drawer
+        className={Classes.DARK}
+        position="left"
+        isOpen={configurationOpen}
+        title="Event Configuration"
+        onClose={() => setConfigurationOpen(false)}
+      >
+        <div className={Classes.DRAWER_BODY}>
+          <div className={Classes.DIALOG_BODY}>
+            <ElementsForm formStructure={eventForm} onChange={onEventChange} />
+          </div>
+        </div>
+      </Drawer>
     );
   };
 
@@ -124,6 +157,9 @@ const EventPageBody = (): JSX.Element => {
         <div className="diagram-body">
           <div className="header">
             <div className="title">Elements Event Diagram</div>
+            <hr />
+            <Button intent="primary" onClick={handleSubmit}>Submit</Button>
+            <Button onClick={() => setConfigurationOpen(!configurationOpen)}>Event Configuration</Button>
             <Button onClick={handleTest}>Test</Button>
           </div>
           <div className="content">
@@ -136,9 +172,9 @@ const EventPageBody = (): JSX.Element => {
             </div>
           </div>
         </div>
-
         {renderSelectedNode()}
       </div>
+      {renderEventConfiguration()}
     </>
   );
 };
