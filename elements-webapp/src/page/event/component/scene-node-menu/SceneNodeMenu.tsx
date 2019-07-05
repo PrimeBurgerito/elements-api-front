@@ -1,9 +1,10 @@
-import { Button, Card, Collapse, FileInput, H2, H3 } from '@blueprintjs/core';
+import { Button, Card, Classes, ControlGroup, Dialog, FileInput, H2, H3 } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import './scene-node-menu.scss';
 
 const sceneForm: IFormStructure = {
   formElements: {
@@ -17,7 +18,7 @@ interface ISceneNodeMenu {
 
 const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
   const [imageFile, setImageFile] = useState<File>(null);
-  const [showImage, setShowImage] = useState<boolean>(true);
+  const [showImage, setShowImage] = useState<boolean>(false);
 
   useEffect(() => {
     setImageFile(props.node.image);
@@ -44,11 +45,15 @@ const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
       />
       <Card>
         <H3>Image</H3>
-        <FileInput fill text="Choose Image" onChange={onImageAdd} />
-        <Button fill disabled={!imageFile} onClick={() => setShowImage(!showImage)} text="Toggle image" />
-        <Collapse isOpen={showImage}>
-          {imageFile && <img className="dialog-img" src={URL.createObjectURL(imageFile)} alt="No image" />}
-        </Collapse>
+        <ControlGroup vertical>
+          <FileInput fill text="Choose Image" onChange={onImageAdd} />
+          <Button fill disabled={!imageFile} onClick={() => setShowImage(!showImage)} text="Toggle image" />
+        </ControlGroup>
+        <Dialog className="scene-dialog" isOpen={showImage} onClose={() => setShowImage(false)}>
+          <div className={Classes.DIALOG_BODY}>
+            {imageFile && <img src={URL.createObjectURL(imageFile)} alt="No image" />}
+          </div>
+        </Dialog>
       </Card>
     </>
   );

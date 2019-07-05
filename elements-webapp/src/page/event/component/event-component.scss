@@ -1,10 +1,16 @@
+.diagram-container {
+  display: flex;
+  flex-flow: row;
+  height: calc(100vh - 50px);
+}
+
 .diagram-body {
-  flex-grow: 1;
+  flex-grow: 2;
   display: flex;
   flex-direction: column;
   background-color: #202b33;
   min-height: 500px;
-  margin-bottom: 20px;
+  min-width: 66vw;
 
   .header {
     display: flex;
@@ -48,5 +54,15 @@
         cursor: pointer;
       }
     }
+  }
+}
+
+.selected-node {
+  min-width: 33vw;
+  overflow-y: auto;
+  flex-grow: 1;
+
+  h1, h2 {
+    margin-left: 20px;
   }
 }

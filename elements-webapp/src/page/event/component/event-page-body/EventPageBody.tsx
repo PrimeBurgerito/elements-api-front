@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { DiagramEngine, DiagramModel, DiagramWidget, LinkModel } from 'storm-react-diagrams';
 import '../event-component.scss';
 import OptionNodeMenu from '../option-node-menu/OptionNodeMenu';
-import SceneNodeMenu from '../SceneNodeMenu';
+import SceneNodeMenu from '../scene-node-menu/SceneNodeMenu';
 import TrayItemWidget from '../TrayItemWidget';
 import TrayWidget from '../TrayWidget';
 
@@ -108,7 +108,7 @@ const EventPageBody = (): JSX.Element => {
 
   const renderSelectedNode = (): JSX.Element => {
     return selectedNode && (
-      <div>
+      <div className="selected-node">
         <H1>{selectedNode.name}</H1>
         <Button intent="primary" large onClick={handleSubmit}>Submit</Button>
         {selectedNode.type === 'OPTION' && selectedNode.constructor.name === 'OptionNodeModel' &&
@@ -120,23 +120,25 @@ const EventPageBody = (): JSX.Element => {
 
   return (
     <>
-      <div className="diagram-body">
-        <div className="header">
-          <div className="title">Elements Event Diagram</div>
-          <Button onClick={handleTest}>Test</Button>
-        </div>
-        <div className="content">
-          <TrayWidget>
-            <TrayItemWidget model={{ type: 'DEFAULT' }} name="Scene" color="rgb(192,255,0)" />
-            <TrayItemWidget model={{ type: 'OPTION' }} name="Option" color="rgb(0,192,255)" />
-          </TrayWidget>
-          <div className="diagram-layer" onDrop={handleNodeDrop} onDragOver={(event) => event.preventDefault()}>
-            <DiagramWidget className="srd-demo-canvas" diagramEngine={engine} />
+      <div className="diagram-container">
+        <div className="diagram-body">
+          <div className="header">
+            <div className="title">Elements Event Diagram</div>
+            <Button onClick={handleTest}>Test</Button>
+          </div>
+          <div className="content">
+            <TrayWidget>
+              <TrayItemWidget model={{ type: 'DEFAULT' }} name="Scene" color="rgb(192,255,0)" />
+              <TrayItemWidget model={{ type: 'OPTION' }} name="Option" color="rgb(0,192,255)" />
+            </TrayWidget>
+            <div className="diagram-layer" onDrop={handleNodeDrop} onDragOver={(event) => event.preventDefault()}>
+              <DiagramWidget className="srd-demo-canvas" diagramEngine={engine} />
+            </div>
           </div>
         </div>
-      </div>
 
-      {renderSelectedNode()}
+        {renderSelectedNode()}
+      </div>
     </>
   );
 };

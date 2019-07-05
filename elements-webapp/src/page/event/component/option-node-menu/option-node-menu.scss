@@ -1,3 +1,19 @@
-.option-button {
+.option-header {
+  display: flex;
   margin: 10px;
+
+  h2 {
+    flex-grow: 4;
+  }
+
+  button {
+    flex-grow: 1;
+  }
+}
+
+.toggle-option {
+  margin-left: 10px;
+  margin-right: 10px;
+  display: block;
+  width: calc(100% - 20px);
 }

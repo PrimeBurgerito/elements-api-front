@@ -5,7 +5,7 @@ import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
 import { ISceneOption } from '@type/event';
 import * as React from 'react';
 import { useState } from 'react';
-import SceneNodeMenu from '../SceneNodeMenu';
+import SceneNodeMenu from '../scene-node-menu/SceneNodeMenu';
 import './option-node-menu.scss';
 
 const optionForm: IFormStructure = {
@@ -43,8 +43,8 @@ const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
 
     return (
       <div key={`option-${idx + 1}-configuration`}>
-        <Button fill onClick={toggleOption} text={`Toggle Option ${idx + 1}`} />
-        <Collapse isOpen={showOption[idx]}>
+        <Button className="toggle-option" onClick={toggleOption} text={`Toggle Option ${idx + 1}`} />
+        <Collapse keepChildrenMounted isOpen={showOption[idx]}>
           <ElementsForm
             initialFormState={props.node.scene.options[idx]}
             formStructure={optionForm}
@@ -58,8 +58,10 @@ const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
   return (
     <>
       <SceneNodeMenu node={props.node} />
-      <H2>Options</H2>
-      <Button className="option-button" large intent="primary" onClick={addOptionClick}>Add option</Button>
+      <div className="option-header">
+        <H2>Options</H2>
+        <Button className="option-button" intent="primary" onClick={addOptionClick}>Add</Button>
+      </div>
       {props.node.scene.options.map(renderOption)}
     </>
   );
