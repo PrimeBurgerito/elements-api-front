@@ -17,18 +17,17 @@ const optionForm: IFormStructure = {
 
 interface IOptionNodeMenu {
   node: OptionNodeModel;
-  update: () => void;
+  onOptionAdd: () => void;
 }
 
 const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
   const [showOption, setShowOption] = useState<boolean[]>([]);
   const addOptionClick = () => {
-    if (props.node.type !== 'OPTION') {
-      return;
+    if (props.node.type === 'OPTION') {
+      props.node.addOption();
+      setShowOption([...showOption, true]);
+      props.onOptionAdd();
     }
-    props.node.addOption();
-    setShowOption([...showOption, true]);
-    props.update();
   };
 
   const renderOption = (option: ISceneOption, idx: number): JSX.Element => {

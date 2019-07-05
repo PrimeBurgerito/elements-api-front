@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import './entity-table.scss';
 
 interface IEntityBaseTableProps {
-  api: BaseApi;
+  api: BaseApi<any>;
   columns: IColumnModel[];
   title: string;
   formStructure?: IFormStructure;

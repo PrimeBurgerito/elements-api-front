@@ -6,15 +6,20 @@ import { useEffect } from 'react';
 import { store, view } from 'react-easy-state';
 import './element.scss';
 
+interface IPropertiesForm {
+  [k: string]: string;
+}
+
 interface IPropertiesInputProps {
   id?: string;
-  onChange: (properties: { [k: string]: string }) => void;
+  initialProperties?: IPropertiesForm;
+  onChange: (properties: IPropertiesForm) => void;
 }
 
 interface IPropertiesInputStore {
   allProperties: IProperty[];
   remainingProps: IProperty[];
-  addedProperties: { [k: string]: string };
+  addedProperties: IPropertiesForm;
   selected: IProperty;
   newValue: string;
 }
@@ -29,13 +34,23 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   });
 
   useEffect(() => {
-    new PropertyApi().find().then((res: IProperty[]) => {
+    new PropertyApi().find(true).then((res: IProperty[]) => {
       if (res && res.length) {
         localStore.allProperties = res;
         localStore.remainingProps = [...res];
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (props.initialProperties && localStore.allProperties) {
+      localStore.addedProperties = props.initialProperties;
+      if (props.initialProperties) {
+        localStore.remainingProps = localStore.allProperties
+          .filter((value) => !Object.keys(props.initialProperties).includes(value.id));
+      }
+    }
+  }, [props.initialProperties, localStore.allProperties]);
 
   const onPropertyChange = (): void => {
     props.onChange(localStore.addedProperties);
@@ -129,7 +144,6 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
 
     return Object.keys(localStore.addedProperties).map((key) => {
       const prop: IProperty = localStore.allProperties.find((p) => p.id === key);
-
       return (
         <FormGroup className="statistic-changer" key={`added-${key}`} labelFor={prop.id} label={prop.name}>
           {renderAddedPropertyValueSelector(prop)}
@@ -141,7 +155,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   return (
     <>
       {renderPropertySelector()}
-      {localStore.addedProperties && renderAddedProperties()}
+      {localStore.allProperties.length && localStore.addedProperties && renderAddedProperties()}
     </>
   );
 };

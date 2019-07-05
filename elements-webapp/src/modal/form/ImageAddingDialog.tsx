@@ -32,7 +32,7 @@ interface IImageAddingDialogProps {
   type: 'default' | 'conditional';
   onClose: () => void;
   onSuccess?: (res: any) => void;
-  api: BaseApi;
+  api: BaseApi<any>;
 }
 
 const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {

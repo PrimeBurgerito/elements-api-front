@@ -13,7 +13,7 @@ interface IEntityFormDialogProps {
   formStructure: IFormStructure;
   onClose: () => void;
   onSuccess?: (res: any) => void;
-  api: BaseApi;
+  api: BaseApi<any>;
 }
 
 const EntityFormDialog = (props: IEntityFormDialogProps): JSX.Element => {

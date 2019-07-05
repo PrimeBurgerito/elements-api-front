@@ -123,7 +123,7 @@ const EventPageBody = (): JSX.Element => {
       <div className="selected-node">
         <H1>{selectedNode.name}</H1>
         {selectedNode.type === 'OPTION' && selectedNode.constructor.name === 'OptionNodeModel' &&
-        <OptionNodeMenu node={selectedNode as OptionNodeModel} update={forceUpdate} />}
+        <OptionNodeMenu node={selectedNode as OptionNodeModel} onOptionAdd={forceUpdate} />}
         {selectedNode.type === 'DEFAULT' && <SceneNodeMenu node={selectedNode} />}
       </div>
     );

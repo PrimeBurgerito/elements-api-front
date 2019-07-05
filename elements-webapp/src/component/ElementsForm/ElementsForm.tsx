@@ -1,6 +1,7 @@
 import { Card, Divider, FormGroup, H1, InputGroup, NumericInput, TagInput } from '@blueprintjs/core';
 import { HTMLInputProps } from '@blueprintjs/core/src/common/props';
 import AttributesInput from '@component/ElementsForm/element/AttributesInput';
+import LocationInput from '@component/ElementsForm/element/LocationInput';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import PropertiesInput from '@component/ElementsForm/element/PropertiesInput';
 import RequirementInput from '@component/ElementsForm/element/RequirementInput';
@@ -16,6 +17,7 @@ import {
   IFormNumeric,
   IFormProperty,
 } from './ElementsFormResource';
+
 
 const ElementsForm = (props: IElementsFormProps): JSX.Element => {
   const [formState, setFormState] = useState(() => ({}));
@@ -75,17 +77,29 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
 
       case FormElementType.PROPERTY:
         element = formElement as IFormProperty;
-        input = <PropertiesInput id={key} onChange={(prop) => onChange(key, prop)} />;
+        input = <PropertiesInput
+          id={key}
+          initialProperties={formState[key]}
+          onChange={(prop) => onChange(key, prop)}
+        />;
         break;
 
       case FormElementType.ATTRIBUTE:
         element = formElement as IFormAttribute;
-        input = <AttributesInput id={key} onChange={(attr) => onChange(key, attr)} />;
+        input = <AttributesInput
+          id={key}
+          initialAttributes={formState[key]}
+          onChange={(attr) => onChange(key, attr)}
+        />;
         break;
 
       case FormElementType.MULTISELECT:
         element = formElement as IFormMultiSelect;
-        input = <MultiStringSelect values={element.values} onChange={(values) => onChange(key, values)} />;
+        input = <MultiStringSelect
+          initialValues={formState[key]}
+          values={element.values}
+          onChange={(values) => onChange(key, values)}
+        />;
         break;
 
       case FormElementType.TIMING:
@@ -93,7 +107,11 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
         break;
 
       case FormElementType.REQUIREMENT:
-        input = <RequirementInput onChange={(values) => onChange(key, values)} />;
+        input = <RequirementInput initialRequirement={formState[key]} onChange={(values) => onChange(key, values)} />;
+        break;
+
+      case FormElementType.LOCATION:
+        input = <LocationInput initialLocationId={formState[key]} onChange={(value) => onChange(key, value)} />;
         break;
     }
 

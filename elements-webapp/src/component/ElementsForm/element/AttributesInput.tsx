@@ -8,6 +8,7 @@ import './element.scss';
 
 interface IAttributesInputProps {
   id?: string;
+  initialAttributes?: { [k: string]: number };
   onChange: (attributes: { [k: string]: number }) => void;
 }
 
@@ -29,13 +30,21 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
   });
 
   useEffect(() => {
-    new AttributeApi().find().then((res: IAttribute[]) => {
+    new AttributeApi().find(true).then((res: IAttribute[]) => {
       if (res && res.length) {
         localStore.allAttributes = res;
         localStore.remainingAttr = [...res];
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (props.initialAttributes && localStore.allAttributes.length) {
+      localStore.addedAttributes = props.initialAttributes;
+      localStore.remainingAttr = localStore.allAttributes
+        .filter((attr) => !Object.keys(props.initialAttributes).includes(attr.id));
+    }
+  }, [props.initialAttributes, localStore.allAttributes]);
 
   const onAttributeChange = () => {
     props.onChange(localStore.addedAttributes);
@@ -68,7 +77,7 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
     };
 
     return (
-      <ControlGroup id={props.id}>
+      <ControlGroup fill id={props.id}>
         <Popover content={renderAttributeMenu()} position={Position.BOTTOM}>
           <Button text={localStore.selected ? localStore.selected.name : 'Attributes'} rightIcon="caret-down" />
         </Popover>
@@ -76,8 +85,7 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
                       onValueChange={(value) => localStore.newValue = value}
                       min={!!localStore.selected ? localStore.selected.min : 0}
                       max={!!localStore.selected ? localStore.selected.max : 100} />
-        <Button onClick={addAttribute} disabled={!localStore.selected} text="Add" rightIcon="arrow-right"
-                intent="success" />
+        <Button onClick={addAttribute} disabled={!localStore.selected} text="Add" intent="success" />
       </ControlGroup>
     );
   };
@@ -100,7 +108,8 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
   return (
     <>
       {renderAttributeSelector()}
-      {localStore.addedAttributes && Object.keys(localStore.addedAttributes).map(renderAttributeChanger)}
+      {localStore.allAttributes.length && localStore.addedAttributes &&
+      Object.keys(localStore.addedAttributes).map(renderAttributeChanger)}
     </>
   );
 };

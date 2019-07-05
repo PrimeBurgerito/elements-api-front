@@ -1,10 +1,11 @@
 import { MenuItem } from '@blueprintjs/core';
 import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IMultiStringSelectProps {
   values: string[];
+  initialValues?: string[];
   onChange: (values: string[]) => void;
 }
 
@@ -12,6 +13,12 @@ const MultiStringSelect = (props: IMultiStringSelectProps): JSX.Element => {
   const allValues = [...new Set(props.values)];
   const [selected, setSelected] = useState([]);
   const StringSelect = MultiSelect.ofType<string>();
+
+  useEffect(() => {
+    if (props.initialValues) {
+      props.initialValues.forEach(handleValueSelect);
+    }
+  }, []);
 
   const valueRenderer: ItemRenderer<string> = (value, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {
