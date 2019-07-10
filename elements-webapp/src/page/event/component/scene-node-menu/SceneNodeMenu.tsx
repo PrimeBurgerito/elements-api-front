@@ -42,7 +42,7 @@ const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
       </div>
       <ElementsForm
         key="default-scene"
-        initialFormState={props.node.scene}
+        formValue={props.node.scene}
         formStructure={sceneForm}
         onChange={handleChange}
       />

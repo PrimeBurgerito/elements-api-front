@@ -3,7 +3,7 @@ import { TimePicker } from '@blueprintjs/datetime';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import { ITimeRange, ITiming } from '@type/requirement';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './element.scss';
 
 const WEEKDAYS = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
@@ -13,11 +13,21 @@ const MONTHS = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
 
 interface ITimingProps {
   onChange: (change: ITiming) => void;
+  value?: ITiming;
 }
 
 const TimingInput = (props: ITimingProps): JSX.Element => {
   const [timing, setTiming] = useState<ITiming>({});
   const [times, setTimes] = useState<ITimeRange[]>([]);
+
+  useEffect(() => {
+    if (props.value) {
+      setTiming(props.value);
+      if (props.value.time) {
+        setTimes(props.value.time.map(mapTimeRangeStringToDate));
+      }
+    }
+  }, [props.value]);
 
   const handleChange = (key: 'weekdays' | 'monthDays' | 'months' | 'time', values) => {
     const newTiming = { ...timing, [key]: values };
@@ -31,7 +41,7 @@ const TimingInput = (props: ITimingProps): JSX.Element => {
   };
 
   const changeMonthDays = (values: string[]) => {
-    handleChange('weekdays', values.map(Number));
+    handleChange('monthDays', values.map(Number));
   };
 
   const addTimeRange = () => {
@@ -59,16 +69,34 @@ const TimingInput = (props: ITimingProps): JSX.Element => {
     return `${hours.length < 2 ? '0' + hours : hours}:${minutes.length < 2 ? '0' + minutes : minutes}`;
   };
 
+  const mapTimeRangeStringToDate = (date: ITimeRange): ITimeRange => {
+    return {
+      start: new Date(`2019-01-01T${date.start}:00`),
+      end: new Date(`2019-01-01T${date.end}:00`),
+    };
+  };
+
   return (
     <>
       <FormGroup label="Weekdays">
-        <MultiStringSelect values={WEEKDAYS} onChange={changeWeekdays} />
+        <MultiStringSelect
+          values={timing.weekdays && timing.weekdays.map((w) => WEEKDAYS[w - 1])}
+          selectableValues={WEEKDAYS}
+          onChange={changeWeekdays} />
       </FormGroup>
       <FormGroup label="Month days">
-        <MultiStringSelect values={MONTH_DAYS} onChange={changeMonthDays} />
+        <MultiStringSelect
+          values={timing.monthDays && timing.monthDays.map((m) => MONTH_DAYS[m])}
+          selectableValues={MONTH_DAYS}
+          onChange={changeMonthDays}
+        />
       </FormGroup>
       <FormGroup label="Months">
-        <MultiStringSelect values={MONTHS} onChange={(values) => handleChange('months', values)} />
+        <MultiStringSelect
+          selectableValues={MONTHS}
+          values={timing.months}
+          onChange={(values) => handleChange('months', values)}
+        />
       </FormGroup>
       <p>Time ranges</p>
       <Button intent={Intent.PRIMARY} icon="time" onClick={addTimeRange}>New time range</Button>

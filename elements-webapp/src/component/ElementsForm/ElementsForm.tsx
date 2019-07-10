@@ -27,10 +27,10 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (props.initialFormState) {
-      setFormState(props.initialFormState);
+    if (props.formValue) {
+      setFormState(props.formValue);
     }
-  }, [props.initialFormState]);
+  }, [props.formValue]);
 
   const onChange = (key, change) => {
     const newFormState = {
@@ -79,7 +79,7 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
         element = formElement as IFormProperty;
         input = <PropertiesInput
           id={key}
-          initialProperties={formState[key]}
+          propertiesValue={formState[key]}
           onChange={(prop) => onChange(key, prop)}
         />;
         break;
@@ -88,7 +88,7 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
         element = formElement as IFormAttribute;
         input = <AttributesInput
           id={key}
-          initialAttributes={formState[key]}
+          attributesValue={formState[key]}
           onChange={(attr) => onChange(key, attr)}
         />;
         break;
@@ -96,22 +96,22 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
       case FormElementType.MULTISELECT:
         element = formElement as IFormMultiSelect;
         input = <MultiStringSelect
-          initialValues={formState[key]}
-          values={element.values}
+          values={formState[key]}
+          selectableValues={element.selectableValues}
           onChange={(values) => onChange(key, values)}
         />;
         break;
 
       case FormElementType.TIMING:
-        input = <TimingInput onChange={(values) => onChange(key, values)} />;
+        input = <TimingInput value={formState[key]} onChange={(values) => onChange(key, values)} />;
         break;
 
       case FormElementType.REQUIREMENT:
-        input = <RequirementInput initialRequirement={formState[key]} onChange={(values) => onChange(key, values)} />;
+        input = <RequirementInput value={formState[key]} onChange={(values) => onChange(key, values)} />;
         break;
 
       case FormElementType.LOCATION:
-        input = <LocationInput initialLocationId={formState[key]} onChange={(value) => onChange(key, value)} />;
+        input = <LocationInput value={formState[key]} onChange={(value) => onChange(key, value)} />;
         break;
     }
 

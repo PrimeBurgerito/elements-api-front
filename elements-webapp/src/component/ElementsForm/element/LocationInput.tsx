@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 interface ILocationInputProps {
   onChange: (locationId: string) => void;
-  initialLocationId?: string;
+  value?: string;
 }
 
 const LocationSelect = Select.ofType<ILocation>();
@@ -40,10 +40,10 @@ const LocationInput = (props: ILocationInputProps) => {
   }, []);
 
   useEffect(() => {
-    if (props.initialLocationId && locations.length) {
-      setSelectedLocation(locations.find((l: ILocation) => l.id === props.initialLocationId));
+    if (props.value && locations.length) {
+      setSelectedLocation(locations.find((l: ILocation) => l.id === props.value));
     }
-  }, [props.initialLocationId, locations]);
+  }, [props.value, locations]);
 
   const onSelect = (location: ILocation) => {
     setSelectedLocation(location);

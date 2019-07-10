@@ -4,21 +4,21 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 interface IMultiStringSelectProps {
-  values: string[];
-  initialValues?: string[];
+  selectableValues: string[];
+  values?: string[];
   onChange: (values: string[]) => void;
 }
 
 const MultiStringSelect = (props: IMultiStringSelectProps): JSX.Element => {
-  const allValues = [...new Set(props.values)];
+  const allValues = [...new Set(props.selectableValues)];
   const [selected, setSelected] = useState([]);
   const StringSelect = MultiSelect.ofType<string>();
 
   useEffect(() => {
-    if (props.initialValues) {
-      props.initialValues.forEach(handleValueSelect);
+    if (props.values) {
+      setSelected(props.values);
     }
-  }, []);
+  }, [props.values]);
 
   const valueRenderer: ItemRenderer<string> = (value, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {

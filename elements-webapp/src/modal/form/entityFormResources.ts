@@ -11,7 +11,7 @@ export const attributeFormStructure: IFormStructure = {
 export const propertyFormStructure: IFormStructure = {
   formElements: {
     name: { label: 'Property name', type: FormElementType.TEXT },
-    values: { label: 'Possible values', type: FormElementType.TAG },
+    values: { label: 'Possible selectableValues', type: FormElementType.TAG },
   },
 };
 

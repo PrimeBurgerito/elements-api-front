@@ -1,6 +1,6 @@
 import { Button, Classes, Drawer, H1 } from '@blueprintjs/core';
-import ElementsForm from '@component/ElementsForm/ElementsForm'
-import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource'
+import ElementsForm from '@component/ElementsForm/ElementsForm';
+import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import EventApi from '@shared/api/EventApi';
 import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance';
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
@@ -144,7 +144,11 @@ const EventPageBody = (): JSX.Element => {
       >
         <div className={Classes.DRAWER_BODY}>
           <div className={Classes.DIALOG_BODY}>
-            <ElementsForm formStructure={eventForm} onChange={onEventChange} />
+            <ElementsForm
+              formValue={eventFormState}
+              formStructure={eventForm}
+              onChange={onEventChange}
+            />
           </div>
         </div>
       </Drawer>

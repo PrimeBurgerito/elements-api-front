@@ -45,7 +45,7 @@ const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
         <Button className="toggle-option" onClick={toggleOption} text={`Toggle Option ${idx + 1}`} />
         <Collapse keepChildrenMounted isOpen={showOption[idx]}>
           <ElementsForm
-            initialFormState={props.node.scene.options[idx]}
+            formValue={props.node.scene.options[idx]}
             formStructure={optionForm}
             onChange={handleChange}
             label={`Option ${idx + 1} configuration`} />

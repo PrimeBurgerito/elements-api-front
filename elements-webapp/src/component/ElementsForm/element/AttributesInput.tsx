@@ -8,7 +8,7 @@ import './element.scss';
 
 interface IAttributesInputProps {
   id?: string;
-  initialAttributes?: { [k: string]: number };
+  attributesValue?: { [k: string]: number };
   onChange: (attributes: { [k: string]: number }) => void;
 }
 
@@ -39,12 +39,12 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (props.initialAttributes && localStore.allAttributes.length) {
-      localStore.addedAttributes = props.initialAttributes;
+    if (props.attributesValue && localStore.allAttributes.length) {
+      localStore.addedAttributes = props.attributesValue;
       localStore.remainingAttr = localStore.allAttributes
-        .filter((attr) => !Object.keys(props.initialAttributes).includes(attr.id));
+        .filter((attr) => !Object.keys(props.attributesValue).includes(attr.id));
     }
-  }, [props.initialAttributes, localStore.allAttributes]);
+  }, [props.attributesValue, localStore.allAttributes]);
 
   const onAttributeChange = () => {
     props.onChange(localStore.addedAttributes);

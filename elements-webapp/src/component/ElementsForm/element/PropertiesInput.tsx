@@ -12,7 +12,7 @@ interface IPropertiesForm {
 
 interface IPropertiesInputProps {
   id?: string;
-  initialProperties?: IPropertiesForm;
+  propertiesValue?: IPropertiesForm;
   onChange: (properties: IPropertiesForm) => void;
 }
 
@@ -43,14 +43,14 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (props.initialProperties && localStore.allProperties) {
-      localStore.addedProperties = props.initialProperties;
-      if (props.initialProperties) {
+    if (props.propertiesValue && localStore.allProperties) {
+      localStore.addedProperties = props.propertiesValue;
+      if (props.propertiesValue) {
         localStore.remainingProps = localStore.allProperties
-          .filter((value) => !Object.keys(props.initialProperties).includes(value.id));
+          .filter((value) => !Object.keys(props.propertiesValue).includes(value.id));
       }
     }
-  }, [props.initialProperties, localStore.allProperties]);
+  }, [props.propertiesValue, localStore.allProperties]);
 
   const onPropertyChange = (): void => {
     props.onChange(localStore.addedProperties);

@@ -15,17 +15,17 @@ const requirementFormStructure: IFormStructure = {
 
 interface IRequirementInputProps {
   onChange: (change: IRequirement) => void;
-  initialRequirement?: IRequirement;
+  value?: IRequirement;
 }
 
 const RequirementInput = (props: IRequirementInputProps): JSX.Element => {
   const [requirementState, setRequirementState] = useState<IRequirement>(null);
 
   useEffect(() => {
-    if (props.initialRequirement) {
-      setRequirementState(props.initialRequirement);
+    if (props.value) {
+      setRequirementState(props.value);
     }
-  }, [props.initialRequirement]);
+  }, [props.value]);
 
   const handleChange = (change: IRequirement) => {
     setRequirementState(change);
@@ -35,7 +35,7 @@ const RequirementInput = (props: IRequirementInputProps): JSX.Element => {
   return (
     <>
       <ElementsForm
-        initialFormState={requirementState}
+        formValue={requirementState}
         formStructure={requirementFormStructure}
         label="Requirement"
         onChange={handleChange}

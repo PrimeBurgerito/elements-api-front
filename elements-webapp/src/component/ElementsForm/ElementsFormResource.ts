@@ -1,7 +1,7 @@
 export interface IElementsFormProps {
   formStructure: IFormStructure;
   onChange: (formState: any) => void;
-  initialFormState?: any;
+  formValue?: any;
   label?: string;
 }
 

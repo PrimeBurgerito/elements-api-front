@@ -6,7 +6,7 @@ export const attributeColumns = [
 
 export const propertyColumns = [
   { name: 'Name', key: 'name' },
-  { name: 'Values', key: 'values' },
+  { name: 'Values', key: 'selectableValues' },
 ];
 
 export const objectiveColumns = [
