@@ -2,11 +2,13 @@ import { IImage } from '@type/image';
 import { IRequirement } from '@type/requirement';
 
 export interface IEvent {
+  name: string;
   scenes: IScene[];
   requirement: IRequirement;
 }
 
 export interface IEventDto {
+  name: string;
   scenes: ISceneDto[];
   requirement: IRequirement;
 }

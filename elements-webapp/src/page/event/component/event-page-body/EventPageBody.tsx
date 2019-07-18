@@ -24,6 +24,7 @@ const FORM_DATA_EVENT_DTO = 'eventDto';
 
 const eventForm: IFormStructure = {
   formElements: {
+    name: { label: 'Event name', type: FormElementType.TEXT },
     requirement: { label: 'Requirement', type: FormElementType.REQUIREMENT },
   },
 };
@@ -33,7 +34,7 @@ const useForceUpdate = () => {
   return () => set(!value);
 };
 
-type PartialEventDto = Pick<IEventDto, 'requirement'>;
+type PartialEventDto = Pick<IEventDto, 'requirement' | 'name'>;
 
 const EventPageBody = (): JSX.Element => {
   const forceUpdate = useForceUpdate();
@@ -54,7 +55,7 @@ const EventPageBody = (): JSX.Element => {
   const handleNodeDrop = (event) => {
     const data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
     const nodesCount = Object.keys(model.getNodes()).length;
-    const node = DiagramUtils.createNode('Scene ' + (nodesCount + 1), data.type, !nodesCount);
+    const node = DiagramUtils.createNode('Scene ' + (nodesCount + 1), data.type, nodesCount);
     const points = engine.getRelativeMousePoint(event);
     node.x = points.x;
     node.y = points.y;
@@ -72,19 +73,19 @@ const EventPageBody = (): JSX.Element => {
   };
 
   const collectEvent = (): IEventDto => {
-    const nodes = model.getNodes() as { [s: string]: BaseNodeModel };
-    const keys = Object.keys(nodes);
+    const nodes = Object.entries(model.getNodes() as { [s: string]: BaseNodeModel })
+      .sort(([, node]) => node.index);
 
     const assignNextScene = (link: LinkModel) => {
-      const current = nodes[link.getSourcePort().parent.id];
-      const nextSceneIdx = keys.indexOf(nodes[link.getTargetPort().parent.id].id);
-      switch (current.scene.type) {
+      const sourceNode = nodes.find(([key]) => key === link.getSourcePort().parent.id)[1];
+      const nextSceneIdx = nodes.find(([key]) => key === link.getTargetPort().parent.id)[1].index;
+      switch (sourceNode.scene.type) {
         case 'DEFAULT':
-          current.scene.next = nextSceneIdx;
+          sourceNode.scene.next = nextSceneIdx;
           break;
         case 'OPTION':
           const idx = parseInt(link.getSourcePort().getName(), 10);
-          current.scene.options[idx].next = nextSceneIdx;
+          sourceNode.scene.options[idx].next = nextSceneIdx;
           break;
       }
     };
@@ -93,7 +94,7 @@ const EventPageBody = (): JSX.Element => {
       .filter((link: LinkModel) => link.getSourcePort() && link.getTargetPort())
       .forEach(assignNextScene);
 
-    const scenes = Object.values(nodes).map((node) => node.scene);
+    const scenes = nodes.map(([, node]) => node.scene);
     return { scenes, ...eventFormState };
   };
 

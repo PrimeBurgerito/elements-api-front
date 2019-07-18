@@ -8,9 +8,11 @@ export default class BaseNodeModel extends NodeModel {
   public scene: ISceneDto;
   public type: SceneType;
   public image: File;
+  public index: number;
 
-  constructor(type: SceneType) {
+  constructor(type: SceneType, index: number) {
     super(type);
+    this.index = index;
     this.scene = {
       text: '',
     };
