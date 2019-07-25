@@ -2,7 +2,7 @@ import { Button, Collapse, H2 } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
-import { ISceneOption } from '@type/event';
+import { IOption } from '@type/event';
 import * as React from 'react';
 import { useState } from 'react';
 import SceneNodeMenu from '../scene-node-menu/SceneNodeMenu';
@@ -30,7 +30,7 @@ const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
     }
   };
 
-  const renderOption = (option: ISceneOption, idx: number): JSX.Element => {
+  const renderOption = (option: IOption, idx: number): JSX.Element => {
     const handleChange = (formState: any) => {
       props.node.scene.options[idx] = { ...option, ...formState };
     };

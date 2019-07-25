@@ -7,8 +7,9 @@ import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import DiagramUtils from '@shared/diagram/DiagramUtils';
 import OptionNodeFactory from '@shared/diagram/option/OptionNodeFactory';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
+import RewardNodeFactory from '@shared/diagram/reward/RewardNodeFactory'
 import SceneNodeFactory from '@shared/diagram/scene/SceneNodeFactory';
-import { IEventDto, IImageToSceneMap } from '@type/event';
+import { IEventDto, IImageToSceneMap, IScene, ISceneOption } from '@type/event';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { DiagramEngine, DiagramModel, DiagramWidget, LinkModel } from 'storm-react-diagrams';
@@ -48,6 +49,7 @@ const EventPageBody = (): JSX.Element => {
     engine.installDefaultFactories();
     engine.registerNodeFactory(new SceneNodeFactory());
     engine.registerNodeFactory(new OptionNodeFactory());
+    engine.registerNodeFactory(new RewardNodeFactory());
     engine.setDiagramModel(model);
     model.setZoomLevel(model.getZoomLevel() * 2);
   }, []);
@@ -79,13 +81,13 @@ const EventPageBody = (): JSX.Element => {
     const assignNextScene = (link: LinkModel) => {
       const sourceNode = nodes.find(([key]) => key === link.getSourcePort().parent.id)[1];
       const nextSceneIdx = nodes.find(([key]) => key === link.getTargetPort().parent.id)[1].index;
-      switch (sourceNode.scene.type) {
+      switch (sourceNode.type) {
         case 'DEFAULT':
-          sourceNode.scene.next = nextSceneIdx;
+          (sourceNode.scene as IScene).next = nextSceneIdx;
           break;
         case 'OPTION':
           const idx = parseInt(link.getSourcePort().getName(), 10);
-          sourceNode.scene.options[idx].next = nextSceneIdx;
+          (sourceNode.scene as ISceneOption).options[idx].next = nextSceneIdx;
           break;
       }
     };
@@ -173,7 +175,7 @@ const EventPageBody = (): JSX.Element => {
               <TrayItemWidget model={{ type: 'OPTION' }} name="Option" color="rgb(0,192,255)" />
             </TrayWidget>
             <div className="diagram-layer" onDrop={handleNodeDrop} onDragOver={(event) => event.preventDefault()}>
-              <DiagramWidget className="srd-demo-canvas" diagramEngine={engine} />
+              <DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={engine} />
             </div>
           </div>
         </div>

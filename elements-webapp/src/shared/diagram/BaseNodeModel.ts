@@ -1,11 +1,11 @@
-import { ISceneDto, SceneType } from '@type/event';
+import { ISceneBase, SceneType } from '@type/event';
 import { DefaultPortModel, DiagramEngine, NodeModel, Toolkit } from 'storm-react-diagrams';
 
 export default class BaseNodeModel extends NodeModel {
   public ports: { [s: string]: DefaultPortModel };
   public name: string;
   public color: string;
-  public scene: ISceneDto;
+  public scene: ISceneBase;
   public type: SceneType;
   public image: File;
   public index: number;
@@ -14,7 +14,7 @@ export default class BaseNodeModel extends NodeModel {
     super(type);
     this.index = index;
     this.scene = {
-      text: '',
+      type,
     };
   }
 

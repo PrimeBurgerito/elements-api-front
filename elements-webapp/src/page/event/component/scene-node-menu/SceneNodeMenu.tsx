@@ -2,7 +2,7 @@ import { Button, Card, Classes, ControlGroup, Dialog, FileInput, H2, H3 } from '
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
-import { ISceneDto } from '@type/event'
+import { IScene } from '@type/event'
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import './scene-node-menu.scss';
@@ -25,7 +25,7 @@ const SceneNodeMenu = (props: ISceneNodeMenu): JSX.Element => {
     setImageFile(props.node.image);
   }, [props.node.image]);
 
-  const handleChange = (formState: ISceneDto) => {
+  const handleChange = (formState: IScene) => {
     props.node.scene = { ...props.node.scene, ...formState };
   };
 
