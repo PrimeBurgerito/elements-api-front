@@ -19,7 +19,7 @@ export default abstract class BaseApi<T> {
   }
   public putConditionalImage = async (body: FormData): Promise<any> => {
     const response: AxiosResponse = await PUT(`${this.PATH}/image`, body,
-      { headers: { 'Content-Type': undefined } });
+      {headers: {'Content-Type': undefined}});
     return await response ? response.data : null;
   }
   public putImage = async (entityId: string, imageKey: string, body: FormData): Promise<any> => {

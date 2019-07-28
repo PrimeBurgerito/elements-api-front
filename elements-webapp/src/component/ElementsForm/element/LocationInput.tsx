@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 interface ILocationInputProps {
   onChange: (locationId: string) => void;
   value?: string;
+  caching?: boolean;
 }
 
 const LocationSelect = Select.ofType<ILocation>();
@@ -34,7 +35,7 @@ const LocationInput = (props: ILocationInputProps) => {
   const api = new LocationApi();
 
   useEffect(() => {
-    api.find(true).then((res: ILocation[]) => {
+    api.find(props.caching).then((res: ILocation[]) => {
       setLocations(res);
     });
   }, []);

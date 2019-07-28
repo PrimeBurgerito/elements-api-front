@@ -20,7 +20,7 @@ const MultiStringSelect = (props: IMultiStringSelectProps): JSX.Element => {
     }
   }, [props.values]);
 
-  const valueRenderer: ItemRenderer<string> = (value, { modifiers, handleClick }) => {
+  const valueRenderer: ItemRenderer<string> = (value, {modifiers, handleClick}) => {
     if (!modifiers.matchesPredicate) {
       return null;
     }

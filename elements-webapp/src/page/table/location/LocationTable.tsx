@@ -6,14 +6,14 @@ import { useEffect, useState } from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const locationColumns = [
-  { name: 'Name', key: 'name' },
-  { name: 'Nearby locations', key: 'nearbyLocations' },
+  {name: 'Name', key: 'name'},
+  {name: 'Nearby locations', key: 'nearbyLocations'},
 ];
 
-const locationFormStructure = (values: string[]): IFormStructure => ({
+const locationFormStructure = (selectableValues: string[]): IFormStructure => ({
   formElements: {
-    name: { label: 'Name', type: FormElementType.TEXT },
-    nearbyLocations: { label: 'Nearby locations', type: FormElementType.MULTISELECT, values },
+    name: {label: 'Name', type: FormElementType.TEXT},
+    nearbyLocations: {label: 'Nearby locations', type: FormElementType.MULTISELECT, selectableValues},
   },
 });
 

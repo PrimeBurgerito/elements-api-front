@@ -6,7 +6,7 @@ export interface IElementsFormProps {
 }
 
 export enum FormElementType {
-  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG, MULTISELECT, TIMING, REQUIREMENT, LOCATION
+  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG, MULTISELECT, TIMING, REQUIREMENT, LOCATION,
 }
 
 export interface IFormElement {
@@ -38,11 +38,12 @@ export interface IFormProperty extends IFormElement {
 
 export interface IFormLocation extends IFormElement {
   type: FormElementType.LOCATION;
+  caching?: boolean;
 }
 
 export interface IFormMultiSelect extends IFormElement {
   type: FormElementType.MULTISELECT;
-  values: string[];
+  selectableValues: string[];
 }
 
 export interface IFormTimingSelect extends IFormElement {

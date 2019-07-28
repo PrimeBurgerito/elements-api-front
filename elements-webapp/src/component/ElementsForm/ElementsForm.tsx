@@ -12,7 +12,7 @@ import {
   FormElementType,
   IElementsFormProps,
   IFormAttribute,
-  IFormElement,
+  IFormElement, IFormLocation,
   IFormMultiSelect,
   IFormNumeric,
   IFormProperty,
@@ -63,7 +63,7 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
           <InputGroup
             id={key}
             value={formState[key] || ''}
-            onChange={({ target }) => onChange(key, target.value)}
+            onChange={({target}) => onChange(key, target.value)}
           />;
         break;
 
@@ -111,7 +111,12 @@ const ElementsForm = (props: IElementsFormProps): JSX.Element => {
         break;
 
       case FormElementType.LOCATION:
-        input = <LocationInput value={formState[key]} onChange={(value) => onChange(key, value)} />;
+        element = formElement as IFormLocation;
+        input = <LocationInput
+          value={formState[key]}
+          caching={element.caching}
+          onChange={(value) => onChange(key, value)}
+        />;
         break;
     }
 
