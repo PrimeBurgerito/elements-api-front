@@ -2,26 +2,26 @@ import { Button, Classes, Dialog, FileInput } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseApi from '@shared/api/BaseApi';
-import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance'
 import { POST_LOADING } from '@shared/api/request-template/requests';
 import { LoadingStore } from '@shared/store/LoadingStore';
+import { IConditionalImageDto, IImageCrop, IImageDto } from '@type/image';
+import 'cropperjs/dist/cropper.css';
 import * as React from 'react';
-import { useState } from 'react';
+import { createRef, ReactElement, useState } from 'react';
+import Cropper from 'react-cropper';
 import './imageAddingDialog.scss';
 
-const FORM_DATA_FILE = 'file';
-const FORM_DATA_IMAGE_DTO = 'imageDto';
 
 const defaultStructure: IFormStructure = {
   formElements: {
-    imageKey: { label: 'Unique image key', type: FormElementType.TEXT },
+    imageKey: {label: 'Unique image key', type: FormElementType.TEXT},
   },
 };
 
 const conditionalStructure: IFormStructure = {
   formElements: {
-    imageKey: { label: 'Unique image key', type: FormElementType.TEXT },
-    requirement: { label: 'Image requirement', type: FormElementType.REQUIREMENT },
+    imageKey: {label: 'Unique image key', type: FormElementType.TEXT},
+    requirement: {label: 'Image requirement', type: FormElementType.REQUIREMENT},
   },
 };
 
@@ -29,38 +29,50 @@ interface IImageAddingDialogProps {
   entityId: string;
   isOpen: boolean;
   label: string;
-  type: 'default' | 'conditional';
+  type: 'default' | 'conditional' | 'avatar';
   onClose: () => void;
   onSuccess?: (res: any) => void;
   api: BaseApi<any>;
 }
 
 const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
-  const [imageDto, setImageDto] = useState({ entityId: props.entityId, imageKey: '' });
+  const [imageDto, setImageDto] = useState<IImageDto | IConditionalImageDto>({entityId: props.entityId, imageKey: ''});
   const [imageFile, setImageFile] = useState<File>(null);
+  const cropper = createRef<any>();
 
   const clickCreate = () => {
-    const formData = new FormData();
-    formData.append(FORM_DATA_FILE, imageFile);
-    if (props.type === 'conditional') {
-      formData.append(FORM_DATA_IMAGE_DTO, new Blob([JSON.stringify(imageDto)], APPLICATION_JSON_OPTION));
-      props.api.putConditionalImage(formData).then(console.log);
-    } else {
-      props.api.putImage(imageDto.entityId, imageDto.imageKey, formData).then(console.log);
+    switch (props.type) {
+      case 'conditional':
+        props.api.putConditionalImage(imageDto, imageFile).then(console.log);
+        break;
+      case 'avatar':
+        const imageCrop = cropper.current.getData(true) as IImageCrop;
+        setImageDto({...imageDto, crops: {avatar: imageCrop}});
+      default:
+        props.api.putImage(imageDto, imageFile).then(console.log);
     }
   };
 
   const onClose = () => {
-    setImageDto({ entityId: props.entityId, imageKey: '' });
+    setImageDto({entityId: props.entityId, imageKey: ''});
     props.onClose();
   };
 
-  const onFileAdd = ({ target }) => {
+  const onFileAdd = ({target}) => {
     setImageFile(target.files[0]);
   };
 
   const handleFormChange = (change: object) => {
-    setImageDto({ ...imageDto, ...change });
+    setImageDto({...imageDto, ...change});
+  };
+
+  const renderImage = (): ReactElement<any> => {
+    const imageUrl = URL.createObjectURL(imageFile);
+    if (props.type !== 'avatar') {
+      return <img className="dialog-img" src={imageUrl} alt="No image" />;
+    }
+
+    return <Cropper ref={cropper} src={imageUrl} aspectRatio={3 / 4} zoomable={false} />;
   };
 
   return (
@@ -74,17 +86,22 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
     >
       <div className={Classes.DIALOG_BODY}>
         <ElementsForm
-          formStructure={props.type === 'default' ? defaultStructure : conditionalStructure}
+          formStructure={props.type === 'conditional' ? conditionalStructure : defaultStructure}
           onChange={handleFormChange}
         />
         <FileInput fill text="Choose image" onChange={onFileAdd} />
-        {imageFile && <img className="dialog-img" src={URL.createObjectURL(imageFile)} alt="No image" />}
+        {imageFile && renderImage()}
       </div>
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
           <Button large intent="warning" onClick={() => console.log(imageDto)}>Test</Button>
-          <Button loading={LoadingStore.isLoading(POST_LOADING)} large intent="primary"
-                  onClick={clickCreate}>Create</Button>
+          <Button
+            large intent="primary"
+            loading={LoadingStore.isLoading(POST_LOADING)}
+            disabled={!imageFile}
+            onClick={clickCreate}>
+            Create
+          </Button>
         </div>
       </div>
     </Dialog>

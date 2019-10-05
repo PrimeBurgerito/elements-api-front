@@ -4,8 +4,8 @@ import * as React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const templateColumns = [
-  { name: 'Attributes', key: 'attributes' },
-  { name: 'Properties', key: 'properties' },
+  {name: 'Attributes', key: 'attributes'},
+  {name: 'Properties', key: 'properties'},
 ];
 
 const characterForm: IFormStructure = {
@@ -26,7 +26,7 @@ const CharacterTemplateTable = (): JSX.Element => {
 
   return <BaseEntityTable
     title="Character template"
-    imageAdder="default"
+    imageAdder="avatar"
     formStructure={characterForm}
     api={characterTemplateApi}
     columns={templateColumns}

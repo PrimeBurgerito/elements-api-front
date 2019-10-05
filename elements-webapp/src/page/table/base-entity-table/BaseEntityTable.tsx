@@ -16,7 +16,7 @@ interface IEntityBaseTableProps {
   title: string;
   formStructure?: IFormStructure;
   refreshOnEntityChange?: boolean;
-  imageAdder?: 'default' | 'conditional';
+  imageAdder?: 'default' | 'conditional' | 'avatar';
   onTableChange?: (entities: object[]) => void;
 }
 
