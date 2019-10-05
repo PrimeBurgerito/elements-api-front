@@ -4,10 +4,10 @@ import { FormElementType, IFormStructure } from '@component/ElementsForm/Element
 import BaseApi from '@shared/api/BaseApi';
 import { POST_LOADING } from '@shared/api/request-template/requests';
 import { LoadingStore } from '@shared/store/LoadingStore';
-import { IConditionalImageDto, IImageCrop, IImageDto } from '@type/image';
+import { IConditionalImageDto, IImageDto } from '@type/image';
 import 'cropperjs/dist/cropper.css';
 import * as React from 'react';
-import { createRef, ReactElement, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import Cropper from 'react-cropper';
 import './imageAddingDialog.scss';
 
@@ -38,41 +38,39 @@ interface IImageAddingDialogProps {
 const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
   const [imageDto, setImageDto] = useState<IImageDto | IConditionalImageDto>({entityId: props.entityId, imageKey: ''});
   const [imageFile, setImageFile] = useState<File>(null);
-  const cropper = createRef<any>();
+  const [imageSrc, setImageSrc] = useState<string>(null);
 
   const clickCreate = () => {
-    switch (props.type) {
-      case 'conditional':
-        props.api.putConditionalImage(imageDto, imageFile).then(console.log);
-        break;
-      case 'avatar':
-        const imageCrop = cropper.current.getData(true) as IImageCrop;
-        setImageDto({...imageDto, crops: {avatar: imageCrop}});
-      default:
-        props.api.putImage(imageDto, imageFile).then(console.log);
+    if (props.type === 'conditional') {
+      props.api.putConditionalImage(imageDto, imageFile).then(console.log);
+    } else {
+      props.api.putImage(imageDto, imageFile).then(console.log);
     }
   };
 
   const onClose = () => {
     setImageDto({entityId: props.entityId, imageKey: ''});
+    setImageFile(null);
+    setImageSrc(null);
     props.onClose();
   };
 
   const onFileAdd = ({target}) => {
     setImageFile(target.files[0]);
+    setImageSrc(URL.createObjectURL(target.files[0]));
   };
 
   const handleFormChange = (change: object) => {
     setImageDto({...imageDto, ...change});
   };
 
+  const onCrop = (e: CustomEvent): void => setImageDto({...imageDto, crops: {avatar: e.detail}});
   const renderImage = (): ReactElement<any> => {
-    const imageUrl = URL.createObjectURL(imageFile);
     if (props.type !== 'avatar') {
-      return <img className="dialog-img" src={imageUrl} alt="No image" />;
+      return <img className="dialog-img" src={imageSrc} alt="No image" />;
     }
 
-    return <Cropper ref={cropper} src={imageUrl} aspectRatio={3 / 4} zoomable={false} />;
+    return <Cropper crop={onCrop} src={imageSrc} aspectRatio={3 / 4} zoomable={false} />;
   };
 
   return (
