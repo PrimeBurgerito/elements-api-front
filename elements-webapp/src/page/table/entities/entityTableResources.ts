@@ -12,3 +12,8 @@ export const propertyColumns = [
 export const objectiveColumns = [
   {name: 'Name', key: 'name'},
 ];
+
+export const imageContainerColumns = [
+  {name: 'Key', key: 'key'},
+  {name}
+];

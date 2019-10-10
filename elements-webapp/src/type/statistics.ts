@@ -1,6 +1,6 @@
-import DocumentBase from '@type/DocumentBase';
+import IDocumentBase from '@type/DocumentBase';
 
-export interface IStatistic extends DocumentBase {
+export interface IStatistic extends IDocumentBase {
   name: string;
 }
 

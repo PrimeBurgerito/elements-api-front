@@ -9,3 +9,4 @@ export const OBJECTIVE_PATH = '/objective';
 export const ATTRIBUTE_PATH = '/attribute';
 export const PROPERTY_PATH = '/property';
 export const EVENT_PATH = '/event';
+export const KEY_CONTAINER_PATH = '/key-container';

@@ -1,8 +1,9 @@
-import { Button, Menu, Navbar, Popover, Position } from '@blueprintjs/core';
+import { Button, Menu, Navbar, Popover } from '@blueprintjs/core';
+import { Position } from '@blueprintjs/core/lib/esm/common/position';
 import {
   ATTRIBUTE_PATH,
   CHARACTER_TEMPLATE_PATH,
-  EVENT_PATH,
+  EVENT_PATH, KEY_CONTAINER_PATH,
   LOCATION_PATH,
   OBJECTIVE_PATH,
   PROPERTY_PATH,
@@ -22,6 +23,7 @@ const Header = (): JSX.Element => {
         <Menu.Item text="Attribute" onClick={() => history.push(ATTRIBUTE_PATH)} />
         <Menu.Item text="Property" onClick={() => history.push(PROPERTY_PATH)} />
         <Menu.Item text="Objective" onClick={() => history.push(OBJECTIVE_PATH)} />
+        <Menu.Item text="Key container" onClick={() => history.push(KEY_CONTAINER_PATH)} />
       </Menu>;
 
 

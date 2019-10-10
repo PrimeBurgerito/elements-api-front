@@ -1,5 +1,6 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import CharacterTemplateApi from '@shared/api/CharacterTemplateApi';
+import { ReactElement } from 'react';
 import * as React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
@@ -21,7 +22,7 @@ const characterForm: IFormStructure = {
   },
 };
 
-const CharacterTemplateTable = (): JSX.Element => {
+const CharacterTemplateTable = (): ReactElement<any> => {
   const characterTemplateApi = new CharacterTemplateApi();
 
   return <BaseEntityTable

@@ -14,24 +14,24 @@
     "noUnusedLocals": true,
     "removeComments": true,
     "strictNullChecks": false,
-    "lib": [ "es6", "es7", "dom" ],
-    "typeRoots": [ "node_modules/@types" ],
+    "lib": ["es6", "es7", "dom"],
+    "typeRoots": ["node_modules/@types"],
     "baseUrl": "./src",
     "paths": {
-      "@shared": [ "shared" ],
-      "@shared*": [ "shared*" ],
-      "@modal": [ "modal" ],
-      "@modal*": [ "modal*" ],
-      "@type": [ "type" ],
-      "@type*": [ "type*" ],
-      "@component": [ "component" ],
-      "@component*": [ "component*" ],
-      "@constant": [ "constant" ],
-      "@constant*": [ "constant*" ],
-      "@images/*": [ "./assets/img/*" ],
-      "@icons/*": [ "./assets/icon/*" ]
+      "@shared": ["shared"],
+      "@shared*": ["shared*"],
+      "@modal": ["modal"],
+      "@modal*": ["modal*"],
+      "@type": ["type"],
+      "@type*": ["type*"],
+      "@component": ["component"],
+      "@component*": ["component*"],
+      "@constant": ["constant"],
+      "@constant*": ["constant*"],
+      "@images/*": ["./assets/img/*"],
+      "@icons/*": ["./assets/icon/*"]
     }
   },
-  "include": [ "src/**/*" ],
-  "exclude": [ "node_modules", "dist" ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

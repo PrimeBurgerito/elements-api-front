@@ -1,13 +1,14 @@
 import {
   ATTRIBUTE_PATH,
   CHARACTER_TEMPLATE_PATH,
-  EVENT_PATH,
+  EVENT_PATH, KEY_CONTAINER_PATH,
   LOCATION_PATH,
   OBJECTIVE_PATH,
   PROPERTY_PATH,
 } from '@constant/paths';
 import EventPage from './event/EventPage';
 import CharacterTemplateTable from './table/character-template/CharacterTemplateTable';
+import KeyContainerTable from './table/container/KeyContainerTable';
 import { AttributeTable, ObjectiveTable, PropertyTable } from './table/entities/entityTables';
 import LocationTable from './table/location/LocationTable';
 
@@ -40,5 +41,9 @@ export const protectedPages: ISinglePage[] = [
   {
     path: EVENT_PATH,
     component: EventPage,
+  },
+  {
+    path: KEY_CONTAINER_PATH,
+    component: KeyContainerTable,
   },
 ];

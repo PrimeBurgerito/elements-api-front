@@ -1,8 +1,8 @@
-import DocumentBase from '@type/DocumentBase';
+import IDocumentBase from '@type/DocumentBase.js';
 import { IConditionalImage } from '@type/image';
 import { IRequirement } from '@type/requirement';
 
-export interface ILocation extends DocumentBase {
+export interface ILocation extends IDocumentBase {
   name: string;
   nearbyLocations: string[];
   images: IConditionalImage[];

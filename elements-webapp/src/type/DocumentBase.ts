@@ -1,4 +1,4 @@
-export default interface DocumentBase {
+export default interface IDocumentBase {
   id?: string;
   created?: Date;
   createdBy?: string;

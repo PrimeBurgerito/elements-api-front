@@ -1,71 +1,55 @@
-export interface IElementsFormProps {
+export interface IElementsFormProps<T> {
   formStructure: IFormStructure;
-  onChange: (formState: any) => void;
+  onChange: (formState: T) => void;
   formValue?: any;
   label?: string;
 }
 
 export enum FormElementType {
-  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG, MULTISELECT, TIMING, REQUIREMENT, LOCATION,
+  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG, MULTISELECT, TIMING, REQUIREMENT, LOCATION, ARRAY,
 }
 
-export interface IFormElement {
+export type FormElement<T extends FormElementType> = {
   label: string;
-  type: FormElementType;
-}
+  type: T;
+};
 
-export interface IFormNumeric extends IFormElement {
-  type: FormElementType.NUMERIC;
+export type FormText = FormElement<FormElementType.TEXT>;
+export type FormTag = FormElement<FormElementType.TAG>;
+export type FormAttribute = FormElement<FormElementType.ATTRIBUTE>;
+export type FormProperty = FormElement<FormElementType.PROPERTY>;
+export type FormTimingSelect = FormElement<FormElementType.TIMING>;
+export type FormRequirement = FormElement<FormElementType.REQUIREMENT>;
+
+export type FormArray = FormElement<FormElementType.ARRAY> & {
+  formStructure: IFormStructure;
+};
+
+export type FormNumeric = FormElement<FormElementType.NUMERIC> & {
   min?: number;
   max?: number;
-}
+};
 
-export interface IFormText extends IFormElement {
-  type: FormElementType.TEXT;
-}
-
-export interface IFormTag extends IFormElement {
-  type: FormElementType.TAG;
-}
-
-export interface IFormAttribute extends IFormElement {
-  type: FormElementType.ATTRIBUTE;
-}
-
-export interface IFormProperty extends IFormElement {
-  type: FormElementType.PROPERTY;
-}
-
-export interface IFormLocation extends IFormElement {
-  type: FormElementType.LOCATION;
+export type FormLocation = FormElement<FormElementType.LOCATION> & {
   caching?: boolean;
-}
+};
 
-export interface IFormMultiSelect extends IFormElement {
-  type: FormElementType.MULTISELECT;
-  selectableValues: string[];
-}
-
-export interface IFormTimingSelect extends IFormElement {
-  type: FormElementType.TIMING;
-}
-
-export interface IFormRequirement extends IFormElement {
-  type: FormElementType.REQUIREMENT;
-}
+export type FormMultiSelect = FormElement<FormElementType.MULTISELECT> & {
+  selectableValues?: string[];
+};
 
 
-export interface IFormStructure {
+export type IFormStructure = {
   formElements: {
     [key: string]:
-      IFormProperty |
-      IFormAttribute |
-      IFormText |
-      IFormNumeric |
-      IFormTag |
-      IFormMultiSelect |
-      IFormTimingSelect |
-      IFormRequirement |
-      IFormLocation
+      FormProperty |
+      FormAttribute |
+      FormText |
+      FormNumeric |
+      FormTag |
+      FormMultiSelect |
+      FormTimingSelect |
+      FormRequirement |
+      FormLocation
   };
-}
+};

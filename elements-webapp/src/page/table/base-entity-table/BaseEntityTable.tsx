@@ -5,7 +5,7 @@ import { IColumnModel } from '@component/ElementsTable/ElementsTableResource';
 import EntityFormDialog from '@modal/form/EntityFormDialog';
 import ImageAddingDialog from '@modal/form/ImageAddingDialog';
 import BaseApi from '@shared/api/BaseApi';
-import DocumentBase from '@type/DocumentBase';
+import IDocumentBase from '@type/DocumentBase';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import './entity-table.scss';
@@ -21,8 +21,8 @@ interface IEntityBaseTableProps {
 }
 
 const BaseEntityTable = (props: IEntityBaseTableProps): JSX.Element => {
-  const [entities, setEntities] = useState<DocumentBase[]>([]);
-  const [selectedEntity, setSelectedEntity] = useState<DocumentBase>(null);
+  const [entities, setEntities] = useState<IDocumentBase[]>([]);
+  const [selectedEntity, setSelectedEntity] = useState<IDocumentBase>(null);
   const [isFormOpen, setFormOpen] = useState<boolean>(false);
   const [isImageAdderOpen, setImageAdderOpen] = useState<boolean>(false);
 
