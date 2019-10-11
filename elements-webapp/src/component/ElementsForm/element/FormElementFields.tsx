@@ -1,4 +1,5 @@
-import { InputGroup, NumericInput, TagInput } from '@blueprintjs/core';
+import { Checkbox, InputGroup, NumericInput, TagInput } from '@blueprintjs/core';
+import ArrayInput from '@component/ElementsForm/element/ArrayInput';
 import AttributesInput from '@component/ElementsForm/element/AttributesInput';
 import LocationInput from '@component/ElementsForm/element/LocationInput';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
@@ -6,6 +7,7 @@ import PropertiesInput from '@component/ElementsForm/element/PropertiesInput';
 import RequirementInput from '@component/ElementsForm/element/RequirementInput';
 import TimingInput from '@component/ElementsForm/element/TimingInput';
 import {
+  FormArray,
   FormAttribute,
   FormElement,
   FormElementType,
@@ -82,6 +84,17 @@ const LocationField = (props: SharedProps<FormLocation>) => (<LocationInput
   onChange={(value) => props.commonProps.onChange(props.commonProps.key, value)}
 />);
 
+const ArrayField = (props: SharedProps<FormArray>) => (<ArrayInput
+  arrayValue={props.commonProps.formState[props.commonProps.key]}
+  formStructure={props.formElement.formStructure}
+  onChange={(value) => props.commonProps.onChange(props.commonProps.key, value)}
+/>);
+
+const BooleanField = (props: Omit<SharedProps<FormArray>, 'formElement'>) => (<Checkbox
+  checked={!!props.commonProps.formState[props.commonProps.key]}
+  onChange={({target}) => props.commonProps.onChange(props.commonProps.key, target['checked'])}
+/>);
+
 
 export const chooseFieldByType = <F extends FormElementType>(
   key: string,
@@ -107,8 +120,12 @@ export const chooseFieldByType = <F extends FormElementType>(
       return <TimingField commonProps={commonProps} />;
     case FormElementType.REQUIREMENT:
       return <RequirementField commonProps={commonProps} />;
+    case FormElementType.BOOLEAN:
+      return <BooleanField commonProps={commonProps} />;
     case FormElementType.LOCATION:
       return <LocationField commonProps={commonProps} formElement={formElement as FormLocation} />;
+    case FormElementType.ARRAY:
+      return <ArrayField commonProps={commonProps} formElement={formElement as FormArray} />;
     default:
       throw new Error('No such field!');
   }

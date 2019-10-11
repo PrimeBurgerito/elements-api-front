@@ -17,7 +17,19 @@ const keyContainerForm: IFormStructure = {
     },
     keys: {
       label: 'Keys',
-      type: FormElementType.PROPERTY,
+      type: FormElementType.ARRAY,
+      formStructure: {
+        formElements: {
+          value: {
+            label: 'Value',
+            type: FormElementType.TEXT
+          },
+          required: {
+            label: 'Required',
+            type: FormElementType.BOOLEAN
+          }
+        }
+      }
     },
   },
 };

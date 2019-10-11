@@ -1,5 +1,5 @@
 import { Card, Divider, FormGroup, H1 } from '@blueprintjs/core';
-import { chooseFieldByType } from '@component/ElementsForm/element/FotmElementFields'
+import { chooseFieldByType } from '@component/ElementsForm/element/FormElementFields';
 import * as React from 'react';
 import { ReactElement, useEffect, useState } from 'react';
 import { FormElement, FormElementType, IElementsFormProps, } from './ElementsFormResource';
@@ -25,7 +25,6 @@ const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElem
     };
     setFormState(newFormState);
     props.onChange(newFormState);
-    console.log(newFormState);
   };
 
   const getFormField = <F extends FormElementType>([key, formElement]: [string, FormElement<F>]): ReactElement<any> => {
