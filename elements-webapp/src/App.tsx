@@ -1,4 +1,4 @@
-import { Classes } from '@blueprintjs/core'
+import { Classes } from '@blueprintjs/core';
 import Header from '@component/Header/Header';
 import LoginDialog from '@modal/Login/LoginDialog';
 import history from '@shared/history';

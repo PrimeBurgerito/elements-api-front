@@ -1,4 +1,4 @@
-import { Button, Classes, Dialog, FileInput } from '@blueprintjs/core';
+import { Button, Checkbox, Classes, Dialog, FileInput } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseApi from '@shared/api/BaseApi';
@@ -7,7 +7,7 @@ import { LoadingStore } from '@shared/store/LoadingStore';
 import { IConditionalImageDto, IImageDto } from '@type/image';
 import 'cropperjs/dist/cropper.css';
 import * as React from 'react';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 import Cropper from 'react-cropper';
 import './imageAddingDialog.scss';
 
@@ -39,16 +39,28 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
   const [imageDto, setImageDto] = useState<IImageDto | IConditionalImageDto>({entityId: props.entityId, imageKey: ''});
   const [imageFile, setImageFile] = useState<File>(null);
   const [imageSrc, setImageSrc] = useState<string>(null);
+  const [saveCropped, setSaveCropped] = useState<boolean>(false);
+  const cropper = useRef<any>();
 
   const clickCreate = () => {
-    if (props.type === 'conditional') {
-      props.api.putConditionalImage(imageDto, imageFile).then(console.log);
+    if (cropper.current && saveCropped) {
+      cropper.current.getCroppedCanvas()
+        .toBlob((blob) => saveImage(new File([blob], `${imageDto.imageKey}_${Math.random() * 1000}.jpg`)));
     } else {
-      props.api.putImage(imageDto, imageFile).then(console.log);
+      saveImage(imageFile);
     }
   };
 
-  const onClose = () => {
+
+  const saveImage = (file: File): void => {
+    if (props.type === 'conditional') {
+      props.api.putConditionalImage(imageDto, file).then(console.log);
+    } else {
+      props.api.putImage(imageDto, file).then(console.log);
+    }
+  };
+
+  const onDialogClose = () => {
     setImageDto({entityId: props.entityId, imageKey: ''});
     setImageFile(null);
     setImageSrc(null);
@@ -64,14 +76,22 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
     setImageDto({...imageDto, ...change});
   };
 
-  const onCrop = (e: CustomEvent): void => setImageDto({...imageDto, crops: {avatar: e.detail}});
+  const onCropDtoChange = (e: CustomEvent): void => setImageDto({...imageDto, crops: {avatar: e.detail}});
   const renderImage = (): ReactElement<any> => {
     if (props.type !== 'avatar') {
+      if (saveCropped) {
+        return <Cropper ref={cropper} src={imageSrc} zoomable={false} />;
+      }
       return <img className="dialog-img" src={imageSrc} alt="No image" />;
     }
-
-    return <Cropper crop={onCrop} src={imageSrc} aspectRatio={3 / 4} zoomable={false} />;
+    return <Cropper crop={onCropDtoChange} src={imageSrc} aspectRatio={3 / 4} zoomable={false} />;
   };
+
+  const renderCreateButton = (): ReactElement<any> => <Button
+    large intent="primary" loading={LoadingStore.isLoading(POST_LOADING)} disabled={!imageFile} onClick={clickCreate}
+  >Create</Button>;
+  const renderSaveCroppedImageToggle = (): ReactElement<any> => props.type !== 'avatar' && <Checkbox
+    checked={saveCropped} label="Save cropped image?" onChange={({target}) => setSaveCropped(target['checked'])} />;
 
   return (
     <Dialog
@@ -79,7 +99,7 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
       canOutsideClickClose={false}
       usePortal={false}
       isOpen={props.isOpen}
-      onClose={onClose}
+      onClose={onDialogClose}
       className="image-add-dialog"
     >
       <div className={Classes.DIALOG_BODY}>
@@ -87,19 +107,14 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
           formStructure={props.type === 'conditional' ? conditionalStructure : defaultStructure}
           onChange={handleFormChange}
         />
+        {renderSaveCroppedImageToggle()}
         <FileInput fill text="Choose image" onChange={onFileAdd} />
         {imageFile && renderImage()}
       </div>
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
           <Button large intent="warning" onClick={() => console.log(imageDto)}>Test</Button>
-          <Button
-            large intent="primary"
-            loading={LoadingStore.isLoading(POST_LOADING)}
-            disabled={!imageFile}
-            onClick={clickCreate}>
-            Create
-          </Button>
+          {renderCreateButton()}
         </div>
       </div>
     </Dialog>

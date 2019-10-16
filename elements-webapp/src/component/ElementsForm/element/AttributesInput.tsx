@@ -42,7 +42,7 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
     if (props.attributesValue && localStore.allAttributes.length) {
       localStore.addedAttributes = props.attributesValue;
       localStore.remainingAttr = localStore.allAttributes
-        .filter((attr) => !Object.keys(props.attributesValue).includes(attr.id));
+        .filter((attr) => !Object.keys(props.attributesValue).includes(attr.key));
     }
   }, [props.attributesValue, localStore.allAttributes]);
 
@@ -55,8 +55,8 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
       if (!localStore.addedAttributes) {
         localStore.addedAttributes = {};
       }
-      localStore.addedAttributes[localStore.selected.id] = localStore.newValue;
-      localStore.remainingAttr = localStore.remainingAttr.filter((attr) => attr.id !== localStore.selected.id);
+      localStore.addedAttributes[localStore.selected.key] = localStore.newValue;
+      localStore.remainingAttr = localStore.remainingAttr.filter((attr) => attr.key !== localStore.selected.key);
       localStore.selected = null;
       localStore.newValue = 0;
       onAttributeChange();
@@ -96,10 +96,10 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
       onAttributeChange();
     };
 
-    const attr = localStore.allAttributes.find((a) => a.id === attrKey);
+    const attr = localStore.allAttributes.find((a) => a.key === attrKey);
     return (
-      <FormGroup className="statistic-changer" label={attr.name} labelFor={attr.id} key={`${attrKey}-for-group`}>
-        <NumericInput min={attr.min} max={attr.max} key={`attr-value-${attr.id}`} id={attr.id}
+      <FormGroup className="statistic-changer" label={attr.name} labelFor={attr.key} key={`${attrKey}-for-group`}>
+        <NumericInput min={attr.min} max={attr.max} key={`attr-value-${attr.key}`} id={attr.key}
                       value={localStore.addedAttributes[attrKey]} onValueChange={changeHandler} />
       </FormGroup>
     );

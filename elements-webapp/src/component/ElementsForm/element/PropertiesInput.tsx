@@ -47,7 +47,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
       localStore.addedProperties = props.propertiesValue;
       if (props.propertiesValue) {
         localStore.remainingProps = localStore.allProperties
-          .filter((value) => !Object.keys(props.propertiesValue).includes(value.id));
+          .filter((value) => !Object.keys(props.propertiesValue).includes(value.key));
       }
     }
   }, [props.propertiesValue, localStore.allProperties]);
@@ -65,13 +65,12 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
       const renderPropertyValues = () =>
         <Menu>
           {prop.values.map((value, idx) =>
-            <Menu.Item key={`prop-value-${prop.id}-${idx}`} text={value} onClick={() => onClick(value)} />)}
+            <Menu.Item key={`prop-value-${prop.key}-${idx}`} text={value} onClick={() => onClick(value)} />)}
         </Menu>;
 
       return (
         <Popover content={renderPropertyValues()} position={Position.BOTTOM}>
-          <Button rightIcon="double-caret-vertical"
-                  text={localStore.newValue ? localStore.newValue : 'Property value'} />
+          <Button rightIcon="double-caret-vertical" text={localStore.newValue ? localStore.newValue : 'Property value'} />
         </Popover>
       );
     };
@@ -80,8 +79,8 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
       if (!localStore.addedProperties) {
         localStore.addedProperties = {};
       }
-      localStore.addedProperties[localStore.selected.id] = localStore.newValue;
-      localStore.remainingProps = localStore.remainingProps.filter((prop) => prop.id !== localStore.selected.id);
+      localStore.addedProperties[localStore.selected.key] = localStore.newValue;
+      localStore.remainingProps = localStore.remainingProps.filter((prop) => prop.key !== localStore.selected.key);
       localStore.selected = null;
       localStore.newValue = null;
       onPropertyChange();
@@ -96,7 +95,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
       return (
         <Menu>
           {localStore.remainingProps.map((prop: IProperty, idx) =>
-            <Menu.Item key={`prop-select-${prop.id}-${idx}`} text={prop.name} onClick={() => selectProperty(prop)} />)}
+            <Menu.Item key={`prop-select-${prop.key}-${idx}`} text={prop.name} onClick={() => selectProperty(prop)} />)}
         </Menu>
       );
     };
@@ -125,27 +124,27 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   const renderAddedProperties = () => {
     const renderAddedPropertyValueSelector = (prop: IProperty) => {
       const onClick = (value) => {
-        localStore.addedProperties[prop.id] = value;
+        localStore.addedProperties[prop.key] = value;
         onPropertyChange();
       };
 
       const renderPropertyValues = () =>
         <Menu>
           {prop.values.map((value) =>
-            <Menu.Item key={`added-${prop.id}-${value}`} text={value} onClick={() => onClick(value)} />)}
+            <Menu.Item key={`added-${prop.key}-${value}`} text={value} onClick={() => onClick(value)} />)}
         </Menu>;
 
       return (
         <Popover content={renderPropertyValues()} position={Position.BOTTOM}>
-          <Button id={prop.id} rightIcon="double-caret-vertical" text={localStore.addedProperties[prop.id]} />
+          <Button id={prop.key} rightIcon="double-caret-vertical" text={localStore.addedProperties[prop.key]} />
         </Popover>
       );
     };
 
     return Object.keys(localStore.addedProperties).map((key) => {
-      const prop: IProperty = localStore.allProperties.find((p) => p.id === key);
+      const prop: IProperty = localStore.allProperties.find((p) => p.key === key);
       return (
-        <FormGroup className="statistic-changer" key={`added-${key}`} labelFor={prop.id} label={prop.name}>
+        <FormGroup className="statistic-changer" key={`added-${key}`} labelFor={prop.key} label={prop.name}>
           {renderAddedPropertyValueSelector(prop)}
         </FormGroup>
       );

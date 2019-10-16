@@ -2,6 +2,7 @@ import IDocumentBase from '@type/DocumentBase';
 
 export interface IStatistic extends IDocumentBase {
   name: string;
+  key: string;
 }
 
 export interface IAttribute extends IStatistic {

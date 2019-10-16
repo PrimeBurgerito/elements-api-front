@@ -4,7 +4,7 @@ extends:
 rules:
   quotemark: [true, "single", "jsx-double"]
   max-line-length:
-    options: [120]
+    options: [140]
   new-parens: true
   no-arg: true
   no-bitwise: true

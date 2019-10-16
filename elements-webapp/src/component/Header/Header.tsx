@@ -3,7 +3,9 @@ import { Position } from '@blueprintjs/core/lib/esm/common/position';
 import {
   ATTRIBUTE_PATH,
   CHARACTER_TEMPLATE_PATH,
-  EVENT_PATH, KEY_CONTAINER_PATH,
+  EVENT_PATH,
+  IMAGE_CONTAINER_PATH,
+  KEY_CONTAINER_PATH,
   LOCATION_PATH,
   OBJECTIVE_PATH,
   PROPERTY_PATH,
@@ -24,6 +26,7 @@ const Header = (): JSX.Element => {
         <Menu.Item text="Property" onClick={() => history.push(PROPERTY_PATH)} />
         <Menu.Item text="Objective" onClick={() => history.push(OBJECTIVE_PATH)} />
         <Menu.Item text="Key container" onClick={() => history.push(KEY_CONTAINER_PATH)} />
+        <Menu.Item text="Image container" onClick={() => history.push(IMAGE_CONTAINER_PATH)} />
       </Menu>;
 
 
