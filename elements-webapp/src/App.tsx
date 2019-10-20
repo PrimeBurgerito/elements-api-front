@@ -3,6 +3,7 @@ import Header from '@component/Header/Header';
 import LoginDialog from '@modal/Login/LoginDialog';
 import history from '@shared/history';
 import UserStore from '@shared/store/UserStore';
+import { ReactElement } from 'react';
 import * as React from 'react';
 import { view } from 'react-easy-state';
 import { hot } from 'react-hot-loader/root';
@@ -30,7 +31,7 @@ const Routes = view(() => (
   </Switch>
 ));
 
-const App = (): JSX.Element => {
+const App = (): ReactElement<any> => {
   return (
     <div className={Classes.DARK}>
       <LoginDialog />

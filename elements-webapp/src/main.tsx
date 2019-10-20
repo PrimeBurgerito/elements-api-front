@@ -3,6 +3,4 @@ import * as ReactDOM from 'react-dom';
 import App from './App';
 import './main.css';
 
-console.log('App initiated!');
-
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -4,13 +4,22 @@ import UserApi from '@shared/api/UserApi';
 import { LoadingStore } from '@shared/store/LoadingStore';
 import UserStore from '@shared/store/UserStore';
 import * as React from 'react';
-import { useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { view } from 'react-easy-state';
 
-const LoginDialog = (): JSX.Element => {
+const PASSWORD_ID = 'password-input';
+const USERNAME_ID = 'username-input';
+
+const LoginDialog = (): ReactElement<any> => {
   const LOGIN_LOADING_KEY = 'LOGIN_LOADING_KEY';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    UserApi.getCurrentUser().then((user) => {
+      UserStore.user = user;
+    });
+  }, []);
 
   const handleSubmit = async () => {
     LoadingStore.addRequest(LOGIN_LOADING_KEY);
@@ -30,31 +39,25 @@ const LoginDialog = (): JSX.Element => {
     >
       <div className={Classes.DIALOG_BODY}>
         <form>
-          <FormGroup
-            label="Username"
-            labelFor="username-input"
-            labelInfo="(required)"
-          >
+          <FormGroup label="Username" labelFor={USERNAME_ID} labelInfo="(required)">
             <InputGroup
-              id="username-input"
+              id={USERNAME_ID}
               leftIcon="user"
+              autoComplete="current-username"
               placeholder="Type username..."
               value={username}
-              onChange={({ target }) => setUsername(target.value)}
+              onChange={({target}) => setUsername(target.value)}
             />
           </FormGroup>
-          <FormGroup
-            label="Password"
-            labelFor="password-input"
-            labelInfo="(required)"
-          >
+          <FormGroup label="Password" labelFor={PASSWORD_ID} labelInfo="(required)">
             <InputGroup
-              id="password-input"
+              id={PASSWORD_ID}
               leftIcon="lock"
               placeholder="Type password..."
               type="password"
+              autoComplete="current-password"
               value={password}
-              onChange={({ target }) => setPassword(target.value)}
+              onChange={({target}) => setPassword(target.value)}
             />
           </FormGroup>
           <Button
