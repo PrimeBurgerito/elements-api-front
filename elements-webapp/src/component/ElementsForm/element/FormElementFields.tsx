@@ -5,6 +5,7 @@ import LocationInput from '@component/ElementsForm/element/LocationInput';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import PropertiesInput from '@component/ElementsForm/element/PropertiesInput';
 import RequirementInput from '@component/ElementsForm/element/RequirementInput';
+import RewardInput from '@component/ElementsForm/element/RewardInput';
 import TimingInput from '@component/ElementsForm/element/TimingInput';
 import {
   FormArray,
@@ -16,6 +17,7 @@ import {
   FormNumeric,
   FormProperty,
   FormRequirement,
+  FormReward,
   FormTag,
   FormText,
   FormTimingSelect
@@ -95,6 +97,11 @@ const BooleanField = (props: Omit<SharedProps<FormArray>, 'formElement'>) => (<C
   onChange={({target}) => props.commonProps.onChange(props.commonProps.key, target['checked'])}
 />);
 
+const RewardField = (props: Omit<SharedProps<FormReward>, 'formElement'>) => (<RewardInput
+  rewardValue={props.commonProps.formState[props.commonProps.key]}
+  onChange={(reward) => props.commonProps.onChange(props.commonProps.key, reward)}
+/>);
+
 
 export const chooseFieldByType = <F extends FormElementType>(
   key: string,
@@ -124,6 +131,8 @@ export const chooseFieldByType = <F extends FormElementType>(
       return <BooleanField commonProps={commonProps} />;
     case FormElementType.LOCATION:
       return <LocationField commonProps={commonProps} formElement={formElement as FormLocation} />;
+    case FormElementType.REWARD:
+      return <RewardField commonProps={commonProps} />;
     case FormElementType.ARRAY:
       return <ArrayField commonProps={commonProps} formElement={formElement as FormArray} />;
     default:

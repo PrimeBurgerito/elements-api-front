@@ -7,14 +7,16 @@ import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import DiagramUtils from '@shared/diagram/DiagramUtils';
 import OptionNodeFactory from '@shared/diagram/option/OptionNodeFactory';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
-import RewardNodeFactory from '@shared/diagram/reward/RewardNodeFactory'
+import RewardNodeFactory from '@shared/diagram/reward/RewardNodeFactory';
+import RewardNodeModel from '@shared/diagram/reward/RewardNodeModel';
 import SceneNodeFactory from '@shared/diagram/scene/SceneNodeFactory';
-import { IEventDto, IImageToSceneMap, IScene, ISceneOption } from '@type/event';
+import { IEventDto, IImageToSceneMap, IScene, ISceneOption, ISceneReward } from '@type/event';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { DiagramEngine, DiagramModel, DiagramWidget, LinkModel } from 'storm-react-diagrams';
 import '../event-component.scss';
 import OptionNodeMenu from '../option-node-menu/OptionNodeMenu';
+import RewardNodeMenu from '../reward-node-menu/RewardNodeMenu';
 import SceneNodeMenu from '../scene-node-menu/SceneNodeMenu';
 import TrayItemWidget from '../TrayItemWidget';
 import TrayWidget from '../TrayWidget';
@@ -25,8 +27,8 @@ const FORM_DATA_EVENT_DTO = 'eventDto';
 
 const eventForm: IFormStructure = {
   formElements: {
-    name: { label: 'Event name', type: FormElementType.TEXT },
-    requirement: { label: 'Requirement', type: FormElementType.REQUIREMENT },
+    name: {label: 'Event name', type: FormElementType.TEXT},
+    requirement: {label: 'Requirement', type: FormElementType.REQUIREMENT},
   },
 };
 
@@ -62,7 +64,7 @@ const EventPageBody = (): JSX.Element => {
     node.x = points.x;
     node.y = points.y;
     node.addListener({
-      selectionChanged: ({ entity }) => setSelectedNode(entity as BaseNodeModel),
+      selectionChanged: ({entity}) => setSelectedNode(entity as BaseNodeModel),
     });
     model.addNode(node);
     forceUpdate();
@@ -85,6 +87,9 @@ const EventPageBody = (): JSX.Element => {
         case 'DEFAULT':
           (sourceNode.scene as IScene).next = nextSceneIdx;
           break;
+        case 'REWARD':
+          (sourceNode.scene as ISceneReward).next = nextSceneIdx;
+          break;
         case 'OPTION':
           const idx = parseInt(link.getSourcePort().getName(), 10);
           (sourceNode.scene as ISceneOption).options[idx].next = nextSceneIdx;
@@ -97,7 +102,7 @@ const EventPageBody = (): JSX.Element => {
       .forEach(assignNextScene);
 
     const scenes = nodes.map(([, node]) => node.scene);
-    return { scenes, ...eventFormState };
+    return {scenes, ...eventFormState};
   };
 
   const collectFormData = (): FormData => {
@@ -109,7 +114,7 @@ const EventPageBody = (): JSX.Element => {
       .forEach((node: BaseNodeModel, imageIndex: number) => {
         formData.append(FORM_DATA_FILES, node.image);
         const sceneIndex = eventDto.scenes.indexOf(node.scene);
-        imageToSceneMap.push({ imageIndex, sceneIndex });
+        imageToSceneMap.push({imageIndex, sceneIndex});
       });
 
     formData.append(FORM_DATA_IMAGE_TO_SCENE, new Blob([JSON.stringify(imageToSceneMap)], APPLICATION_JSON_OPTION));
@@ -128,13 +133,14 @@ const EventPageBody = (): JSX.Element => {
         {selectedNode.type === 'OPTION' && selectedNode.constructor.name === 'OptionNodeModel' &&
         <OptionNodeMenu node={selectedNode as OptionNodeModel} onOptionAdd={forceUpdate} />}
         {selectedNode.type === 'DEFAULT' && <SceneNodeMenu node={selectedNode} />}
+        {selectedNode.type === 'REWARD' && <RewardNodeMenu node={selectedNode as RewardNodeModel} />}
       </div>
     );
   };
 
   const renderEventConfiguration = (): JSX.Element => {
     const onEventChange = (formState: any) => {
-      setEventFormState({ ...eventFormState, ...formState });
+      setEventFormState({...eventFormState, ...formState});
     };
 
     return (
@@ -171,8 +177,9 @@ const EventPageBody = (): JSX.Element => {
           </div>
           <div className="content">
             <TrayWidget>
-              <TrayItemWidget model={{ type: 'DEFAULT' }} name="Scene" color="rgb(192,255,0)" />
-              <TrayItemWidget model={{ type: 'OPTION' }} name="Option" color="rgb(0,192,255)" />
+              <TrayItemWidget model={{type: 'DEFAULT'}} name="Scene" color="rgb(192,255,0)" />
+              <TrayItemWidget model={{type: 'OPTION'}} name="Option" color="rgb(0,192,255)" />
+              <TrayItemWidget model={{type: 'REWARD'}} name="Reward" color="rgb(192,100,0)" />
             </TrayWidget>
             <div className="diagram-layer" onDrop={handleNodeDrop} onDragOver={(event) => event.preventDefault()}>
               <DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={engine} />

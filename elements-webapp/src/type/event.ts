@@ -38,6 +38,7 @@ export interface ISceneImage extends ISceneBase {
 }
 
 export interface ISceneReward extends ISceneBase {
+  next: number;
   reward: IReward;
 }
 

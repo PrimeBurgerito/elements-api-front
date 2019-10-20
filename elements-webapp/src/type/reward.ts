@@ -1,18 +1,18 @@
 export type RewardType = 'ADD' | 'REMOVE';
 
 export interface IPropertyReward {
-  propertyId: string;
+  propertyKey: string;
   value: string;
   type: RewardType;
 }
 
 export interface IAttributeReward {
-  attributeId: string;
+  attributeKey: string;
   value: number;
 }
 
 export interface IObjectiveReward {
-  objectiveId: string;
+  objectiveKey: string;
   type: RewardType;
 }
 

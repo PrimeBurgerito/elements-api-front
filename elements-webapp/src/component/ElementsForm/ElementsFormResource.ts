@@ -6,7 +6,7 @@ export interface IElementsFormProps<T> {
 }
 
 export enum FormElementType {
-  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG, MULTISELECT, TIMING, REQUIREMENT, LOCATION, ARRAY, BOOLEAN
+  NUMERIC, TEXT, ATTRIBUTE, PROPERTY, TAG, MULTISELECT, TIMING, REQUIREMENT, LOCATION, ARRAY, BOOLEAN, REWARD
 }
 
 export type FormElement<T extends FormElementType> = {
@@ -21,6 +21,7 @@ export type FormProperty = FormElement<FormElementType.PROPERTY>;
 export type FormTimingSelect = FormElement<FormElementType.TIMING>;
 export type FormRequirement = FormElement<FormElementType.REQUIREMENT>;
 export type FormBoolean = FormElement<FormElementType.BOOLEAN>;
+export type FormReward = FormElement<FormElementType.REWARD>;
 
 export type FormArray = FormElement<FormElementType.ARRAY> & {
   formStructure?: IFormStructure;
@@ -53,6 +54,7 @@ export type IFormStructure = {
       FormRequirement |
       FormLocation |
       FormArray |
-      FormBoolean
+      FormBoolean |
+      FormReward
   };
 };
