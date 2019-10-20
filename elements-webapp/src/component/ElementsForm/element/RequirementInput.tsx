@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 const requirementFormStructure: IFormStructure = {
   formElements: {
-    locationId: { label: 'Location', type: FormElementType.LOCATION },
+    locationIds: { label: 'Location', type: FormElementType.LOCATION },
     timing: { label: 'Required timing', type: FormElementType.TIMING },
     properties: { label: 'Required properties', type: FormElementType.PROPERTY },
     attributes: { label: 'Required attributes', type: FormElementType.ATTRIBUTE },
