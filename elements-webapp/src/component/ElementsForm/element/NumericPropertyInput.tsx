@@ -1,27 +1,27 @@
 import { Button, ControlGroup, FormGroup, Menu, NumericInput, Popover, Position } from '@blueprintjs/core';
-import AttributeApi from '@shared/api/statistic/AttributeApi';
-import { IAttribute } from '@type/statistics';
+import NumericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
+import { INumericProperty } from '@type/statistics';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { store, view } from 'react-easy-state';
 import './element.scss';
 
-interface IAttributesInputProps {
+type Props = {
   id?: string;
   attributesValue?: { [k: string]: number };
   onChange: (attributes: { [k: string]: number }) => void;
-}
+};
 
-interface IAttributeStore {
-  allAttributes: IAttribute[];
-  remainingAttr: IAttribute[];
+interface INumericPropertyStore {
+  allAttributes: INumericProperty[];
+  remainingAttr: INumericProperty[];
   addedAttributes: { [k: string]: number };
   newValue: number;
-  selected: IAttribute;
+  selected: INumericProperty;
 }
 
-const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
-  const localStore = store<IAttributeStore>({
+const NumericPropertyInput: React.FC<Props> = (props) => {
+  const localStore = store<INumericPropertyStore>({
     allAttributes: [],
     remainingAttr: [],
     addedAttributes: null,
@@ -30,7 +30,7 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
   });
 
   useEffect(() => {
-    new AttributeApi().find(true).then((res: IAttribute[]) => {
+    new NumericPropertyApi().find(true).then((res: INumericProperty[]) => {
       if (res && res.length) {
         localStore.allAttributes = res;
         localStore.remainingAttr = [...res];
@@ -63,14 +63,14 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
     };
 
     const renderAttributeMenu = () => {
-      const onClick = (attr: IAttribute) => {
+      const onClick = (attr: INumericProperty) => {
         localStore.newValue = attr.min;
         localStore.selected = attr;
       };
 
       return (
         <Menu>
-          {localStore.remainingAttr.map((attr: IAttribute, idx) =>
+          {localStore.remainingAttr.map((attr: INumericProperty, idx) =>
             <Menu.Item key={`attr-select-${attr.id}-${idx}`} text={attr.name} onClick={() => onClick(attr)} />)}
         </Menu>
       );
@@ -114,4 +114,4 @@ const AttributesInput = (props: IAttributesInputProps): JSX.Element => {
   );
 };
 
-export default view(AttributesInput);
+export default view(NumericPropertyInput);

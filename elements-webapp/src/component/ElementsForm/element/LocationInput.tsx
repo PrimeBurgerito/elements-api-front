@@ -1,7 +1,7 @@
 import { MenuItem } from '@blueprintjs/core';
 import { IItemRendererProps, ItemPredicate, ItemRenderer, MultiSelect } from '@blueprintjs/select';
 import LocationApi from '@shared/api/LocationApi';
-import { ILocation } from '@type/location';
+import { ILocation } from '@type/Location';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 

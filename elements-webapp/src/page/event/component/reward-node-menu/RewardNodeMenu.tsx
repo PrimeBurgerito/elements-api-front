@@ -2,7 +2,7 @@ import { Button, H2 } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import RewardNodeModel from '@shared/diagram/reward/RewardNodeModel';
-import { ISceneReward } from '@type/event';
+import { ISceneReward } from '@type/Event';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import './reward-node-menu.scss';
@@ -26,7 +26,7 @@ const RewardNodeMenu = (props: IRewardNodeMenu): ReactElement<any> => {
   return (
     <>
       <div className="scene-header">
-        <Button onClick={() => console.log(props.node.scene)}>Test node</Button>
+        <Button onClick={() => console.debug(props.node.scene)}>Test node</Button>
         <H2>Reward scene Configuration</H2>
       </div>
       <ElementsForm

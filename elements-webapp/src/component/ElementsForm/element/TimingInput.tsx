@@ -1,7 +1,7 @@
 import { Button, FormGroup, Intent, OL } from '@blueprintjs/core';
 import { TimePicker } from '@blueprintjs/datetime';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
-import { ITimeRange, ITiming } from '@type/requirement';
+import { ITimeRange, ITiming } from '@type/Requirement';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import './element.scss';
@@ -11,12 +11,12 @@ const MONTH_DAYS = [...Array(31).keys()].map((n) => (n + 1).toString());
 const MONTHS = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
   'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
-interface ITimingProps {
+type Props = {
   onChange: (change: ITiming) => void;
   value?: ITiming;
-}
+};
 
-const TimingInput = (props: ITimingProps): JSX.Element => {
+const TimingInput: React.FC<Props> = (props) => {
   const [timing, setTiming] = useState<ITiming>({});
   const [times, setTimes] = useState<ITimeRange[]>([]);
 
@@ -30,7 +30,7 @@ const TimingInput = (props: ITimingProps): JSX.Element => {
   }, [props.value]);
 
   const handleChange = (key: 'weekdays' | 'monthDays' | 'months' | 'time', values) => {
-    const newTiming = { ...timing, [key]: values };
+    const newTiming = {...timing, [key]: values};
     setTiming(newTiming);
     props.onChange(newTiming);
   };
@@ -45,11 +45,11 @@ const TimingInput = (props: ITimingProps): JSX.Element => {
   };
 
   const addTimeRange = () => {
-    setTimes([...times, { start: new Date(), end: new Date() }]);
+    setTimes([...times, {start: new Date(), end: new Date()}]);
 
     const newTimeRangeList = timing.time ? timing.time : [];
     const dateString = mapDateToString(new Date());
-    newTimeRangeList.push({ start: dateString, end: dateString });
+    newTimeRangeList.push({start: dateString, end: dateString});
     handleChange('time', newTimeRangeList);
   };
 

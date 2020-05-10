@@ -1,4 +1,4 @@
-import { ISceneBase, SceneType } from '@type/event';
+import { ISceneBase, SceneType } from '@type/Event';
 import { DefaultPortModel, DiagramEngine, NodeModel, Toolkit } from 'storm-react-diagrams';
 
 export default class BaseNodeModel extends NodeModel {

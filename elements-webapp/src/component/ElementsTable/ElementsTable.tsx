@@ -3,7 +3,7 @@ import { IColumnModel, IElementsTableProps } from '@component/ElementsTable/Elem
 import * as React from 'react';
 import { view } from 'react-easy-state';
 
-const ElementsTable = (props: IElementsTableProps): JSX.Element => {
+const ElementsTable: React.FC<IElementsTableProps> = (props) => {
 
   const renderCell = (cellIndex: number, columnIndex: number) => {
     const paramKey = props.columns[columnIndex].key;

@@ -10,7 +10,7 @@ import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
 import RewardNodeFactory from '@shared/diagram/reward/RewardNodeFactory';
 import RewardNodeModel from '@shared/diagram/reward/RewardNodeModel';
 import SceneNodeFactory from '@shared/diagram/scene/SceneNodeFactory';
-import { IEventDto, IImageToSceneMap, IScene, ISceneOption, ISceneReward } from '@type/event';
+import { IEventDto, IImageToSceneMap, IScene, ISceneOption, ISceneReward } from '@type/Event';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { DiagramEngine, DiagramModel, DiagramWidget, LinkModel } from 'storm-react-diagrams';
@@ -39,7 +39,7 @@ const useForceUpdate = () => {
 
 type PartialEventDto = Pick<IEventDto, 'requirement' | 'name'>;
 
-const EventPageBody = (): JSX.Element => {
+const EventPageBody: React.FC = () => {
   const forceUpdate = useForceUpdate();
   const [engine] = useState(new DiagramEngine());
   const [model] = useState(new DiagramModel());
@@ -77,7 +77,7 @@ const EventPageBody = (): JSX.Element => {
   };
 
   const collectEvent = (): IEventDto => {
-    const nodes = Object.entries(model.getNodes() as { [s: string]: BaseNodeModel })
+    const nodes: [string, BaseNodeModel][] = Object.entries(model.getNodes() as { [s: string]: BaseNodeModel })
       .sort(([, node]) => node.index);
 
     const assignNextScene = (link: LinkModel) => {

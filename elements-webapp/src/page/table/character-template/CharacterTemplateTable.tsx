@@ -1,28 +1,27 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import CharacterTemplateApi from '@shared/api/CharacterTemplateApi';
-import { ReactElement } from 'react';
 import * as React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const templateColumns = [
-  {name: 'Attributes', key: 'attributes'},
   {name: 'Properties', key: 'properties'},
+  {name: 'Images', key: 'images'},
 ];
 
 const characterForm: IFormStructure = {
   formElements: {
-    attributes: {
-      label: 'Attributes',
-      type: FormElementType.ATTRIBUTE,
+    numericProperties: {
+      label: 'Numeric Properties',
+      type: FormElementType.NUMERIC_PROPERTY,
     },
-    properties: {
-      label: 'Properties',
-      type: FormElementType.PROPERTY,
+    stringProperties: {
+      label: 'String Properties',
+      type: FormElementType.STRING_PROPERTY,
     },
   },
 };
 
-const CharacterTemplateTable = (): ReactElement<any> => {
+const CharacterTemplateTable: React.FC = () => {
   const characterTemplateApi = new CharacterTemplateApi();
 
   return <BaseEntityTable

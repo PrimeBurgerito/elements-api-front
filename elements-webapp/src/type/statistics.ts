@@ -1,23 +1,25 @@
 import IDocumentBase from '@type/DocumentBase';
 
-export interface IStatistic extends IDocumentBase {
+export interface IProperty<T> extends IDocumentBase {
   name: string;
   key: string;
+  value: T;
 }
 
-export interface IAttribute extends IStatistic {
+export interface INumericProperty extends IProperty<number> {
   min: number;
   max: number;
 }
 
-export interface IProperty extends IStatistic {
-  values: string[];
+export interface IStringProperty extends IProperty<string[]> {
+  possibleValues: string[];
+  type: StringPropertyType;
 }
 
-export interface IObjective extends IStatistic {
-
+export interface IObjective extends IDocumentBase {
+  value: string;
 }
 
-export enum ObjectiveValue {
-  FAIL, SUCCESS,
+export enum StringPropertyType {
+  SINGLE, UNIQUE, MULTIPLE
 }

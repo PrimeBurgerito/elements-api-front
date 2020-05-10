@@ -1,23 +1,25 @@
 import { Checkbox, InputGroup, NumericInput, TagInput } from '@blueprintjs/core';
 import ArrayInput from '@component/ElementsForm/element/ArrayInput';
-import AttributesInput from '@component/ElementsForm/element/AttributesInput';
 import LocationInput from '@component/ElementsForm/element/LocationInput';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
-import PropertiesInput from '@component/ElementsForm/element/PropertiesInput';
+import NumericPropertyInput from '@component/ElementsForm/element/NumericPropertyInput';
 import RequirementInput from '@component/ElementsForm/element/RequirementInput';
 import RewardInput from '@component/ElementsForm/element/RewardInput';
+import StringPropertyInput from '@component/ElementsForm/element/StringPropertyInput';
 import TimingInput from '@component/ElementsForm/element/TimingInput';
+import ElementsForm from '@component/ElementsForm/ElementsForm';
 import {
   FormArray,
-  FormAttribute,
   FormElement,
   FormElementType,
   FormLocation,
   FormMultiSelect,
+  FormNested,
   FormNumeric,
-  FormProperty,
+  FormNumericProperty,
   FormRequirement,
   FormReward,
+  FormStringProperty,
   FormTag,
   FormText,
   FormTimingSelect
@@ -52,13 +54,13 @@ const TagField = (props: Omit<SharedProps<FormTag>, 'formElement'>) => (<TagInpu
   onChange={(values: string[]) => props.commonProps.onChange(props.commonProps.key, values)}
 />);
 
-const PropertyField = (props: Omit<SharedProps<FormProperty>, 'formElement'>) => (<PropertiesInput
+const StringPropertyField = (props: Omit<SharedProps<FormStringProperty>, 'formElement'>) => (<StringPropertyInput
   id={props.commonProps.key}
   propertiesValue={props.commonProps.formState[props.commonProps.key]}
   onChange={(prop) => props.commonProps.onChange(props.commonProps.key, prop)}
 />);
 
-const AttributeField = (props: Omit<SharedProps<FormAttribute>, 'formElement'>) => (<AttributesInput
+const NumericPropertyField = (props: Omit<SharedProps<FormNumericProperty>, 'formElement'>) => (<NumericPropertyInput
   id={props.commonProps.key}
   attributesValue={props.commonProps.formState[props.commonProps.key]}
   onChange={(attr) => props.commonProps.onChange(props.commonProps.key, attr)}
@@ -92,6 +94,12 @@ const ArrayField = (props: SharedProps<FormArray>) => (<ArrayInput
   onChange={(value) => props.commonProps.onChange(props.commonProps.key, value)}
 />);
 
+const NestedField = (props: SharedProps<FormNested>) => (<ElementsForm
+  formStructure={props.formElement.formStructure}
+  onChange={(value) => props.commonProps.onChange(props.commonProps.key, value)}
+  formValue={props.commonProps.formState[props.commonProps.key]}
+/>);
+
 const BooleanField = (props: Omit<SharedProps<FormArray>, 'formElement'>) => (<Checkbox
   checked={!!props.commonProps.formState[props.commonProps.key]}
   onChange={({target}) => props.commonProps.onChange(props.commonProps.key, target['checked'])}
@@ -117,11 +125,11 @@ export const chooseFieldByType = <F extends FormElementType>(
       return <TextField commonProps={commonProps} />;
     case FormElementType.TAG:
       return <TagField commonProps={commonProps} />;
-    case FormElementType.PROPERTY:
-      return <PropertyField commonProps={commonProps} />;
-    case FormElementType.ATTRIBUTE:
-      return <AttributeField commonProps={commonProps} />;
-    case FormElementType.MULTISELECT:
+    case FormElementType.STRING_PROPERTY:
+      return <StringPropertyField commonProps={commonProps} />;
+    case FormElementType.NUMERIC_PROPERTY:
+      return <NumericPropertyField commonProps={commonProps} />;
+    case FormElementType.MULTI_SELECT:
       return <MultiStringField commonProps={commonProps} formElement={formElement as FormMultiSelect} />;
     case FormElementType.TIMING:
       return <TimingField commonProps={commonProps} />;
@@ -135,6 +143,8 @@ export const chooseFieldByType = <F extends FormElementType>(
       return <RewardField commonProps={commonProps} />;
     case FormElementType.ARRAY:
       return <ArrayField commonProps={commonProps} formElement={formElement as FormArray} />;
+    case FormElementType.NESTED:
+      return <NestedField commonProps={commonProps} formElement={formElement as unknown as FormNested} />;
     default:
       throw new Error('No such field!');
   }

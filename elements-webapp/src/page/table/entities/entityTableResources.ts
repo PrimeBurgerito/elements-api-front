@@ -1,16 +1,19 @@
-export const attributeColumns = [
+export const numericPropertyColumns = [
   {name: 'Name', key: 'name'},
   {name: 'Min value', key: 'min'},
   {name: 'Max value', key: 'max'},
+  {name: 'Default value', key: 'value'},
 ];
 
-export const propertyColumns = [
+export const stringPropertyColumns = [
   {name: 'Name', key: 'name'},
-  {name: 'Values', key: 'values'},
+  {name: 'Possible values', key: 'possibleValues'},
+  {name: 'Type', key: 'type'},
+  {name: 'Default value', key: 'value'},
 ];
 
 export const objectiveColumns = [
-  {name: 'Name', key: 'name'},
+  {name: 'Value', key: 'value'},
 ];
 
 export const imageContainerColumns = [

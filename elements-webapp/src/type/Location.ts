@@ -1,6 +1,6 @@
-import IDocumentBase from '@type/DocumentBase.js';
+import IDocumentBase from '@type/DocumentBase';
 import { IConditionalImage } from '@type/image';
-import { IRequirement } from '@type/requirement';
+import { IRequirement } from '@type/Requirement';
 
 export interface ILocation extends IDocumentBase {
   name: string;

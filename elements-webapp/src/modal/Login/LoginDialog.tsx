@@ -4,13 +4,13 @@ import UserApi from '@shared/api/UserApi';
 import { LoadingStore } from '@shared/store/LoadingStore';
 import UserStore from '@shared/store/UserStore';
 import * as React from 'react';
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { view } from 'react-easy-state';
 
 const PASSWORD_ID = 'password-input';
 const USERNAME_ID = 'username-input';
 
-const LoginDialog = (): ReactElement<any> => {
+const LoginDialog: React.FC = () => {
   const LOGIN_LOADING_KEY = 'LOGIN_LOADING_KEY';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

@@ -3,13 +3,14 @@ import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-interface IMultiStringSelectProps {
+type Props = {
   selectableValues: string[];
   values?: string[];
   onChange: (values: string[]) => void;
-}
+  disabled?: boolean;
+};
 
-const MultiStringSelect = (props: IMultiStringSelectProps): JSX.Element => {
+const MultiStringSelect: React.FC<Props> = (props) => {
   const allValues = [...new Set(props.selectableValues)];
   const [selected, setSelected] = useState([]);
   const StringSelect = MultiSelect.ofType<string>();
@@ -35,7 +36,7 @@ const MultiStringSelect = (props: IMultiStringSelectProps): JSX.Element => {
     );
   };
 
-  const handleValueSelect = (value: string) => {
+  const handleValueSelect = (value: string): void => {
     const newSelected = selected.includes(value) ? selected.filter((v) => v !== value) : [...selected, value];
     setSelected(newSelected);
     props.onChange(newSelected);

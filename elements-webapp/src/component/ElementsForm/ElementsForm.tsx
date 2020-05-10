@@ -5,7 +5,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { FormElement, FormElementType, IElementsFormProps, } from './ElementsFormResource';
 
 
-const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElement<any> => {
+const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElement => {
   const [formState, setFormState] = useState<T>(() => ({}) as any);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElem
     props.onChange(newFormState);
   };
 
-  const getFormField = <F extends FormElementType>([key, formElement]: [string, FormElement<F>]): ReactElement<any> => {
+  const getFormField = <F extends FormElementType>([key, formElement]: [string, FormElement<F>]): ReactElement => {
     return (
       <div key={`${key}-form-group`}>
         <FormGroup label={formElement.label} labelFor={key}>
@@ -41,7 +41,7 @@ const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElem
   return (
     <Card>
       {!!props.label && <H1>{props.label}</H1>}
-      {Object.entries(props.formStructure.formElements).map<ReactElement<any>>(getFormField)}
+      {Object.entries(props.formStructure.formElements).map<ReactElement>(getFormField)}
     </Card>
   );
 };

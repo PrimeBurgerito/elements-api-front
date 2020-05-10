@@ -8,6 +8,7 @@ import {
   OBJECTIVE_PATH,
   PROPERTY_PATH,
 } from '@constant/paths';
+import * as React from 'react';
 import EventPage from './event/EventPage';
 import CharacterTemplateTable from './table/character-template/CharacterTemplateTable';
 import ImageContainerTable from './table/container/ImageContainerTable';
@@ -17,7 +18,7 @@ import LocationTable from './table/location/LocationTable';
 
 interface ISinglePage {
   path: string;
-  component: () => JSX.Element;
+  component: React.FC;
 }
 
 export const protectedPages: ISinglePage[] = [

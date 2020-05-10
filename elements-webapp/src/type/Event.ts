@@ -1,6 +1,6 @@
 import { IImage } from '@type/image';
-import { IRequirement } from '@type/requirement';
-import { IReward } from './reward';
+import { IRequirement } from '@type/Requirement';
+import { IReward } from './Reward';
 
 export interface IEvent {
   name: string;

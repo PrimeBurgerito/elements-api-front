@@ -1,6 +1,6 @@
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
 import OptionNodeWidget from '@shared/diagram/option/OptionNodeWidget';
-import { SceneType } from '@type/event';
+import { SceneType } from '@type/Event';
 import * as React from 'react';
 import { AbstractNodeFactory, DiagramEngine } from 'storm-react-diagrams';
 

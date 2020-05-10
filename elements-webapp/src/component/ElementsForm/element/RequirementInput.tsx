@@ -1,24 +1,31 @@
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import { IRequirement } from '@type/requirement';
+import { IRequirement } from '@type/Requirement';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-const requirementFormStructure: IFormStructure = {
+const requirementFormStructure: IFormStructure<IRequirement> = {
   formElements: {
-    locationIds: { label: 'Location', type: FormElementType.LOCATION },
-    timing: { label: 'Required timing', type: FormElementType.TIMING },
-    properties: { label: 'Required properties', type: FormElementType.PROPERTY },
-    attributes: { label: 'Required attributes', type: FormElementType.ATTRIBUTE },
+    locationIds: {label: 'Location', type: FormElementType.LOCATION},
+    timing: {label: 'Required timing', type: FormElementType.TIMING},
+    properties: {
+      label: 'Required properties', type: FormElementType.NESTED, formStructure: {
+        formElements: {
+          stringProperties: {label: 'String property requirement', type: FormElementType.STRING_PROPERTY},
+          numericProperties: {label: 'Numeric property requirement', type: FormElementType.NUMERIC_PROPERTY},
+        }
+      }
+    },
+    objectives: {label: 'Required objectives', type: FormElementType.MULTI_SELECT, selectableValues: ['TEST']}
   },
 };
 
-interface IRequirementInputProps {
+type Props = {
   onChange: (change: IRequirement) => void;
   value?: IRequirement;
-}
+};
 
-const RequirementInput = (props: IRequirementInputProps): JSX.Element => {
+const RequirementInput: React.FC<Props> = (props) => {
   const [requirementState, setRequirementState] = useState<IRequirement>(null);
 
   useEffect(() => {

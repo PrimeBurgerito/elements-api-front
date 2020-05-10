@@ -1,5 +1,5 @@
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
-import { ISceneOption } from '@type/event';
+import { ISceneOption } from '@type/Event';
 
 export default class OptionNodeModel extends BaseNodeModel {
   public scene: ISceneOption;

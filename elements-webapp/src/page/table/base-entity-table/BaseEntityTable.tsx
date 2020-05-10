@@ -10,7 +10,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import './entity-table.scss';
 
-interface IEntityBaseTableProps {
+type Props = {
   api: BaseApi<any>;
   columns: IColumnModel[];
   title: string;
@@ -18,9 +18,9 @@ interface IEntityBaseTableProps {
   refreshOnEntityChange?: boolean;
   imageAdder?: 'default' | 'conditional' | 'avatar';
   onTableChange?: (entities: object[]) => void;
-}
+};
 
-const BaseEntityTable = (props: IEntityBaseTableProps): JSX.Element => {
+const BaseEntityTable: React.FC<Props> = (props) => {
   const [entities, setEntities] = useState<IDocumentBase[]>([]);
   const [selectedEntity, setSelectedEntity] = useState<IDocumentBase>(null);
   const [isFormOpen, setFormOpen] = useState<boolean>(false);

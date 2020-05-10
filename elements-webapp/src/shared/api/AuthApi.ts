@@ -7,7 +7,7 @@ const AUTH_PATH = '/oauth/token';
 
 export default class AuthApi {
   public static getAuthenticationToken = async (username: string, password: string): Promise<IToken> => {
-    const body: IAuthTokenRequestBody = { grant_type: 'password', password, username };
+    const body: IAuthTokenRequestBody = {grant_type: 'password', password, username};
     const response: AxiosResponse = await AUTH_POST(AUTH_PATH, body);
     if (!response) {
       return null;
@@ -15,5 +15,5 @@ export default class AuthApi {
     const token: IToken = await response.data;
     sessionStorage.setItem(TOKEN_STORAGE_KEY, token.access_token);
     return token;
-  }
+  };
 }

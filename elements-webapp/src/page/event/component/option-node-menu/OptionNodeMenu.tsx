@@ -2,7 +2,7 @@ import { Button, Collapse, H2 } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
-import { IOption } from '@type/event';
+import { IOption } from '@type/Event';
 import * as React from 'react';
 import { useState } from 'react';
 import SceneNodeMenu from '../scene-node-menu/SceneNodeMenu';
@@ -10,8 +10,8 @@ import './option-node-menu.scss';
 
 const optionForm: IFormStructure = {
   formElements: {
-    text: { label: 'Text', type: FormElementType.TEXT },
-    requirement: { label: 'Requirement', type: FormElementType.REQUIREMENT },
+    text: {label: 'Text', type: FormElementType.TEXT},
+    requirement: {label: 'Requirement', type: FormElementType.REQUIREMENT},
   },
 };
 
@@ -20,7 +20,7 @@ interface IOptionNodeMenu {
   onOptionAdd: () => void;
 }
 
-const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
+const OptionNodeMenu: React.FC<IOptionNodeMenu> = (props) => {
   const [showOption, setShowOption] = useState<boolean[]>([]);
   const addOptionClick = () => {
     if (props.node.type === 'OPTION') {
@@ -32,7 +32,7 @@ const OptionNodeMenu = (props: IOptionNodeMenu): JSX.Element => {
 
   const renderOption = (option: IOption, idx: number): JSX.Element => {
     const handleChange = (formState: any) => {
-      props.node.scene.options[idx] = { ...option, ...formState };
+      props.node.scene.options[idx] = {...option, ...formState};
     };
     const toggleOption = () => {
       const newShowOption = [...showOption];

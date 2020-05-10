@@ -1,30 +1,31 @@
 import { Button, ControlGroup, FormGroup, Menu, Popover, Position } from '@blueprintjs/core';
-import PropertyApi from '@shared/api/statistic/PropertyApi';
-import { IProperty } from '@type/statistics';
+import StringPropertyApi from '@shared/api/statistic/StringPropertyApi';
+import { IStringProperty } from '@type/statistics';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { store, view } from 'react-easy-state';
 import './element.scss';
 
 interface IPropertiesForm {
-  [k: string]: string;
+  [k: string]: string[];
 }
 
-interface IPropertiesInputProps {
+type Props = {
   id?: string;
   propertiesValue?: IPropertiesForm;
   onChange: (properties: IPropertiesForm) => void;
-}
+};
 
 interface IPropertiesInputStore {
-  allProperties: IProperty[];
-  remainingProps: IProperty[];
+  allProperties: IStringProperty[];
+  remainingProps: IStringProperty[];
   addedProperties: IPropertiesForm;
-  selected: IProperty;
+  selected: IStringProperty;
   newValue: string;
 }
 
-const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
+// TODO: support for SINGLE and MULTIPLE properties
+const StringPropertyInput: React.FC<Props> = (props) => {
   const localStore = store<IPropertiesInputStore>({
     allProperties: [],
     remainingProps: [],
@@ -34,7 +35,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   });
 
   useEffect(() => {
-    new PropertyApi().find(true).then((res: IProperty[]) => {
+    new StringPropertyApi().find(true).then((res: IStringProperty[]) => {
       if (res && res.length) {
         localStore.allProperties = res;
         localStore.remainingProps = [...res];
@@ -57,14 +58,14 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   };
 
   const renderPropertySelector = () => {
-    const renderNewPropertyValuesSelector = (prop: IProperty) => {
+    const renderNewPropertyValuesSelector = (prop: IStringProperty) => {
       const onClick = (value: string) => {
         localStore.newValue = value;
       };
 
       const renderPropertyValues = () =>
         <Menu>
-          {prop.values.map((value, idx) =>
+          {prop.possibleValues.map((value, idx) =>
             <Menu.Item key={`prop-value-${prop.key}-${idx}`} text={value} onClick={() => onClick(value)} />)}
         </Menu>;
 
@@ -79,7 +80,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
       if (!localStore.addedProperties) {
         localStore.addedProperties = {};
       }
-      localStore.addedProperties[localStore.selected.key] = localStore.newValue;
+      localStore.addedProperties[localStore.selected.key] = [localStore.newValue];
       localStore.remainingProps = localStore.remainingProps.filter((prop) => prop.key !== localStore.selected.key);
       localStore.selected = null;
       localStore.newValue = null;
@@ -87,14 +88,14 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
     };
 
     const renderPropertyMenu = () => {
-      const selectProperty = (prop: IProperty) => {
+      const selectProperty = (prop: IStringProperty) => {
         localStore.selected = prop;
-        localStore.newValue = prop.values[0];
+        localStore.newValue = prop.possibleValues[0];
       };
 
       return (
         <Menu>
-          {localStore.remainingProps.map((prop: IProperty, idx) =>
+          {localStore.remainingProps.map((prop: IStringProperty, idx) =>
             <Menu.Item key={`prop-select-${prop.key}-${idx}`} text={prop.name} onClick={() => selectProperty(prop)} />)}
         </Menu>
       );
@@ -122,7 +123,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   };
 
   const renderAddedProperties = () => {
-    const renderAddedPropertyValueSelector = (prop: IProperty) => {
+    const renderAddedPropertyValueSelector = (prop: IStringProperty) => {
       const onClick = (value) => {
         localStore.addedProperties[prop.key] = value;
         onPropertyChange();
@@ -130,7 +131,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
 
       const renderPropertyValues = () =>
         <Menu>
-          {prop.values.map((value) =>
+          {prop.possibleValues.map((value) =>
             <Menu.Item key={`added-${prop.key}-${value}`} text={value} onClick={() => onClick(value)} />)}
         </Menu>;
 
@@ -142,7 +143,7 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
     };
 
     return Object.keys(localStore.addedProperties).map((key) => {
-      const prop: IProperty = localStore.allProperties.find((p) => p.key === key);
+      const prop: IStringProperty = localStore.allProperties.find((p) => p.key === key);
       return (
         <FormGroup className="statistic-changer" key={`added-${key}`} labelFor={prop.key} label={prop.name}>
           {renderAddedPropertyValueSelector(prop)}
@@ -159,4 +160,4 @@ const PropertiesInput = (props: IPropertiesInputProps): JSX.Element => {
   );
 };
 
-export default view(PropertiesInput);
+export default view(StringPropertyInput);

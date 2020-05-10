@@ -1,32 +1,28 @@
-import {
-  attributeFormStructure,
-  objectiveFormStructure,
-  propertyFormStructure,
-} from '@modal/form/entityFormResources';
-import AttributeApi from '@shared/api/statistic/AttributeApi';
+import { numericPropertyFormStructure, objectiveFormStructure, stringPropertyFormStructure, } from '@modal/form/entityFormResources';
+import NumericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import ObjectiveApi from '@shared/api/statistic/ObjectiveApi';
-import PropertyApi from '@shared/api/statistic/PropertyApi';
+import StringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import * as React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
-import { attributeColumns, objectiveColumns, propertyColumns } from './entityTableResources';
+import { numericPropertyColumns, objectiveColumns, stringPropertyColumns } from './entityTableResources';
 
-export const AttributeTable = () =>
+export const AttributeTable: React.FC = () =>
   <BaseEntityTable
-    title="Attribute"
-    api={new AttributeApi()}
-    columns={attributeColumns}
-    formStructure={attributeFormStructure}
+    title="Numeric Property"
+    api={new NumericPropertyApi()}
+    columns={numericPropertyColumns}
+    formStructure={numericPropertyFormStructure}
   />;
 
-export const PropertyTable = () =>
+export const PropertyTable: React.FC = () =>
   <BaseEntityTable
-    title="Property"
-    api={new PropertyApi()}
-    columns={propertyColumns}
-    formStructure={propertyFormStructure}
+    title="String Property"
+    api={new StringPropertyApi()}
+    columns={stringPropertyColumns}
+    formStructure={stringPropertyFormStructure}
   />;
 
-export const ObjectiveTable = () =>
+export const ObjectiveTable: React.FC = () =>
   <BaseEntityTable
     title="Objective"
     api={new ObjectiveApi()}

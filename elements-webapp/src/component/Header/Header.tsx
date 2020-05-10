@@ -14,10 +14,10 @@ import history from '@shared/history';
 import * as React from 'react';
 import { view } from 'react-easy-state';
 
-const Header = (): JSX.Element => {
+const Header: React.FC = () => {
 
-  const renderApiMenu = (): JSX.Element => {
-    const menu = () =>
+  const renderApiMenu = (): React.ReactElement => {
+    const menu = (): React.ReactElement =>
       <Menu>
         <Menu.Item text="Event" onClick={() => history.push(EVENT_PATH)} />
         <Menu.Item text="Character template" onClick={() => history.push(CHARACTER_TEMPLATE_PATH)} />

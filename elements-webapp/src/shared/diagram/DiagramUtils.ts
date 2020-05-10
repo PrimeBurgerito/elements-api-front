@@ -2,7 +2,7 @@ import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
 import RewardNodeModel from '@shared/diagram/reward/RewardNodeModel';
 import SceneNodeModel from '@shared/diagram/scene/SceneNodeModel';
-import { SceneType } from '@type/event';
+import { SceneType } from '@type/Event';
 
 export type NodeType = SceneType;
 

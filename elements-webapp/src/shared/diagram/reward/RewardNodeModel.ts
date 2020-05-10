@@ -1,5 +1,5 @@
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
-import { ISceneReward } from '@type/event';
+import { ISceneReward } from '@type/Event';
 
 export default class RewardNodeModel extends BaseNodeModel {
   public scene: ISceneReward;

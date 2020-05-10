@@ -1,4 +1,4 @@
-import { IRequirement } from '@type/requirement';
+import { IRequirement } from '@type/Requirement';
 
 export interface IImage {
   fileName: string;

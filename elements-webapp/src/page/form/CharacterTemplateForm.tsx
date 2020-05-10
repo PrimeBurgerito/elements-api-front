@@ -4,13 +4,13 @@ import * as React from 'react';
 
 const characterForm: IFormStructure = {
   formElements: {
-    attributes: {
+    numericProperties: {
       label: 'Attributes',
-      type: FormElementType.ATTRIBUTE,
+      type: FormElementType.NUMERIC_PROPERTY,
     },
-    properties: {
+    stringProperties: {
       label: 'Properties',
-      type: FormElementType.PROPERTY,
+      type: FormElementType.STRING_PROPERTY,
     },
   },
 };

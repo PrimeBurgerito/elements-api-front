@@ -17,16 +17,14 @@ module.exports = {
   target: 'web',
   module: {
     rules: [
+      {test: /\.js$/, loader: 'babel-loader'},
       {
         test: /\.tsx?$/,
         exclude: '/node_modules/',
-        use: [{
-          loader: 'babel-loader',
-          options: {babelrc: true},
-        }, {
-          loader: 'ts-loader',
-          options: {configFile: 'tsconfig.json'}
-        }]
+        use: [
+          {loader: 'babel-loader', options: {babelrc: true}},
+          {loader: 'ts-loader', options: {configFile: 'tsconfig.json'}}
+        ]
       },
       {test: /\.html$/, loader: 'html-loader'},
       {

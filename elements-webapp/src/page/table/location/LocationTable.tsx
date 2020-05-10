@@ -1,6 +1,6 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import LocationApi from '@shared/api/LocationApi';
-import { ILocation } from '@type/location';
+import { ILocation } from '@type/Location';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
@@ -13,11 +13,11 @@ const locationColumns = [
 const locationFormStructure = (selectableValues: string[]): IFormStructure => ({
   formElements: {
     name: {label: 'Name', type: FormElementType.TEXT},
-    nearbyLocations: {label: 'Nearby locations', type: FormElementType.MULTISELECT, selectableValues},
+    nearbyLocations: {label: 'Nearby locations', type: FormElementType.MULTI_SELECT, selectableValues},
   },
 });
 
-const LocationTable = (): JSX.Element => {
+const LocationTable: React.FC = () => {
   const locationApi = new LocationApi();
   const [formStructure, setFormStructure] = useState<IFormStructure>(null);
 

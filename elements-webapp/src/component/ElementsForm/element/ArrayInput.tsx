@@ -4,13 +4,13 @@ import { FormElement, FormElementType, IFormStructure } from '@component/Element
 import * as React from 'react';
 import { ReactElement, useEffect, useState } from 'react';
 
-type ArrayInputProps = {
+type Props = {
   formStructure: IFormStructure;
   arrayValue?: object[];
   onChange: (formArray: object[]) => void;
 };
 
-const ArrayInput = (props: ArrayInputProps): ReactElement<any> => {
+const ArrayInput: React.FC<Props> = (props) => {
   const [formState, setFormState] = useState([]);
   const [forms, setForms] = useState([]);
 
@@ -34,7 +34,7 @@ const ArrayInput = (props: ArrayInputProps): ReactElement<any> => {
   };
 
   const getFormField = (index: number) =>
-    <F extends FormElementType>([key, formElement]: [string, FormElement<F>]): ReactElement<any> => {
+    <F extends FormElementType>([key, formElement]: [string, FormElement<F>]): ReactElement => {
       return (
         <div key={`${key}-form-group`}>
           <FormGroup label={formElement.label} labelFor={key}>
@@ -49,7 +49,7 @@ const ArrayInput = (props: ArrayInputProps): ReactElement<any> => {
     <>
       <Button intent="primary" onClick={() => setForms([...forms, (setFormState([...formState, {}]))])}>Add</Button>
       {formState.map((state, index: number) =>
-        Object.entries(props.formStructure.formElements).map<ReactElement<any>>(getFormField(index)))}
+        Object.entries(props.formStructure.formElements).map<ReactElement>(getFormField(index)))}
     </>
   );
 };
