@@ -43,6 +43,7 @@ const LocationTable: React.FC = () => {
     formStructure={formStructure}
     refreshOnEntityChange
     onTableChange={onTableChange}
+    imagePath={['images']}
   />;
 };
 

@@ -1,4 +1,5 @@
-import { Button, Checkbox, Classes, Dialog, FileInput } from '@blueprintjs/core';
+import { Button, Checkbox, Classes, Drawer, FileInput, Position } from '@blueprintjs/core';
+import { Intent } from '@blueprintjs/core/lib/esm/common/intent';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import BaseApi from '@shared/api/BaseApi';
@@ -25,7 +26,7 @@ const conditionalStructure: IFormStructure = {
   },
 };
 
-interface IImageAddingDialogProps {
+type Props = {
   entityId: string;
   isOpen: boolean;
   label: string;
@@ -33,9 +34,9 @@ interface IImageAddingDialogProps {
   onClose: () => void;
   onSuccess?: (res: any) => void;
   api: BaseApi<any>;
-}
+};
 
-const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
+const ImageAddingDrawer: React.FC<Props> = (props) => {
   const [imageDto, setImageDto] = useState<IImageDto | IConditionalImageDto>({entityId: props.entityId, imageKey: ''});
   const [imageFile, setImageFile] = useState<File>(null);
   const [imageSrc, setImageSrc] = useState<string>(null);
@@ -77,7 +78,7 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
   };
 
   const onCropDtoChange = (e: CustomEvent): void => setImageDto({...imageDto, crops: {avatar: e.detail}});
-  const renderImage = (): ReactElement<any> => {
+  const renderImage = (): ReactElement => {
     if (props.type !== 'avatar') {
       if (saveCropped) {
         return <Cropper ref={cropper} src={imageSrc} zoomable={false} />;
@@ -87,20 +88,26 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
     return <Cropper crop={onCropDtoChange} src={imageSrc} aspectRatio={3 / 4} zoomable={false} />;
   };
 
-  const renderCreateButton = (): ReactElement<any> => <Button
-    large intent="primary" loading={LoadingStore.isLoading(POST_LOADING)} disabled={!imageFile} onClick={clickCreate}
-  >Create</Button>;
-  const renderSaveCroppedImageToggle = (): ReactElement<any> => props.type !== 'avatar' && <Checkbox
+  const renderCreateButton = (): ReactElement => <Button
+    large
+    intent={Intent.PRIMARY}
+    loading={LoadingStore.isLoading(POST_LOADING)}
+    disabled={!imageFile}
+    onClick={clickCreate}
+    text="Create"
+  />;
+  const renderSaveCroppedImageToggle = (): ReactElement => props.type !== 'avatar' && <Checkbox
     checked={saveCropped} label="Save cropped image?" onChange={({target}) => setSaveCropped(target['checked'])} />;
 
   return (
-    <Dialog
+    <Drawer
+      className={Classes.DARK}
+      style={{overflow: 'auto'}}
+      position={Position.LEFT}
       title={props.label}
-      canOutsideClickClose={false}
-      usePortal={false}
       isOpen={props.isOpen}
       onClose={onDialogClose}
-      className="image-add-dialog"
+      canOutsideClickClose={false}
     >
       <div className={Classes.DIALOG_BODY}>
         <ElementsForm
@@ -112,13 +119,13 @@ const ImageAddingDialog = (props: IImageAddingDialogProps): JSX.Element => {
         {imageFile && renderImage()}
       </div>
       <div className={Classes.DIALOG_FOOTER}>
-        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+        <div className={Classes.DIALOG_FOOTER_ACTIONS} style={{marginBottom: 10}}>
           <Button large intent="warning" onClick={() => console.log(imageDto)}>Test</Button>
           {renderCreateButton()}
         </div>
       </div>
-    </Dialog>
+    </Drawer>
   );
 };
 
-export default ImageAddingDialog;
+export default ImageAddingDrawer;

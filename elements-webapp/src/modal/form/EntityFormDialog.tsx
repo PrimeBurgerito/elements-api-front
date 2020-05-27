@@ -21,7 +21,7 @@ const EntityFormDialog = (props: IEntityFormDialogProps): JSX.Element => {
 
   const clickCreate = () => {
     props.api.post(formState).then((res) => {
-      if (props.onSuccess) {
+      if (res && props.onSuccess) {
         props.onSuccess(res);
       }
     });
@@ -33,21 +33,14 @@ const EntityFormDialog = (props: IEntityFormDialogProps): JSX.Element => {
   };
 
   return (
-    <Dialog
-      title={props.label}
-      canOutsideClickClose={false}
-      usePortal={false}
-      isOpen={props.isOpen}
-      onClose={onClose}
-    >
+    <Dialog title={props.label} canOutsideClickClose={false} usePortal={false} isOpen={props.isOpen} onClose={onClose}>
       <div className={Classes.DIALOG_BODY}>
         <ElementsForm formStructure={props.formStructure} onChange={setFormState} />
       </div>
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
           <Button large intent="warning" onClick={() => console.log(formState)}>Test</Button>
-          <Button loading={LoadingStore.isLoading(POST_LOADING)} large intent="primary"
-                  onClick={clickCreate}>Create</Button>
+          <Button loading={LoadingStore.isLoading(POST_LOADING)} large intent="primary" onClick={clickCreate}>Create</Button>
         </div>
       </div>
     </Dialog>

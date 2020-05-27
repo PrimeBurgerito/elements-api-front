@@ -10,10 +10,10 @@ type Props = {
   disabled?: boolean;
 };
 
+const TypedMultiStringSelect = MultiSelect.ofType<string>();
 const MultiStringSelect: React.FC<Props> = (props) => {
   const allValues = [...new Set(props.selectableValues)];
   const [selected, setSelected] = useState([]);
-  const StringSelect = MultiSelect.ofType<string>();
 
   useEffect(() => {
     if (props.values) {
@@ -42,7 +42,7 @@ const MultiStringSelect: React.FC<Props> = (props) => {
     props.onChange(newSelected);
   };
 
-  return <StringSelect
+  return <TypedMultiStringSelect
     className="string-multi-select"
     items={allValues}
     tagRenderer={(name) => name}

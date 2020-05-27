@@ -21,5 +21,5 @@ export interface IObjective extends IDocumentBase {
 }
 
 export enum StringPropertyType {
-  SINGLE, UNIQUE, MULTIPLE
+  SINGLE = 'SINGLE', UNIQUE = 'UNIQUE', MULTIPLE = 'MULTIPLE'
 }

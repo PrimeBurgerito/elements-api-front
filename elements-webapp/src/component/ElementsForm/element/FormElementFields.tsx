@@ -1,7 +1,6 @@
 import { Checkbox, InputGroup, NumericInput, TagInput } from '@blueprintjs/core';
 import ArrayInput from '@component/ElementsForm/element/ArrayInput';
 import LocationInput from '@component/ElementsForm/element/LocationInput';
-import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import NumericPropertyInput from '@component/ElementsForm/element/NumericPropertyInput';
 import RequirementInput from '@component/ElementsForm/element/RequirementInput';
 import RewardInput from '@component/ElementsForm/element/RewardInput';
@@ -10,23 +9,26 @@ import TimingInput from '@component/ElementsForm/element/TimingInput';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import {
   FormArray,
-  FormElement,
+  FormComponentBaseProps,
+  FormComponentProps,
   FormElementType,
   FormLocation,
-  FormMultiSelect,
   FormNested,
   FormNumeric,
   FormNumericProperty,
   FormRequirement,
   FormReward,
+  FormSelect,
   FormStringProperty,
   FormTag,
   FormText,
   FormTimingSelect
 } from '@component/ElementsForm/ElementsFormResource';
 import * as React from 'react';
+import MultiStringSelect from './MultiStringSelect';
+import StringSelect from './StringSelect';
 
-type SharedProps<F extends FormElement<any>> = {
+type SharedProps<F extends FormComponentBaseProps<any>> = {
   commonProps: {
     key: string;
     formState: object;
@@ -35,13 +37,15 @@ type SharedProps<F extends FormElement<any>> = {
   formElement: F;
 };
 
-const NumericField = (props: SharedProps<FormNumeric>) => (<NumericInput
-  id={props.commonProps.key}
-  min={props.formElement.min}
-  max={props.formElement.max}
-  value={props.commonProps.formState[props.commonProps.key] || 0}
-  onValueChange={(value) => props.commonProps.onChange(props.commonProps.key, value)}
-/>);
+const NumericField: React.FC<SharedProps<FormNumeric>> = (props) => {
+  return <NumericInput
+    id={props.commonProps.key}
+    min={props.formElement.min}
+    max={props.formElement.max}
+    value={props.commonProps.formState[props.commonProps.key] || NumericInput.VALUE_ZERO}
+    onValueChange={(value) => props.commonProps.onChange(props.commonProps.key, value)}
+  />;
+};
 
 const TextField = (props: Omit<SharedProps<FormText>, 'formElement'>) => (<InputGroup
   id={props.commonProps.key}
@@ -66,10 +70,16 @@ const NumericPropertyField = (props: Omit<SharedProps<FormNumericProperty>, 'for
   onChange={(attr) => props.commonProps.onChange(props.commonProps.key, attr)}
 />);
 
-const MultiStringField = (props: SharedProps<FormMultiSelect>) => (<MultiStringSelect
+const MultiStringSelectField = (props: SharedProps<FormSelect>) => (<MultiStringSelect
   values={props.commonProps.formState[props.commonProps.key]}
   selectableValues={props.formElement.selectableValues || []}
   onChange={(values) => props.commonProps.onChange(props.commonProps.key, values)}
+/>);
+
+const StringSelectField = (props: SharedProps<FormSelect>) => (<StringSelect
+  value={props.commonProps.formState[props.commonProps.key]}
+  selectableValues={props.formElement.selectableValues || []}
+  onChange={(value) => props.commonProps.onChange(props.commonProps.key, value)}
 />);
 
 const TimingField = (props: Omit<SharedProps<FormTimingSelect>, 'formElement'>) => (<TimingInput
@@ -113,14 +123,14 @@ const RewardField = (props: Omit<SharedProps<FormReward>, 'formElement'>) => (<R
 
 export const chooseFieldByType = <F extends FormElementType>(
   key: string,
-  formElement: FormElement<F>,
+  formElement: FormComponentProps,
   onChange: (key: string, change) => void,
   formState: object
-) => {
+): React.ReactElement => {
   const commonProps = {key, formState, onChange};
   switch (formElement.type) {
     case FormElementType.NUMERIC:
-      return <NumericField commonProps={commonProps} formElement={formElement as FormNumeric} />;
+      return <NumericField key={`numeric-input-${commonProps.key}`} commonProps={commonProps} formElement={formElement} />;
     case FormElementType.TEXT:
       return <TextField commonProps={commonProps} />;
     case FormElementType.TAG:
@@ -130,7 +140,9 @@ export const chooseFieldByType = <F extends FormElementType>(
     case FormElementType.NUMERIC_PROPERTY:
       return <NumericPropertyField commonProps={commonProps} />;
     case FormElementType.MULTI_SELECT:
-      return <MultiStringField commonProps={commonProps} formElement={formElement as FormMultiSelect} />;
+      return <MultiStringSelectField commonProps={commonProps} formElement={formElement} />;
+    case FormElementType.SELECT:
+      return <StringSelectField commonProps={commonProps} formElement={formElement} />;
     case FormElementType.TIMING:
       return <TimingField commonProps={commonProps} />;
     case FormElementType.REQUIREMENT:
@@ -138,13 +150,13 @@ export const chooseFieldByType = <F extends FormElementType>(
     case FormElementType.BOOLEAN:
       return <BooleanField commonProps={commonProps} />;
     case FormElementType.LOCATION:
-      return <LocationField commonProps={commonProps} formElement={formElement as FormLocation} />;
+      return <LocationField commonProps={commonProps} formElement={formElement} />;
     case FormElementType.REWARD:
       return <RewardField commonProps={commonProps} />;
     case FormElementType.ARRAY:
-      return <ArrayField commonProps={commonProps} formElement={formElement as FormArray} />;
+      return <ArrayField commonProps={commonProps} formElement={formElement} />;
     case FormElementType.NESTED:
-      return <NestedField commonProps={commonProps} formElement={formElement as unknown as FormNested} />;
+      return <NestedField commonProps={commonProps} formElement={formElement} />;
     default:
       throw new Error('No such field!');
   }

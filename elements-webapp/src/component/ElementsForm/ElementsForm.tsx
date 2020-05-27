@@ -1,11 +1,11 @@
 import { Card, Divider, FormGroup, H1 } from '@blueprintjs/core';
 import { chooseFieldByType } from '@component/ElementsForm/element/FormElementFields';
 import * as React from 'react';
-import { ReactElement, useEffect, useState } from 'react';
-import { FormElement, FormElementType, IElementsFormProps, } from './ElementsFormResource';
+import { useEffect, useMemo, useState } from 'react';
+import { FormComponentProps, FormElementType, IElementsFormProps, } from './ElementsFormResource';
 
 
-const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElement => {
+const ElementsForm = <T extends object>(props: IElementsFormProps<T>): React.ReactElement => {
   const [formState, setFormState] = useState<T>(() => ({}) as any);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElem
     }
   }, [props.formValue]);
 
-  const onChange = (key, change) => {
+  const onChange = (key: string, change) => {
     const newFormState = {
       ...formState,
       [key]: change,
@@ -27,7 +27,7 @@ const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElem
     props.onChange(newFormState);
   };
 
-  const getFormField = <F extends FormElementType>([key, formElement]: [string, FormElement<F>]): ReactElement => {
+  const getFormField = <F extends FormElementType>([key, formElement]: [string, FormComponentProps]): React.ReactElement => {
     return (
       <div key={`${key}-form-group`}>
         <FormGroup label={formElement.label} labelFor={key}>
@@ -38,10 +38,12 @@ const ElementsForm = <T extends object>(props: IElementsFormProps<T>): ReactElem
     );
   };
 
+  const memoizedForm = useMemo(() => Object.entries(props.formStructure.formElements).map<React.ReactElement>(getFormField), [formState]);
+
   return (
     <Card>
       {!!props.label && <H1>{props.label}</H1>}
-      {Object.entries(props.formStructure.formElements).map<ReactElement>(getFormField)}
+      {memoizedForm}
     </Card>
   );
 };

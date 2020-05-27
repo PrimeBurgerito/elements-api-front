@@ -18,7 +18,7 @@ export const stringPropertyFormStructure: IFormStructure<Omit<IStringProperty, k
     key: {label: 'Properties unique key', type: FormElementType.TEXT},
     possibleValues: {label: 'Possible values', type: FormElementType.TAG},
     value: {label: 'Default value', type: FormElementType.TAG},
-    type: {label: 'Value type', type: FormElementType.TEXT}
+    type: {label: 'Value type', type: FormElementType.SELECT, selectableValues: ['SINGLE', 'UNIQUE', 'MULTIPLE']}
   },
 };
 

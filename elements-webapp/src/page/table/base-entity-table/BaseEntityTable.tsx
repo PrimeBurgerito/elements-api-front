@@ -1,13 +1,15 @@
-import { Button, H1, Intent } from '@blueprintjs/core';
+import { Button, ButtonGroup, H1, Intent } from '@blueprintjs/core';
 import { IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import ElementsTable from '@component/ElementsTable/ElementsTable';
 import { IColumnModel } from '@component/ElementsTable/ElementsTableResource';
 import EntityFormDialog from '@modal/form/EntityFormDialog';
-import ImageAddingDialog from '@modal/form/ImageAddingDialog';
+import ImageAddingDrawer from '@modal/form/ImageAddingDrawer';
+import ImageEditDrawer from '@modal/form/ImageEditDrawer';
 import BaseApi from '@shared/api/BaseApi';
 import IDocumentBase from '@type/DocumentBase';
+import { IConditionalImage, IImage } from '@type/image';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './entity-table.scss';
 
 type Props = {
@@ -17,6 +19,7 @@ type Props = {
   formStructure?: IFormStructure;
   refreshOnEntityChange?: boolean;
   imageAdder?: 'default' | 'conditional' | 'avatar';
+  imagePath?: string[];
   onTableChange?: (entities: object[]) => void;
 };
 
@@ -25,6 +28,8 @@ const BaseEntityTable: React.FC<Props> = (props) => {
   const [selectedEntity, setSelectedEntity] = useState<IDocumentBase>(null);
   const [isFormOpen, setFormOpen] = useState<boolean>(false);
   const [isImageAdderOpen, setImageAdderOpen] = useState<boolean>(false);
+  const [isImageEditOpen, setImageEditOpen] = useState<boolean>(false);
+  const [selectedImages, setSelectedImages] = useState<IImage[] | IConditionalImage[]>([]);
 
   useEffect(() => {
     props.api.find().then(setEntities);
@@ -36,21 +41,23 @@ const BaseEntityTable: React.FC<Props> = (props) => {
     }
   }, [entities]);
 
-  const renderFormOpenButton = (): JSX.Element => {
+  const renderFormOpenButton = (): React.ReactElement => {
     return props.formStructure && <Button
       icon="new-object" intent={Intent.PRIMARY} large onClick={() => setFormOpen(true)}>Create new
     </Button>;
   };
 
-  const renderImageAddButton = (): JSX.Element => {
+  const renderImageButtons = (): React.ReactElement => {
     const isSelected = selectedEntity && selectedEntity.id;
-    return props.imageAdder && <Button
-      large disabled={!isSelected} onClick={() => setImageAdderOpen(true)} icon="media" intent={Intent.PRIMARY}>
-      Add image
-    </Button>;
+    const openAdd = () => setImageAdderOpen(true);
+    const openEdit = () => setImageEditOpen(true);
+    return props.imageAdder && <ButtonGroup large>
+      <Button disabled={!isSelected} onClick={openAdd} icon="media" intent={Intent.PRIMARY} text="Add image" />
+      <Button disabled={!isSelected || !selectedImages.length} onClick={openEdit} icon="media" intent={Intent.PRIMARY} text="Edit images" />
+    </ButtonGroup>;
   };
 
-  const renderEntityDeleteButton = (): JSX.Element => {
+  const renderEntityDeleteButton = (): React.ReactElement => {
     const onDelete = () => {
       props.api.delete(selectedEntity.id).then((isDeleted: boolean) => {
         if (isDeleted) {
@@ -69,6 +76,11 @@ const BaseEntityTable: React.FC<Props> = (props) => {
   };
 
   const onEntitySelect = (entity: object) => {
+    console.info(entity);
+    if (props.imagePath) {
+      const images = props.imagePath.reduce((res, curr) => res[curr], entity) || [];
+      setSelectedImages(images);
+    }
     setSelectedEntity(entity);
   };
 
@@ -80,7 +92,7 @@ const BaseEntityTable: React.FC<Props> = (props) => {
     }
   };
 
-  const renderEntityFormDialog = () => {
+  const renderEntityFormDialog = (): React.ReactElement => {
     return <EntityFormDialog
       api={props.api}
       formStructure={props.formStructure}
@@ -91,26 +103,37 @@ const BaseEntityTable: React.FC<Props> = (props) => {
     />;
   };
 
-  const renderImageAddingDialog = (): JSX.Element => {
-    return <ImageAddingDialog
+  const renderImageAddingDrawer = (): React.ReactElement => {
+    const onClose = () => setImageAdderOpen(false);
+    return <ImageAddingDrawer
       entityId={selectedEntity.id}
       isOpen={isImageAdderOpen}
       label={props.title}
       type={props.imageAdder}
-      onClose={() => setImageAdderOpen(false)}
+      onClose={onClose}
       api={props.api}
     />;
   };
 
+  const renderImageEditDrawer = (): React.ReactElement => {
+    const onClose = () => setImageEditOpen(false);
+    // @ts-ignore
+    return <ImageEditDrawer images={selectedImages} type={props.imageAdder} isOpen={isImageEditOpen} onClose={onClose} />;
+  };
+
+  const memoizedTable = useMemo(() => <ElementsTable data={entities} columns={props.columns} onSelect={onEntitySelect} />,
+    [entities]);
+
   return (
     <>
       {props.formStructure && renderEntityFormDialog()}
-      {props.imageAdder && selectedEntity && renderImageAddingDialog()}
+      {props.imageAdder && selectedEntity && renderImageAddingDrawer()}
+      {Boolean(props.imageAdder && selectedEntity && selectedImages.length) && renderImageEditDrawer()}
       <div className="aw-9">
         <div className="entity-table-header">
-          <H1>{props.title}</H1>{renderFormOpenButton()}{renderImageAddButton()}{renderEntityDeleteButton()}
+          <H1>{props.title}</H1>{renderFormOpenButton()}{renderImageButtons()}{renderEntityDeleteButton()}
         </div>
-        <ElementsTable data={entities} columns={props.columns} onSelect={onEntitySelect} />
+        {memoizedTable}
       </div>
     </>
   );

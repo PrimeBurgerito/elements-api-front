@@ -5,15 +5,15 @@ import { view } from 'react-easy-state';
 
 const ElementsTable: React.FC<IElementsTableProps> = (props) => {
 
-  const renderCell = (cellIndex: number, columnIndex: number) => {
+  const renderCell = (cellIndex: number, columnIndex: number): React.ReactElement => {
     const paramKey = props.columns[columnIndex].key;
-    const cellData = props.data[cellIndex][paramKey];
+    const cellData = props.data[cellIndex]?.[paramKey];
     return <Cell key={`cell-${cellIndex}-${columnIndex}-${paramKey}`}>
       {typeof cellData === 'object' ? <JSONFormat>{cellData}</JSONFormat> : cellData}
     </Cell>;
   };
 
-  const renderColumn = (column: IColumnModel) => {
+  const renderColumn = (column: IColumnModel): React.ReactElement => {
     return <Column key={`column-${column.key}`} name={column.name} cellRenderer={renderCell} />;
   };
 

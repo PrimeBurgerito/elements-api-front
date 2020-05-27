@@ -1,5 +1,6 @@
 export const numericPropertyColumns = [
   {name: 'Name', key: 'name'},
+  {name: 'Unique key', key: 'key'},
   {name: 'Min value', key: 'min'},
   {name: 'Max value', key: 'max'},
   {name: 'Default value', key: 'value'},

@@ -1,6 +1,6 @@
 import { Button, Divider, FormGroup } from '@blueprintjs/core';
 import { chooseFieldByType } from '@component/ElementsForm/element/FormElementFields';
-import { FormElement, FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
+import { FormComponentProps, FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import * as React from 'react';
 import { ReactElement, useEffect, useState } from 'react';
 
@@ -34,7 +34,7 @@ const ArrayInput: React.FC<Props> = (props) => {
   };
 
   const getFormField = (index: number) =>
-    <F extends FormElementType>([key, formElement]: [string, FormElement<F>]): ReactElement => {
+    <F extends FormElementType>([key, formElement]: [string, FormComponentProps]): ReactElement => {
       return (
         <div key={`${key}-form-group`}>
           <FormGroup label={formElement.label} labelFor={key}>
