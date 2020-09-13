@@ -24,14 +24,6 @@ const dev = {
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'},
       {
-        test: /\.tsx?$/,
-        exclude: '/node_modules/',
-        use: [
-          {loader: 'babel-loader', options: {babelrc: true}},
-          {loader: 'ts-loader', options: {configFile: 'tsconfig.json'}}
-        ]
-      },
-      {
         test: /\.(sa|sc|c)ss$/,
         use: [
           {

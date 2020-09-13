@@ -1,4 +1,4 @@
-const IS_PROD = process.env.node_env === 'production';
+const IS_PROD = process.env.NODE_ENV === 'production';
 const AUTH_PORT = 8080;
 const API_PORT = 7777;
 const MEDIA_PORT = 80;

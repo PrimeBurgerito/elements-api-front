@@ -16,14 +16,6 @@ const prod = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        exclude: '/node_modules/',
-        use: [
-          {loader: 'babel-loader', options: {babelrc: true}},
-          {loader: 'ts-loader', options: {configFile: 'tsconfig.json'}}
-        ]
-      },
-      {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,

@@ -16,6 +16,14 @@ module.exports = {
   module: {
     rules: [
       {test: /\.js$/, loader: 'babel-loader'},
+      {
+        test: /\.tsx?$/,
+        exclude: '/node_modules/',
+        use: [
+          {loader: 'babel-loader', options: {babelrc: true}},
+          {loader: 'ts-loader', options: {configFile: 'tsconfig.json'}}
+        ]
+      },
       {test: /\.html$/, loader: 'html-loader'},
       {
         test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
