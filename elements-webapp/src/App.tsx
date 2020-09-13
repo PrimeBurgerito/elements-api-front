@@ -11,7 +11,7 @@ import { Switch } from 'react-router-dom';
 import { protectedPages } from './page/pages';
 
 if (process.env.NODE_ENV !== 'production') {
-  console.log('Looks like we are in development mode!');
+  console.debug('Looks like we are in development mode!');
 }
 
 const Home: React.FC = () => (
