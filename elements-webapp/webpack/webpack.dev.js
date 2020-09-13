@@ -1,6 +1,6 @@
 const {join} = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -8,11 +8,11 @@ const MAIN_PATH = join(__dirname, '..');
 const SRC_PATH = join(MAIN_PATH, 'src');
 
 const dev = {
-  mode: 'development',
-  devtool: 'inline-source-map',
   entry: {
     main: ['babel-polyfill', 'react-hot-loader/patch', join(SRC_PATH, 'main.tsx')]
   },
+  mode: 'development',
+  devtool: 'inline-source-map',
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom'
@@ -23,6 +23,14 @@ const dev = {
     rules: [
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'},
+      {
+        test: /\.tsx?$/,
+        exclude: '/node_modules/',
+        use: [
+          {loader: 'babel-loader', options: {babelrc: true}},
+          {loader: 'ts-loader', options: {configFile: 'tsconfig.json'}}
+        ]
+      },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
@@ -45,4 +53,4 @@ const dev = {
   ]
 };
 
-module.exports = merge.smart(common, dev);
+module.exports = merge(common, dev);
