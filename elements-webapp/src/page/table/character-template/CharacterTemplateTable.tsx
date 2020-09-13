@@ -30,6 +30,7 @@ const CharacterTemplateTable: React.FC = () => {
     formStructure={characterForm}
     api={characterTemplateApi}
     columns={templateColumns}
+    imagePath={['images']}
   />;
 };
 

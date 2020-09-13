@@ -44,11 +44,12 @@ const ImageEditDrawer: React.FC<Props> = (props) => {
   const [image, setImage] = useState<IImage | IConditionalImage>(null);
 
   const onClose = (): void => {
+    setImage(null);
     props.onClose();
   };
 
   const getImageSrc = (): string => {
-    const fileName = props.type === 'default' ? (image as IImage).fileName : (image as IConditionalImage).image.fileName;
+    const fileName = props.type === 'conditional' ? (image as IConditionalImage).image.fileName : (image as IImage).fileName;
     return `${MEDIA_URL}/${fileName}`;
   };
 
@@ -80,7 +81,7 @@ const ImageEditDrawer: React.FC<Props> = (props) => {
     canOutsideClickClose={false}
   >
     <div className={Classes.DRAWER_HEADER}>
-      {props.type === 'default' ? renderImageSelect() : renderConditionalImageSelect()}
+      {props.type === 'conditional' ? renderConditionalImageSelect() : renderImageSelect()}
     </div>
     <div className={Classes.DIALOG_BODY}>
       <img style={{width: '100%'}} src={image && getImageSrc()} alt="No image" />

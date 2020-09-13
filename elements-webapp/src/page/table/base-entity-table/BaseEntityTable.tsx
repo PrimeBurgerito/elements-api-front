@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, H1, Intent } from '@blueprintjs/core';
+import { Button, ButtonGroup, H1, Intent, Tooltip } from '@blueprintjs/core';
 import { IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import ElementsTable from '@component/ElementsTable/ElementsTable';
 import { IColumnModel } from '@component/ElementsTable/ElementsTableResource';
@@ -49,11 +49,16 @@ const BaseEntityTable: React.FC<Props> = (props) => {
 
   const renderImageButtons = (): React.ReactElement => {
     const isSelected = selectedEntity && selectedEntity.id;
+    const disableImageEdit = !isSelected || !selectedImages.length;
     const openAdd = () => setImageAdderOpen(true);
     const openEdit = () => setImageEditOpen(true);
     return props.imageAdder && <ButtonGroup large>
-      <Button disabled={!isSelected} onClick={openAdd} icon="media" intent={Intent.PRIMARY} text="Add image" />
-      <Button disabled={!isSelected || !selectedImages.length} onClick={openEdit} icon="media" intent={Intent.PRIMARY} text="Edit images" />
+      <Tooltip disabled={!!isSelected} content="No item selected!">
+        <Button disabled={!isSelected} onClick={openAdd} icon="media" intent={Intent.PRIMARY} text="Add image" />
+      </Tooltip>
+      <Tooltip disabled={!disableImageEdit} content={!isSelected ? 'No item selected!' : 'Selected item has no images!'}>
+        <Button disabled={disableImageEdit} onClick={openEdit} icon="media" intent={Intent.PRIMARY} text="Edit images" />
+      </Tooltip>
     </ButtonGroup>;
   };
 
@@ -78,8 +83,8 @@ const BaseEntityTable: React.FC<Props> = (props) => {
   const onEntitySelect = (entity: object) => {
     console.info(entity);
     if (props.imagePath) {
-      const images = props.imagePath.reduce((res, curr) => res[curr], entity) || [];
-      setSelectedImages(images);
+      const images = props.imagePath.reduce((res, curr) => res?.[curr], entity) || [];
+      setSelectedImages(Array.isArray(images) ? images : Object.values(images));
     }
     setSelectedEntity(entity);
   };
