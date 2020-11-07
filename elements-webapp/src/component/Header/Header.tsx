@@ -10,11 +10,12 @@ import {
   OBJECTIVE_PATH,
   PROPERTY_PATH,
 } from '@constant/paths';
-import history from '@shared/history';
 import * as React from 'react';
 import { view } from 'react-easy-state';
+import { useHistory } from 'react-router-dom';
 
 const Header: React.FC = () => {
+  const history = useHistory();
 
   const renderApiMenu = (): React.ReactElement => {
     const menu = (): React.ReactElement =>

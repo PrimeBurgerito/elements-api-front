@@ -1,0 +1,21 @@
+#!/usr/bin/env groovy
+
+pipeline {
+    agent {
+        docker {
+            image 'node:stretch-slim'
+            args '-v /var/www/elements/html:/elements-webapp/build -u root'
+        }
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                dir('elements-webapp') {
+                    sh 'npm build'
+                }
+            }
+        }
+    }
+}

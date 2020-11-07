@@ -7,7 +7,7 @@ const USER_REFRESH_TOKEN = '/auth/refresh-token';
 
 export default class UserApi {
   public static getCurrentUser = async (): Promise<IUser> => {
-    const response: AxiosResponse = await GET(CURRENT_USER_PATH, {});
+    const response: AxiosResponse = await GET(CURRENT_USER_PATH, {}, true);
     if (!response) {
       return null;
     }

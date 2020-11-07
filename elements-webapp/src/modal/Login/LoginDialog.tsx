@@ -16,14 +16,12 @@ const LoginDialog: React.FC = () => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    UserApi.getCurrentUser().then((user) => {
-      UserStore.user = user;
-    });
+    UserApi.getCurrentUser().then((user) => UserStore.user = user);
   }, []);
 
   const handleSubmit = async () => {
     LoadingStore.addRequest(LOGIN_LOADING_KEY);
-    await AuthApi.getAuthenticationToken(username, password);
+    await AuthApi.authenticate(username, password);
     UserStore.user = await UserApi.getCurrentUser();
     LoadingStore.endRequest(LOGIN_LOADING_KEY);
   };

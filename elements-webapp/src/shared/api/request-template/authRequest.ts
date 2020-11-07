@@ -1,14 +1,13 @@
 import { authAPI } from '@shared/api/request-template/AxiosInstance';
-import { ITokenRequestBody } from '@type/token';
+import { IAuthenticationRequest } from '@type/token';
 import { AxiosResponse } from 'axios';
-import * as qs from 'qs';
 
 
-export const AUTH_POST = async (path: string, body: ITokenRequestBody): Promise<AxiosResponse> => {
+export const AUTH_POST = async (body: IAuthenticationRequest): Promise<AxiosResponse> => {
   try {
-    return await authAPI.post(path, qs.stringify(body));
+    return await authAPI.post('', body);
   } catch (e) {
-    console.log(`authTemplate(): ${e}\n path: ${path}\n body: ${body}`);
+    console.error(`authTemplate(): ${e}\n body: ${body}`);
     return null;
   }
 };

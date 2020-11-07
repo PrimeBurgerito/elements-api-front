@@ -1,23 +1,13 @@
-export interface IAuthTokenRequestBody extends ITokenRequestBody {
-  grant_type: string;
+export interface IAuthenticationRequest {
   username: string;
   password: string;
 }
 
-export interface IRefreshTokenRequestBody extends ITokenRequestBody {
-  grant_type: string;
-  refresh_token: string;
-}
-
-export interface ITokenRequestBody {
-  grant_type: string;
-}
-
-
-export interface IToken {
-  access_token: string | null;
-  expires_in: number | null;
-  token_type: 'Bearer' | null;
-  scope: 'read' | 'write' | 'groups';
-  refresh_token: string | null;
+export interface IJwt {
+  email: string;
+  id: string;
+  roles: ReadonlyArray<string>;
+  token: string;
+  type: null;
+  username: string;
 }

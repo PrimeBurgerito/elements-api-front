@@ -1,13 +1,12 @@
 import { Classes } from '@blueprintjs/core';
 import Header from '@component/Header/Header';
 import LoginDialog from '@modal/Login/LoginDialog';
-import history from '@shared/history';
 import UserStore from '@shared/store/UserStore';
 import * as React from 'react';
 import { view } from 'react-easy-state';
 import { hot } from 'react-hot-loader/root';
-import { Redirect, Route, Router } from 'react-router';
-import { Switch } from 'react-router-dom';
+import { Redirect, Route } from 'react-router';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import { protectedPages } from './page/pages';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -33,10 +32,10 @@ const App: React.FC = () => {
   return (
     <div className={Classes.DARK}>
       <LoginDialog />
-      <Router history={history}>
+      <BrowserRouter>
         <Header />
         <Routes />
-      </Router>
+      </BrowserRouter>
     </div>
   );
 };

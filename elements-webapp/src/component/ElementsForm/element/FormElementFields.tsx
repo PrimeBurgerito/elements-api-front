@@ -60,13 +60,13 @@ const TagField = (props: Omit<SharedProps<FormTag>, 'formElement'>) => (<TagInpu
 
 const StringPropertyField = (props: Omit<SharedProps<FormStringProperty>, 'formElement'>) => (<StringPropertyInput
   id={props.commonProps.key}
-  propertiesValue={props.commonProps.formState[props.commonProps.key]}
+  initialValue={props.commonProps.formState[props.commonProps.key]}
   onChange={(prop) => props.commonProps.onChange(props.commonProps.key, prop)}
 />);
 
 const NumericPropertyField = (props: Omit<SharedProps<FormNumericProperty>, 'formElement'>) => (<NumericPropertyInput
   id={props.commonProps.key}
-  attributesValue={props.commonProps.formState[props.commonProps.key]}
+  initialValues={props.commonProps.formState[props.commonProps.key]}
   onChange={(attr) => props.commonProps.onChange(props.commonProps.key, attr)}
 />);
 

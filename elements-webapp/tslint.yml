@@ -2,13 +2,13 @@ extends:
   - "tslint:recommended"
   - "@blueprintjs/tslint-config/blueprint-rules"
 rules:
-  quotemark: [true, "single", "jsx-double"]
+  quotemark: [ true, "single", "jsx-double" ]
   max-line-length:
-    options: [140]
+    options: [ 140 ]
   new-parens: true
   no-arg: true
   no-bitwise: true
-  semicolon: true
+  semicolon: [ true, always, ignore-bound-class-methods ]
   no-conditional-assignment: true
   no-consecutive-blank-lines: false
   blueprint-classes-constants: true
@@ -27,4 +27,4 @@ rules:
       - trace
 jsRules:
   max-line-length:
-    options: [140]
+    options: [ 140 ]

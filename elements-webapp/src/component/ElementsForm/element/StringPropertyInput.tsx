@@ -1,9 +1,10 @@
 import { Button, ControlGroup, FormGroup, Menu, Popover, Position } from '@blueprintjs/core';
+import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
+import { IPopoverProps } from '@blueprintjs/core/src/components/popover/popover';
 import StringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { IStringProperty } from '@type/statistics';
 import * as React from 'react';
-import { useEffect } from 'react';
-import { store, view } from 'react-easy-state';
+import { useEffect, useMemo, useState } from 'react';
 import './element.scss';
 
 interface IPropertiesForm {
@@ -12,152 +13,106 @@ interface IPropertiesForm {
 
 type Props = {
   id?: string;
-  propertiesValue?: IPropertiesForm;
+  initialValue?: IPropertiesForm;
   onChange: (properties: IPropertiesForm) => void;
 };
 
-interface IPropertiesInputStore {
-  allProperties: IStringProperty[];
-  remainingProps: IStringProperty[];
-  addedProperties: IPropertiesForm;
-  selected: IStringProperty;
-  newValue: string;
-}
+type PropertySelectorProps = {
+  properties: ReadonlyArray<IStringProperty>;
+  onSelect: (property: IStringProperty) => void;
+};
 
-// TODO: support for SINGLE and MULTIPLE properties
-const StringPropertyInput: React.FC<Props> = (props) => {
-  const localStore = store<IPropertiesInputStore>({
-    allProperties: [],
-    remainingProps: [],
-    addedProperties: null,
-    selected: null,
-    newValue: null,
-  });
+const PropertySelector: React.FC<PropertySelectorProps> = props => {
+  const [selected, setSelected] = useState<IStringProperty>(null);
 
-  useEffect(() => {
-    new StringPropertyApi().find(true).then((res: IStringProperty[]) => {
-      if (res && res.length) {
-        localStore.allProperties = res;
-        localStore.remainingProps = [...res];
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (props.propertiesValue && localStore.allProperties) {
-      localStore.addedProperties = props.propertiesValue;
-      if (props.propertiesValue) {
-        localStore.remainingProps = localStore.allProperties
-          .filter((value) => !Object.keys(props.propertiesValue).includes(value.key));
-      }
-    }
-  }, [props.propertiesValue, localStore.allProperties]);
-
-  const onPropertyChange = (): void => {
-    props.onChange(localStore.addedProperties);
-  };
-
-  const renderPropertySelector = () => {
-    const renderNewPropertyValuesSelector = (prop: IStringProperty) => {
-      const onClick = (value: string) => {
-        localStore.newValue = value;
-      };
-
-      const renderPropertyValues = () =>
-        <Menu>
-          {prop.possibleValues.map((value, idx) =>
-            <Menu.Item key={`prop-value-${prop.key}-${idx}`} text={value} onClick={() => onClick(value)} />)}
-        </Menu>;
-
-      return (
-        <Popover content={renderPropertyValues()} position={Position.BOTTOM}>
-          <Button rightIcon="double-caret-vertical" text={localStore.newValue ? localStore.newValue : 'Property value'} />
-        </Popover>
-      );
+  const renderNewPropertyValuesSelector = (): React.ReactElement<IPopoverProps> => {
+    const onClick = (value: string) => {
+      setSelected({...selected, value: [value]});
     };
 
-    const addProperty = () => {
-      if (!localStore.addedProperties) {
-        localStore.addedProperties = {};
-      }
-      localStore.addedProperties[localStore.selected.key] = [localStore.newValue];
-      localStore.remainingProps = localStore.remainingProps.filter((prop) => prop.key !== localStore.selected.key);
-      localStore.selected = null;
-      localStore.newValue = null;
-      onPropertyChange();
-    };
-
-    const renderPropertyMenu = () => {
-      const selectProperty = (prop: IStringProperty) => {
-        localStore.selected = prop;
-        localStore.newValue = prop.possibleValues[0];
-      };
-
-      return (
-        <Menu>
-          {localStore.remainingProps.map((prop: IStringProperty, idx) =>
-            <Menu.Item key={`prop-select-${prop.key}-${idx}`} text={prop.name} onClick={() => selectProperty(prop)} />)}
-        </Menu>
-      );
-    };
+    const renderPropertyValues = (): React.ReactElement =>
+      <Menu>
+        {selected.possibleValues.map((value: string, index: number) =>
+          <Menu.Item key={`prop-value-${selected.key}-${index}`} text={value} onClick={() => onClick(value)} />)}
+      </Menu>;
 
     return (
-      <ControlGroup>
-        <Popover content={renderPropertyMenu()} position={Position.BOTTOM}>
-          <Button
-            disabled={!localStore.remainingProps.length}
-            text={localStore.selected ? localStore.selected.name : 'Properties'}
-            rightIcon="caret-down"
-          />
-        </Popover>
-        {!!localStore.selected && renderNewPropertyValuesSelector(localStore.selected)}
-        <Button
-          onClick={addProperty}
-          disabled={!localStore.selected}
-          text="Add"
-          rightIcon="arrow-right"
-          intent="success"
-        />
-      </ControlGroup>
+      <Popover content={renderPropertyValues()} position={Position.BOTTOM}>
+        <Button rightIcon="double-caret-vertical" text={selected?.value || 'Property value'} />
+      </Popover>
     );
   };
 
-  const renderAddedProperties = () => {
-    const renderAddedPropertyValueSelector = (prop: IStringProperty) => {
-      const onClick = (value) => {
-        localStore.addedProperties[prop.key] = value;
-        onPropertyChange();
-      };
+  const addProperty = () => {
+    props.onSelect(selected);
+    setSelected(null);
+  };
 
-      const renderPropertyValues = () =>
-        <Menu>
-          {prop.possibleValues.map((value) =>
-            <Menu.Item key={`added-${prop.key}-${value}`} text={value} onClick={() => onClick(value)} />)}
-        </Menu>;
+  const renderPropertyMenu = (): React.ReactElement<IMenuProps> => {
+    const selectProperty = (prop: IStringProperty) => setSelected({...prop, value: [prop.possibleValues[0]]});
 
-      return (
-        <Popover content={renderPropertyValues()} position={Position.BOTTOM}>
-          <Button id={prop.key} rightIcon="double-caret-vertical" text={localStore.addedProperties[prop.key]} />
+    return (
+      <Menu>
+        {props.properties.map((prop: IStringProperty) =>
+          <Menu.Item key={`prop-select-${prop.key}`} text={prop.name} onClick={() => selectProperty(prop)} />)}
+      </Menu>
+    );
+  };
+
+  return (
+    <ControlGroup>
+      <Popover content={renderPropertyMenu()} position={Position.BOTTOM}>
+        <Button disabled={!props?.properties?.length} text={selected?.name || 'Properties'} rightIcon="caret-down" />
+      </Popover>
+      {selected && renderNewPropertyValuesSelector()}
+      <Button onClick={addProperty} disabled={!selected} text="Add" rightIcon="arrow-right" intent="success" />
+    </ControlGroup>
+  );
+};
+
+// TODO: support for SINGLE and MULTIPLE properties
+const StringPropertyInput: React.FC<Props> = props => {
+  const [inputValue, setInputValue] = useState<IPropertiesForm>(props.initialValue);
+
+  const [properties, setProperties] = useState<IStringProperty[]>([]);
+  const [unusedProperties, usedProperties] = useMemo<[IStringProperty[], IStringProperty[]]>(() => {
+    return properties.reduce<[IStringProperty[], IStringProperty[]]>(([unused, used], next) => {
+      const isSelected = inputValue && Object.keys(inputValue).includes(next.key);
+      return isSelected ? [unused, [...used, next]] : [[...unused, next], used];
+    }, [[], []]);
+  }, [inputValue, properties]);
+
+  useEffect(() => {
+    props.onChange(inputValue);
+  }, [inputValue]);
+
+  useEffect(() => {
+    new StringPropertyApi().find().then((res: IStringProperty[]) => setProperties(res));
+  }, []);
+
+  const renderPropertyChanger = (prop: IStringProperty) => {
+    const onClick = (newValue: string) => setInputValue({...inputValue, [prop.key]: [newValue]});
+    const menuItem = (value: string) => <Menu.Item key={`added-${prop.key}-${value}`} text={value} onClick={() => onClick(value)} />;
+
+    return (
+      <FormGroup className="statistic-changer" key={`added-${prop.key}`} labelFor={prop.key} label={prop.name}>
+        <Popover content={<Menu>{prop.possibleValues.map(menuItem)}</Menu>} position={Position.BOTTOM}>
+          <Button id={prop.key} rightIcon="double-caret-vertical" text={inputValue[prop.key]} />
         </Popover>
-      );
-    };
+      </FormGroup>
+    );
+  };
 
-    return Object.keys(localStore.addedProperties).map((key) => {
-      const prop: IStringProperty = localStore.allProperties.find((p) => p.key === key);
-      return (
-        <FormGroup className="statistic-changer" key={`added-${key}`} labelFor={prop.key} label={prop.name}>
-          {renderAddedPropertyValueSelector(prop)}
-        </FormGroup>
-      );
-    });
+  const onPropertySelect = (property: IStringProperty) => {
+    setInputValue(!inputValue ? {[property.key]: property.value} : {...inputValue, [property.key]: property.value});
   };
 
   return (
     <>
-      {renderPropertySelector()}
-      {localStore.allProperties.length && localStore.addedProperties && renderAddedProperties()}
+      <PropertySelector properties={unusedProperties} onSelect={onPropertySelect} />
+      {usedProperties.map(renderPropertyChanger)}
     </>
   );
 };
 
-export default view(StringPropertyInput);
+export default StringPropertyInput;

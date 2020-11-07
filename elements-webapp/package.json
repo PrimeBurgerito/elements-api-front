@@ -23,7 +23,6 @@
     "@blueprintjs/table": "^3.8.13",
     "axios": "^0.20.0",
     "dexie": "^3.0.2",
-    "history": "^5.0.0",
     "qs": "^6.9.4",
     "react": "^16.13.1",
     "react-cropper": "^2.1.3",

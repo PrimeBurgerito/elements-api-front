@@ -1,117 +1,112 @@
 import { Button, ControlGroup, FormGroup, Menu, NumericInput, Popover, Position } from '@blueprintjs/core';
+import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
 import NumericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import { INumericProperty } from '@type/statistics';
 import * as React from 'react';
-import { useEffect } from 'react';
-import { store, view } from 'react-easy-state';
+import { useEffect, useMemo, useState } from 'react';
 import './element.scss';
 
 type Props = {
   id?: string;
-  attributesValue?: { [k: string]: number };
+  initialValues?: { [k: string]: number };
   onChange: (attributes: { [k: string]: number }) => void;
 };
 
-interface INumericPropertyStore {
-  allAttributes: INumericProperty[];
-  remainingAttr: INumericProperty[];
-  addedAttributes: { [k: string]: number };
-  newValue: number;
-  selected: INumericProperty;
-}
+type AttributeSelectorProps = {
+  properties: ReadonlyArray<INumericProperty>;
+  onSelect: (property: INumericProperty) => void;
+  id: string;
+};
 
-const NumericPropertyInput: React.FC<Props> = (props) => {
-  const localStore = store<INumericPropertyStore>({
-    allAttributes: [],
-    remainingAttr: [],
-    addedAttributes: null,
-    newValue: 0,
-    selected: null,
-  });
+const AttributeSelector: React.FC<AttributeSelectorProps> = props => {
+  const ITEM_KEY = 'attr-select';
+  const [selected, setSelected] = useState<INumericProperty | null>(null);
 
-  useEffect(() => {
-    new NumericPropertyApi().find(true).then((res: INumericProperty[]) => {
-      if (res && res.length) {
-        localStore.allAttributes = res;
-        localStore.remainingAttr = [...res];
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (props.attributesValue && localStore.allAttributes.length) {
-      localStore.addedAttributes = props.attributesValue;
-      localStore.remainingAttr = localStore.allAttributes
-        .filter((attr) => !Object.keys(props.attributesValue).includes(attr.key));
-    }
-  }, [props.attributesValue, localStore.allAttributes]);
-
-  const onAttributeChange = () => {
-    props.onChange(localStore.addedAttributes);
+  const addAttribute = () => {
+    props.onSelect(selected);
+    setSelected(null);
   };
 
-  const renderAttributeSelector = () => {
-    const addAttribute = () => {
-      if (!localStore.addedAttributes) {
-        localStore.addedAttributes = {};
-      }
-      localStore.addedAttributes[localStore.selected.key] = localStore.newValue;
-      localStore.remainingAttr = localStore.remainingAttr.filter((attr) => attr.key !== localStore.selected.key);
-      localStore.selected = null;
-      localStore.newValue = 0;
-      onAttributeChange();
-    };
-
-    const renderAttributeMenu = () => {
-      const onClick = (attr: INumericProperty) => {
-        localStore.newValue = attr.min;
-        localStore.selected = attr;
-      };
-
-      return (
-        <Menu>
-          {localStore.remainingAttr.map((attr: INumericProperty, idx) =>
-            <Menu.Item key={`attr-select-${attr.id}-${idx}`} text={attr.name} onClick={() => onClick(attr)} />)}
-        </Menu>
-      );
+  const onValueChange = (value: number) => setSelected({...selected, value});
+  const renderAttributeMenu = (): React.ReactElement<IMenuProps> => {
+    const onClick = (attr: INumericProperty) => {
+      setSelected({...attr, value: attr.value || attr.min});
     };
 
     return (
-      <ControlGroup fill id={props.id}>
-        <Popover content={renderAttributeMenu()} position={Position.BOTTOM}>
-          <Button text={localStore.selected ? localStore.selected.name : 'Attributes'} rightIcon="caret-down" />
-        </Popover>
-        <NumericInput disabled={!localStore.selected} value={localStore.newValue}
-                      onValueChange={(value) => localStore.newValue = value}
-                      min={!!localStore.selected ? localStore.selected.min : 0}
-                      max={!!localStore.selected ? localStore.selected.max : 100} />
-        <Button onClick={addAttribute} disabled={!localStore.selected} text="Add" intent="success" />
-      </ControlGroup>
-    );
-  };
-
-  const renderAttributeChanger = (attrKey: string) => {
-    const changeHandler = (value: number) => {
-      localStore.addedAttributes[attrKey] = value;
-      onAttributeChange();
-    };
-
-    const attr = localStore.allAttributes.find((a) => a.key === attrKey);
-    return (
-      <FormGroup className="statistic-changer" label={attr.name} labelFor={attr.key} key={`${attrKey}-for-group`}>
-        <NumericInput min={attr.min} max={attr.max} key={`attr-value-${attr.key}`} id={attr.key}
-                      value={localStore.addedAttributes[attrKey]} onValueChange={changeHandler} />
-      </FormGroup>
+      <Menu>
+        {props.properties.map((attr: INumericProperty) =>
+          <Menu.Item key={`${ITEM_KEY}-${attr.id}`} text={attr.name} onClick={() => onClick(attr)} />
+        )}
+      </Menu>
     );
   };
 
   return (
+    <ControlGroup fill id={props.id}>
+      <Popover content={renderAttributeMenu()} position={Position.BOTTOM}>
+        <Button text={selected?.name || 'Attributes'} rightIcon="caret-down" />
+      </Popover>
+      <NumericInput
+        disabled={!selected}
+        value={selected?.value}
+        onValueChange={onValueChange}
+        min={selected?.min || 0}
+        max={selected?.max || 100}
+      />
+      <Button onClick={addAttribute} disabled={!selected} text="Add" intent="success" />
+    </ControlGroup>
+  );
+};
+
+const NumericPropertyInput: React.FC<Props> = props => {
+  const [inputValue, setInputValue] = useState<{ [k: string]: number }>(props.initialValues);
+
+  const [properties, setProperties] = useState<INumericProperty[]>([]);
+  const unusedProperties = useMemo<INumericProperty[]>(() => {
+    const usedProperties = inputValue ? Object.keys(inputValue) : [];
+    return properties.filter(p => !usedProperties.includes(p.key));
+  }, [inputValue, properties]);
+
+  useEffect(() => {
+    props.onChange(inputValue);
+  }, [inputValue]);
+
+  useEffect(() => {
+    new NumericPropertyApi().find().then((res: INumericProperty[]) => {
+      if (res?.length) {
+        setProperties(res);
+      }
+    });
+  }, []);
+
+  const renderPropertyChanger = (key: string): React.ReactElement => {
+    const changeHandler = (newValue: number) => setInputValue({...inputValue, [key]: newValue});
+    const property: INumericProperty = properties.find((a: INumericProperty) => a.key === key);
+    return (
+      <FormGroup className="statistic-changer" label={property.name} labelFor={property.key} key={`${key}-for-group`}>
+        <NumericInput
+          min={property.min}
+          max={property.max}
+          key={`attr-value-${property.key}`}
+          id={property.key}
+          value={inputValue[key]}
+          onValueChange={changeHandler}
+        />
+      </FormGroup>
+    );
+  };
+
+  const onPropertySelect = (property: INumericProperty) => {
+    setInputValue(!inputValue ? {[property.key]: property.value} : {...inputValue, [property.key]: property.value});
+  };
+
+  return (
     <>
-      {renderAttributeSelector()}
-      {localStore.allAttributes.length && localStore.addedAttributes &&
-      Object.keys(localStore.addedAttributes).map(renderAttributeChanger)}
+      <AttributeSelector id={props.id} properties={unusedProperties} onSelect={onPropertySelect} />
+      {properties.length && inputValue && Object.keys(inputValue).map(renderPropertyChanger)}
     </>
   );
 };
 
-export default view(NumericPropertyInput);
+export default NumericPropertyInput;

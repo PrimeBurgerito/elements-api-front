@@ -8,13 +8,15 @@ export const POST_LOADING = 'POST_LOADING';
 export const PUT_LOADING = 'PUT_LOADING';
 export const DELETE_LOADING = 'DELETE_LOADING';
 
-export const GET = async (path: string, config?: AxiosRequestConfig): Promise<AxiosResponse> => {
+export const GET = async (path: string, config?: AxiosRequestConfig, disableNotice?: boolean): Promise<AxiosResponse> => {
   LoadingStore.addRequest(GET_LOADING);
   return await API().get(path, config)
     .finally(() => LoadingStore.endRequest(GET_LOADING))
     .catch((e: AxiosError) => {
-      requestErrorNotice(e);
-      console.log(`getTemplate(): ${e}\n path: ${path}`);
+      if (!disableNotice) {
+        requestErrorNotice(e);
+        console.error(`getTemplate(): ${e}\n path: ${path}`);
+      }
       return null;
     });
 
@@ -26,7 +28,7 @@ export const POST = async (path: string, body = {}, config: AxiosRequestConfig =
     .finally(() => LoadingStore.endRequest(POST_LOADING))
     .catch((e: AxiosError) => {
       requestErrorNotice(e);
-      console.log(`postTemplate(): ${e}\n path: ${path}\n body: ${body}`);
+      console.error(`postTemplate(): ${e}\n path: ${path}\n body: ${body}`);
       return null;
     });
 };
@@ -37,7 +39,7 @@ export const PUT = async (path: string, body: any, config?: AxiosRequestConfig):
     .finally(() => LoadingStore.endRequest(PUT_LOADING))
     .catch((e: AxiosError) => {
       requestErrorNotice(e);
-      console.log(`postTemplate(): ${e}\n path: ${path}\n body: ${body}`);
+      console.error(`postTemplate(): ${e}\n path: ${path}\n body: ${body}`);
       return null;
     });
 };
@@ -48,7 +50,7 @@ export const DELETE = async (path: string, config?: AxiosRequestConfig): Promise
     .finally(() => LoadingStore.endRequest(DELETE_LOADING))
     .catch((e: AxiosError) => {
       requestErrorNotice(e);
-      console.log(`deleteTemplate(): ${e}\n path: ${path}`);
+      console.error(`deleteTemplate(): ${e}\n path: ${path}`);
       return null;
     });
 };
