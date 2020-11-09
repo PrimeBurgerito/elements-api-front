@@ -14,6 +14,7 @@ pipeline {
                 echo 'Building...'
                 dir('elements-webapp') {
                     sh 'npm install'
+                    sh 'echo $(npm config get prefix)/bin'
                     sh 'ls node_modules -a'
                     sh 'npm run build'
                 }
