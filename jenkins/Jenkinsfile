@@ -13,9 +13,10 @@ pipeline {
             steps {
                 echo 'Building...'
                 dir('elements-webapp') {
-                    sh 'npm install -g npx'
-                    sh 'npx install'
-                    sh 'npx run build'
+                    sh 'ls'
+                    sh 'npm install'
+                    sh 'ls'
+                    sh 'npx build'
                 }
             }
         }
