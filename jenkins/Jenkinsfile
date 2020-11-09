@@ -14,7 +14,7 @@ pipeline {
                 echo 'Building...'
                 dir('elements-webapp') {
                     sh 'npm install'
-                    sh 'ls -a'
+                    sh 'ls node_modules -a'
                     sh 'npm run build'
                 }
             }
