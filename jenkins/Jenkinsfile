@@ -13,6 +13,7 @@ pipeline {
             steps {
                 echo 'Building...'
                 dir('elements-webapp') {
+                    sh 'rm -rf build'
                     sh 'npm install'
                     sh 'npm run build'
                 }
