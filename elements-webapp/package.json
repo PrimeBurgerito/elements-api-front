@@ -11,7 +11,7 @@
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "start": "webpack-dev-server --config ./webpack/webpack.dev.js --progress",
-    "build": "webpack --config ./webpack/webpack.prod.js",
+    "build": "webpack --config __dirname/webpack/webpack.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
