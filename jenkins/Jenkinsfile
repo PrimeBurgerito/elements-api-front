@@ -4,7 +4,7 @@ pipeline {
     agent {
         docker {
             image 'node:latest'
-            args '-v /var/www/elements/html:/elements-webapp/build -u root'
+            args '-v /var/www/elements/html:/var/lib/jenkins/workspace/elements-api-front/elements-webapp/build -u root'
         }
     }
 
@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Building...'
                 dir('elements-webapp') {
-                    sh 'npm ci'
+                    sh 'npm install'
                     sh 'npm run build'
                 }
             }
