@@ -13,10 +13,9 @@ pipeline {
             steps {
                 echo 'Building...'
                 dir('elements-webapp') {
-                    sh 'npm install'
-                    sh 'echo $(npm config get prefix)/bin'
-                    sh 'ls node_modules -a'
-                    sh 'npm run build'
+                    sh 'npm install -g npx'
+                    sh 'npx install'
+                    sh 'npx run build'
                 }
             }
         }
