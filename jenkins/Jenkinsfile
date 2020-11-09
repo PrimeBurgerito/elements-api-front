@@ -15,7 +15,7 @@ pipeline {
                 dir('elements-webapp') {
                     sh 'npm install'
                     sh 'ls -a'
-                    sh 'npx run build'
+                    sh 'npm run build'
                 }
             }
         }
