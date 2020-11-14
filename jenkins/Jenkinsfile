@@ -13,13 +13,9 @@ pipeline {
             steps {
                 echo 'Building...'
                 dir('elements-webapp') {
-                    try {
-                        sh 'npm install'
-                        sh 'npm run build'
-                    } catch (e) {
-                        echo e
-                        sh 'tail -f $(/bin/ls -1t /root/.npm/_logs/* | /bin/sed q)'
-                    }
+                    sh 'npm install'
+                    sh 'npm run build'
+                    sh 'tail -f $(/bin/ls -1t /root/.npm/_logs/* | /bin/sed q)'
                     sh 'mv build/* /tmp/app/'
                 }
             }
