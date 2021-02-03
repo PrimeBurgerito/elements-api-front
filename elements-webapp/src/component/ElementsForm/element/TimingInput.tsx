@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import './element.scss';
 
 const WEEKDAYS = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
-const MONTH_DAYS = [...Array(31).keys()].map((n) => (n + 1).toString());
+const MONTH_DAYS = Array(31).map((n, idx) => (idx + 1).toString());
 const MONTHS = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
   'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 

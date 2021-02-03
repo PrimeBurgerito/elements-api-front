@@ -1,5 +1,5 @@
-import { Button, Menu, Navbar, Popover } from '@blueprintjs/core';
-import { Position } from '@blueprintjs/core/lib/esm/common/position';
+import { Button, Menu, Navbar } from '@blueprintjs/core';
+import { Popover2 } from '@blueprintjs/popover2';
 import {
   ATTRIBUTE_PATH,
   CHARACTER_TEMPLATE_PATH,
@@ -32,9 +32,9 @@ const Header: React.FC = () => {
 
 
     return (
-      <Popover content={menu()} position={Position.BOTTOM}>
+      <Popover2 content={menu()} placement="bottom">
         <Button minimal text="API" />
-      </Popover>
+      </Popover2>
     );
   };
 

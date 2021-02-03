@@ -1,4 +1,5 @@
 const {join} = require('path');
+const webpack = require('webpack');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const resolveTsconfigPathsToAlias = require('./resolve-tsconfig-path-to-webpack-alias');
@@ -11,7 +12,7 @@ module.exports = {
   output: {
     path: OUT_PATH,
     filename: '[name].bundle.js',
-    chunkFilename: '[chunkhash].js'
+    chunkFilename: '[chunkhash].js',
   },
   module: {
     rules: [
@@ -31,7 +32,13 @@ module.exports = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'application/font-woff',
+          },
+        }],
       },
       {
         test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -53,20 +60,7 @@ module.exports = {
     colors: true
   },
   optimization: {
-    splitChunks: {
-      name: true,
-      cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'all',
-          priority: -10
-        }
-      }
-    },
+    splitChunks: {chunks: 'all'},
     runtimeChunk: true
   },
   resolve: {

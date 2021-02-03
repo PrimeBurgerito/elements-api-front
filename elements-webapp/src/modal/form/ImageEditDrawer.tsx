@@ -40,7 +40,7 @@ const conditionalImageItemRenderer: ItemRenderer<IConditionalImage> = (value, {m
   return <MenuItem active={modifiers.active} key={`menu-item-${value}`} text={value.image.key} onClick={handleClick} />;
 };
 
-const ImageEditDrawer: React.FC<Props> = (props) => {
+const ImageEditDrawer: React.FC<Props> = props => {
   const [image, setImage] = useState<IImage | IConditionalImage>(null);
 
   const onClose = (): void => {
@@ -84,7 +84,7 @@ const ImageEditDrawer: React.FC<Props> = (props) => {
       {props.type === 'conditional' ? renderConditionalImageSelect() : renderImageSelect()}
     </div>
     <div className={Classes.DIALOG_BODY}>
-      <img style={{width: '100%'}} src={image && getImageSrc()} alt="No image" />
+      {image ? <img style={{width: '100%'}} src={getImageSrc()} alt="No image" /> : 'Select image'}
     </div>
   </Drawer>;
 };

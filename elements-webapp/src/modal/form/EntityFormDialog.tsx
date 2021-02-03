@@ -32,10 +32,14 @@ const EntityFormDialog = (props: IEntityFormDialogProps): JSX.Element => {
     props.onClose();
   };
 
+  const onChange = (form: object) => {
+    setFormState(form);
+  };
+
   return (
     <Dialog title={props.label} canOutsideClickClose={false} usePortal={false} isOpen={props.isOpen} onClose={onClose}>
       <div className={Classes.DIALOG_BODY}>
-        <ElementsForm formStructure={props.formStructure} onChange={setFormState} />
+        <ElementsForm formStructure={props.formStructure} onChange={onChange} />
       </div>
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>

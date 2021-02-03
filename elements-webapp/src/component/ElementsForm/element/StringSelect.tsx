@@ -21,7 +21,7 @@ const StringSelect: React.FC<Props> = (props) => {
   }, [props.value]);
 
   useEffect(() => {
-    setSelected(props.value || props.selectableValues[0]);
+    handleValueSelect(props.value || props.selectableValues[0]);
   }, []);
 
   const valueRenderer: ItemRenderer<string> = (value, {modifiers, handleClick}) => {

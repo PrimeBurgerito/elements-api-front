@@ -28,7 +28,9 @@ const dev = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {hmr: true},
+            options: {
+              publicPath: '',
+            }
           },
           'css-loader',
           'sass-loader',
@@ -41,7 +43,13 @@ const dev = {
       filename: '[name].css',
       chunkFilename: '[id].css'
     }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.DefinePlugin({
+      process: {
+        env: {
+          NODE_ENV: JSON.stringify('development')
+        }
+      }
+    }),
   ]
 };
 

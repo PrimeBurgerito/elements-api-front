@@ -8,9 +8,9 @@ import { FormComponentProps, FormElementType, IElementsFormProps, } from './Elem
 const ElementsForm = <T extends object>(props: IElementsFormProps<T>): React.ReactElement => {
   const [formState, setFormState] = useState<T>(() => ({}) as any);
 
-  useEffect(() => {
+/*  useEffect(() => {
     props.onChange(formState);
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     if (props.formValue) {
