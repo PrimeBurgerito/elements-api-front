@@ -1,9 +1,9 @@
 import { Button, Divider, FormGroup, MenuItem, NumericInput, Switch } from '@blueprintjs/core';
 import { IItemRendererProps, ItemRenderer, Select } from '@blueprintjs/select';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
-import NumericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
-import ObjectiveApi from '@shared/api/statistic/ObjectiveApi';
-import StringPropertyApi from '@shared/api/statistic/StringPropertyApi';
+import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
+import objectiveApi from '@shared/api/statistic/ObjectiveApi';
+import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { INumericPropertyReward, IObjectiveReward, IReward, IStringPropertyReward } from '@type/Reward';
 import { INumericProperty, IObjective, IProperty, IStringProperty, StringPropertyType } from '@type/statistics';
 import * as React from 'react';
@@ -23,9 +23,9 @@ const useGameProperties = (): [IStringProperty[], INumericProperty[], IObjective
 
   useEffect(() => {
     Promise.all([
-      new NumericPropertyApi().find(true),
-      new StringPropertyApi().find(true),
-      new ObjectiveApi().find(true)
+      numericPropertyApi.find(true),
+      stringPropertyApi.find(true),
+      objectiveApi.find(true)
     ]).then(([numericProps, stringProps, objective]: [INumericProperty[], IStringProperty[], IObjective[]]) => {
       setNumericProperties(numericProps);
       setStringProperties(stringProps);

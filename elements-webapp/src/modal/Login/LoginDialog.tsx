@@ -1,10 +1,8 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup } from '@blueprintjs/core';
-import AuthApi from '@shared/api/AuthApi';
-import UserApi from '@shared/api/UserApi';
+import { ApplicationContext } from '@shared/context/ApplicationContext';
 import { LoadingStore } from '@shared/store/LoadingStore';
-import UserStore from '@shared/store/UserStore';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { view } from 'react-easy-state';
 
 const PASSWORD_ID = 'password-input';
@@ -12,24 +10,20 @@ const USERNAME_ID = 'username-input';
 
 const LoginDialog: React.FC = () => {
   const LOGIN_LOADING_KEY = 'LOGIN_LOADING_KEY';
+  const {auth, login} = useContext(ApplicationContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    UserApi.getCurrentUser().then((user) => UserStore.user = user);
-  }, []);
-
   const handleSubmit = async () => {
     LoadingStore.addRequest(LOGIN_LOADING_KEY);
-    await AuthApi.authenticate(username, password);
-    UserStore.user = await UserApi.getCurrentUser();
+    await login(username, password);
     LoadingStore.endRequest(LOGIN_LOADING_KEY);
   };
 
   return (
     <Dialog
       title="Login"
-      isOpen={!UserStore.isAuthenticated}
+      isOpen={!auth.authenticated}
       canOutsideClickClose={false}
       canEscapeKeyClose={false}
       usePortal={false}

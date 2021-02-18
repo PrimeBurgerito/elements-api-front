@@ -1,0 +1,38 @@
+.location-card-container {
+  display: grid;
+  height: 100%;
+  align-content: start;
+  grid-template-rows: auto auto 1fr;
+  grid-row-gap: 10px;
+
+  .c-item-image {
+    display: grid;
+    align-content: start;
+    grid-template-rows: auto 1fr;
+
+    .location-image-container {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+
+      button.btn-left {
+        margin-right: 10px;
+      }
+
+      button.btn-right {
+        margin-left: 10px;
+      }
+    }
+
+    .location-image {
+      text-align: center;
+      flex: 1;
+    }
+
+    .location-image > img {
+      width: auto;
+      max-width: 100%;
+    }
+  }
+}

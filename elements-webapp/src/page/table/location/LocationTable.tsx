@@ -1,5 +1,5 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import LocationApi from '@shared/api/LocationApi';
+import locationApi from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,6 @@ const locationFormStructure = (selectableValues: string[]): IFormStructure => ({
 });
 
 const LocationTable: React.FC = () => {
-  const locationApi = new LocationApi();
   const [formStructure, setFormStructure] = useState<IFormStructure>(null);
 
   useEffect(() => {

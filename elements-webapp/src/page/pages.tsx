@@ -8,12 +8,16 @@ import {
   OBJECTIVE_PATH,
   PROPERTY_PATH,
 } from '@constant/paths';
+import { PropertiesContextProvider } from '@shared/context/PropertiesContext';
 import * as React from 'react';
+import { Route } from 'react-router';
+import { Switch, useRouteMatch } from 'react-router-dom';
 import EventPage from './event/EventPage';
 import CharacterTemplateTable from './table/character-template/CharacterTemplateTable';
 import ImageContainerTable from './table/container/ImageContainerTable';
 import KeyContainerTable from './table/container/KeyContainerTable';
 import { AttributeTable, ObjectiveTable, PropertyTable } from './table/entities/entityTables';
+import LocationCardTable from './table/location/location-card-table/LocationCardTable';
 import LocationTable from './table/location/LocationTable';
 
 interface ISinglePage {
@@ -40,7 +44,21 @@ export const protectedPages: ISinglePage[] = [
   },
   {
     path: LOCATION_PATH,
-    component: LocationTable,
+    component: () => {
+      const {path} = useRouteMatch();
+      return (
+        <Switch>
+          <Route exact path={path}>
+            <LocationTable />
+          </Route>
+          <Route path={`${path}/v2`}>
+            <PropertiesContextProvider>
+              <LocationCardTable />
+            </PropertiesContextProvider>
+          </Route>
+        </Switch>
+      );
+    },
   },
   {
     path: EVENT_PATH,

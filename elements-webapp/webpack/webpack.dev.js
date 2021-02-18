@@ -29,7 +29,7 @@ const dev = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '',
+              publicPath: '/',
             }
           },
           'css-loader',

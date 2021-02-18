@@ -1,6 +1,6 @@
 import { Button, ControlGroup, FormGroup, Menu, NumericInput, Popover, Position } from '@blueprintjs/core';
 import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
-import NumericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
+import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import { INumericProperty } from '@type/statistics';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
@@ -73,7 +73,7 @@ const NumericPropertyInput: React.FC<Props> = props => {
   }, [inputValue]);
 
   useEffect(() => {
-    new NumericPropertyApi().find().then((res: INumericProperty[]) => {
+    numericPropertyApi.find().then((res: INumericProperty[]) => {
       if (res?.length) {
         setProperties(res);
       }

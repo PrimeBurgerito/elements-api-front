@@ -10,9 +10,12 @@ export interface ITimeRange {
   end: Date | string;
 }
 
+export type IRequirementStringProperties = { [key: string]: string[] };
+export type IRequirementNumericProperties = { [key: string]: { first: number, second: number } };
+
 export interface IPropertiesRequirement {
-  stringProperties: { [key: string]: Set<string> };
-  numericProperties: { [key: string]: { first: number, second: number } };
+  stringProperties: IRequirementStringProperties;
+  numericProperties: IRequirementNumericProperties;
 }
 
 export interface IRequirement {
@@ -21,3 +24,13 @@ export interface IRequirement {
   objectives?: string[];
   properties?: IPropertiesRequirement;
 }
+
+export const defaultRequirement = (): IRequirement => ({
+  locationIds: [],
+  objectives: [],
+  timing: null,
+  properties: {
+    stringProperties: null,
+    numericProperties: null,
+  },
+});

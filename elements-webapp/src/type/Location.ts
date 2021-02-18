@@ -8,3 +8,8 @@ export interface ILocation extends IDocumentBase {
   images: IConditionalImage[];
   requirement: IRequirement;
 }
+
+export interface ILocationCreate {
+  name?: string;
+  nearbyLocations: string[];
+}

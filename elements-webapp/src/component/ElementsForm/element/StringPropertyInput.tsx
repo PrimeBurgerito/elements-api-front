@@ -1,7 +1,7 @@
 import { Button, ControlGroup, FormGroup, Menu, Popover, Position } from '@blueprintjs/core';
 import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
 import { IPopoverProps } from '@blueprintjs/core/src/components/popover/popover';
-import StringPropertyApi from '@shared/api/statistic/StringPropertyApi';
+import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { IStringProperty } from '@type/statistics';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
@@ -87,7 +87,7 @@ const StringPropertyInput: React.FC<Props> = props => {
   }, [inputValue]);
 
   useEffect(() => {
-    new StringPropertyApi().find().then((res: IStringProperty[]) => setProperties(res));
+    stringPropertyApi.find().then((res: IStringProperty[]) => setProperties(res));
   }, []);
 
   const renderPropertyChanger = (prop: IStringProperty) => {

@@ -18,3 +18,10 @@ export const requestErrorNotice = (e: AxiosError) => Notice.show({
   icon: 'warning-sign',
   timeout: 30000,
 });
+
+export const errorNotice = (message: string) => Notice.show({
+  message: (<>{message}</>),
+  intent: Intent.DANGER,
+  icon: 'warning-sign',
+  timeout: 30000,
+});

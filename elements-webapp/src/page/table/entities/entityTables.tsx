@@ -1,7 +1,7 @@
 import { numericPropertyFormStructure, objectiveFormStructure, stringPropertyFormStructure, } from '@modal/form/entityFormResources';
-import NumericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
-import ObjectiveApi from '@shared/api/statistic/ObjectiveApi';
-import StringPropertyApi from '@shared/api/statistic/StringPropertyApi';
+import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
+import objectiveApi from '@shared/api/statistic/ObjectiveApi';
+import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import * as React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 import { numericPropertyColumns, objectiveColumns, stringPropertyColumns } from './entityTableResources';
@@ -9,7 +9,7 @@ import { numericPropertyColumns, objectiveColumns, stringPropertyColumns } from 
 export const AttributeTable: React.FC = () =>
   <BaseEntityTable
     title="Numeric Property"
-    api={new NumericPropertyApi()}
+    api={numericPropertyApi}
     columns={numericPropertyColumns}
     formStructure={numericPropertyFormStructure}
   />;
@@ -17,7 +17,7 @@ export const AttributeTable: React.FC = () =>
 export const PropertyTable: React.FC = () =>
   <BaseEntityTable
     title="String Property"
-    api={new StringPropertyApi()}
+    api={stringPropertyApi}
     columns={stringPropertyColumns}
     formStructure={stringPropertyFormStructure}
   />;
@@ -25,7 +25,7 @@ export const PropertyTable: React.FC = () =>
 export const ObjectiveTable: React.FC = () =>
   <BaseEntityTable
     title="Objective"
-    api={new ObjectiveApi()}
+    api={objectiveApi}
     columns={objectiveColumns}
     formStructure={objectiveFormStructure}
   />;

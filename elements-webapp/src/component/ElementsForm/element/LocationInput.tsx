@@ -1,6 +1,6 @@
 import { MenuItem } from '@blueprintjs/core';
 import { IItemRendererProps, ItemPredicate, ItemRenderer, MultiSelect } from '@blueprintjs/select';
-import LocationApi from '@shared/api/LocationApi';
+import locationApi from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -20,10 +20,9 @@ const filterLocation: ItemPredicate<ILocation> = (query, location: ILocation) =>
 const LocationInput = (props: ILocationInputProps) => {
   const [locations, setLocations] = useState<ILocation[]>([]);
   const [selectedLocations, setSelectedLocations] = useState<ILocation[]>([]);
-  const api = new LocationApi();
 
   useEffect(() => {
-    api.find(props.caching).then((res: ILocation[]) => {
+    locationApi.find(props.caching).then((res: ILocation[]) => {
       setLocations(res);
     });
   }, []);

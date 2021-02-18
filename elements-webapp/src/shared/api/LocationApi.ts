@@ -1,6 +1,9 @@
 import BaseApi from '@shared/api/BaseApi';
-import { ILocation } from '@type/Location';
+import { ILocation, ILocationCreate } from '@type/Location';
 
-export default class LocationApi extends BaseApi<ILocation> {
+class LocationApi extends BaseApi<ILocation, ILocationCreate> {
   protected PATH: string = '/location';
 }
+
+const locationApi: BaseApi<ILocation, ILocationCreate> = new LocationApi();
+export default locationApi;

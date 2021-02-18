@@ -19,3 +19,10 @@ body {
     max-width: 90%;
     margin: 30px auto;
 }
+
+.absolute-center {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
