@@ -77,6 +77,7 @@ const RequirementStringPropertiesSelect: React.FC<Props> = props => {
         itemRenderer={valueRenderer}
         onItemSelect={onToggle}
         selectedItems={selected}
+        noResults={<MenuItem disabled={true} text="No results." />}
       />
       <br />
       {selected.map(renderStringPropertySelect)}

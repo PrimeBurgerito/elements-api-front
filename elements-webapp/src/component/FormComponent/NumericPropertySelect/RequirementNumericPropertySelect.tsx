@@ -62,6 +62,7 @@ const RequirementNumericPropertySelect: React.FC<Props> = props => {
         selectedItems={selectedProperties}
         onItemSelect={onToggle}
         onRemove={toggle}
+        noResults={<MenuItem disabled={true} text="No results." />}
       />
       <br />
       {Object.entries(value).map(renderNumericPropertyInput)}

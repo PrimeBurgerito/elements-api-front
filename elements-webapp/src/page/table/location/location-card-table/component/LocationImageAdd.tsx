@@ -88,7 +88,9 @@ const LocationImageAdd: React.FC<Props> = props => {
           <FormGroup label="Paste image from clipboard" labelInfo="(Ctrl + V)" labelFor="image-paste">
             <InputGroup id="image-paste" readOnly value={pasteInputText} placeholder="Paste image..." fill onPaste={onImagePaste} />
           </FormGroup>
-          {!!imageFile && <img src={memoizedImage} alt="No image" />}
+          <div style={{textAlign: 'center'}}>
+            {!!imageFile && <img src={memoizedImage} alt="No image" />}
+          </div>
           <RequirementEdit value={requirement} onChange={setRequirement} />
         </div>
         <div className={Classes.DIALOG_FOOTER}>
