@@ -5,8 +5,7 @@ import locationApi from '@shared/api/LocationApi';
 import { errorNotice } from '@shared/notice/notices';
 import { IConditionalImage, IConditionalImageDto } from '@type/image';
 import { defaultRequirement, IRequirement } from '@type/Requirement';
-import * as React from 'react';
-import { ChangeEventHandler, ClipboardEventHandler, useMemo, useState } from 'react';
+import React, { ChangeEventHandler, ClipboardEventHandler, useMemo, useState } from 'react';
 
 type Props = {
   entityId: string;
@@ -27,7 +26,7 @@ const LocationImageAdd: React.FC<Props> = props => {
     setImageFile(target.files[0]);
   };
 
-  const onImagePaste: ClipboardEventHandler = (e) => {
+  const onImagePaste: ClipboardEventHandler = e => {
     const file = e.clipboardData.files.length === 1 && e.clipboardData.files[0];
     if (file) {
       if (file.type.startsWith('image')) {
@@ -54,8 +53,8 @@ const LocationImageAdd: React.FC<Props> = props => {
     }
   };
 
-  const onImageKeyChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setImageKey(event.target.value);
+  const onImageKeyChange: ChangeEventHandler<HTMLInputElement> = e => {
+    setImageKey(e.target.value);
   };
 
   const isValidImage = (): boolean => {

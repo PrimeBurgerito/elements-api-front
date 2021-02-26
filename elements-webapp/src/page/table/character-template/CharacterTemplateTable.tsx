@@ -1,6 +1,6 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import CharacterTemplateApi from '@shared/api/CharacterTemplateApi';
-import * as React from 'react';
+import React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const templateColumns = [

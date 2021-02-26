@@ -1,6 +1,6 @@
 import { Intent, Position, Toaster } from '@blueprintjs/core';
 import { AxiosError } from 'axios';
-import * as React from 'react';
+import React from 'react';
 
 const Notice = Toaster.create({
   position: Position.TOP,

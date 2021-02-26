@@ -6,7 +6,7 @@ import objectiveApi from '@shared/api/statistic/ObjectiveApi';
 import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { INumericPropertyReward, IObjectiveReward, IReward, IStringPropertyReward } from '@type/Reward';
 import { INumericProperty, IObjective, IProperty, IStringProperty, StringPropertyType } from '@type/statistics';
-import * as React from 'react';
+import React from 'react';
 import { ReactElement, useEffect, useState } from 'react';
 import ReactJson from 'react-json-view';
 

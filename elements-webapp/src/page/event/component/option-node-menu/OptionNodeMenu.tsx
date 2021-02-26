@@ -3,8 +3,7 @@ import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import OptionNodeModel from '@shared/diagram/option/OptionNodeModel';
 import { IOption } from '@type/Event';
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import SceneNodeMenu from '../scene-node-menu/SceneNodeMenu';
 import './option-node-menu.scss';
 
@@ -17,7 +16,7 @@ const optionForm: IFormStructure = {
 
 interface IOptionNodeMenu {
   node: OptionNodeModel;
-  onOptionAdd: () => void;
+  onOptionAdd?: () => void;
 }
 
 const OptionNodeMenu: React.FC<IOptionNodeMenu> = (props) => {

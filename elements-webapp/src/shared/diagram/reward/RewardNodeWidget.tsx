@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { BaseWidget, BaseWidgetProps, DefaultNodeState, DefaultPortLabel, DiagramEngine } from 'storm-react-diagrams';
 import RewardNodeModel from './RewardNodeModel';
 

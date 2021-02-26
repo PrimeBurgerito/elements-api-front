@@ -1,7 +1,7 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup } from '@blueprintjs/core';
 import { ApplicationContext } from '@shared/context/ApplicationContext';
 import { LoadingStore } from '@shared/store/LoadingStore';
-import * as React from 'react';
+import React from 'react';
 import { useContext, useState } from 'react';
 import { view } from 'react-easy-state';
 

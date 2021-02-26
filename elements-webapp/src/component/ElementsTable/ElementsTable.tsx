@@ -1,6 +1,6 @@
 import { Cell, Column, IRegion, JSONFormat, SelectionModes, Table } from '@blueprintjs/table';
 import { IColumnModel, IElementsTableProps } from '@component/ElementsTable/ElementsTableResource';
-import * as React from 'react';
+import React from 'react';
 import { view } from 'react-easy-state';
 
 const ElementsTable: React.FC<IElementsTableProps> = (props) => {

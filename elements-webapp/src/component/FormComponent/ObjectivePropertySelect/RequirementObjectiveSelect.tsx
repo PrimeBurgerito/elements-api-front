@@ -2,7 +2,7 @@ import { MenuItem } from '@blueprintjs/core';
 import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
 import { useMultiToggleHook } from '@shared/hooks/multiToggleHook';
 import { IObjective } from '@type/statistics';
-import * as React from 'react';
+import React from 'react';
 
 type Props = {
   objectives: IObjective[];

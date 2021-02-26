@@ -4,8 +4,7 @@ import RequirementNumericPropertyValueInput from '@component/FormComponent/Numer
 import { useNumericPropertyRequirementHook } from '@shared/hooks/requirementHooks';
 import { IRequirementNumericProperties } from '@type/Requirement';
 import { INumericProperty } from '@type/statistics';
-import * as React from 'react';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 type Props = {
   properties: INumericProperty[],

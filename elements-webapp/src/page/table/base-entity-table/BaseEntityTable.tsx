@@ -8,8 +8,7 @@ import ImageEditDrawer from '@modal/form/ImageEditDrawer';
 import BaseApi from '@shared/api/BaseApi';
 import IDocumentBase from '@type/DocumentBase';
 import { IConditionalImage, IImage } from '@type/image';
-import * as React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './entity-table.scss';
 
 type Props = {

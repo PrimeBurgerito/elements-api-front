@@ -1,6 +1,6 @@
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import * as React from 'react';
+import React from 'react';
 
 const characterForm: IFormStructure = {
   formElements: {

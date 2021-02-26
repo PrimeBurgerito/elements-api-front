@@ -3,7 +3,7 @@ import Header from '@component/Header/Header';
 import PrivateRoute from '@component/PrivateRoute';
 import LoginDialog from '@modal/Login/LoginDialog';
 import { ApplicationContextProvider, useAppContext } from '@shared/context/ApplicationContext';
-import * as React from 'react';
+import React from 'react';
 import { view } from 'react-easy-state';
 import { hot } from 'react-hot-loader/root';
 import { Route } from 'react-router';

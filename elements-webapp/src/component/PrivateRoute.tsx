@@ -1,5 +1,5 @@
 import { useAppContext } from '@shared/context/ApplicationContext';
-import * as React from 'react';
+import React from 'react';
 import { Redirect, Route } from 'react-router';
 
 const PrivateRoute: React.FC = ({children, ...rest}) => {

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { BaseWidget, BaseWidgetProps, DefaultNodeState, DefaultPortLabel, DiagramEngine } from 'storm-react-diagrams';
+import React from 'react';
+import { BaseWidget, BaseWidgetProps, DefaultNodeState, DefaultPortLabel, DefaultPortModel, DiagramEngine } from 'storm-react-diagrams';
 import OptionNodeModel from './OptionNodeModel';
 
 export interface IOptionNodeProps extends BaseWidgetProps {
@@ -15,13 +15,13 @@ export default class OptionNodeWidget extends BaseWidget<IOptionNodeProps, Defau
     this.state = {};
   }
 
-  public generatePort(port) {
+  public generatePort(port: DefaultPortModel): React.ReactElement {
     return <DefaultPortLabel model={port} key={port.id} />;
   }
 
   public render() {
     return (
-      <div {...this.getProps()} style={{ background: this.props.node.color }}>
+      <div {...this.getProps()} style={{background: this.props.node.color}}>
         <div className={this.bem('__title')}>
           <div className={this.bem('__name')}>{this.props.node.name}</div>
         </div>

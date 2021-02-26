@@ -1,8 +1,7 @@
 import { Spinner } from '@blueprintjs/core';
 import locationApi from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LocationCard from './component/LocationCard';
 import LocationCreateCard from './component/LocationCreateCard';
 import './location-card-table.scss';

@@ -1,6 +1,6 @@
 import { MenuItem } from '@blueprintjs/core';
 import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 type Props = {

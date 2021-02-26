@@ -2,7 +2,7 @@ import { H6, MenuItem } from '@blueprintjs/core';
 import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
 import { useMultiToggleHook } from '@shared/hooks/multiToggleHook';
 import { ILocation } from '@type/Location';
-import * as React from 'react';
+import React from 'react';
 
 
 type Props = {

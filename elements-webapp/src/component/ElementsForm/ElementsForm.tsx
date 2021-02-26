@@ -1,6 +1,6 @@
 import { Card, Divider, FormGroup, H1 } from '@blueprintjs/core';
 import { chooseFieldByType } from '@component/ElementsForm/element/FormElementFields';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { FormComponentProps, FormElementType, IElementsFormProps, } from './ElementsFormResource';
 

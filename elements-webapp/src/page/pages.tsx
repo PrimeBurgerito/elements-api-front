@@ -9,7 +9,7 @@ import {
   PROPERTY_PATH,
 } from '@constant/paths';
 import { PropertiesContextProvider } from '@shared/context/PropertiesContext';
-import * as React from 'react';
+import React from 'react';
 import { Route } from 'react-router';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import EventPage from './event/EventPage';

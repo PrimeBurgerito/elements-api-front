@@ -1,7 +1,6 @@
 import { Spinner } from '@blueprintjs/core';
 import { Authenticator, useProvideAuth } from '@shared/auth';
-import * as React from 'react';
-import { createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
 
 export const ApplicationContext = createContext<Authenticator | null>(null);

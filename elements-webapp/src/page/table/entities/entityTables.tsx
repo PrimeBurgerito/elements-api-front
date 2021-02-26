@@ -2,7 +2,7 @@ import { numericPropertyFormStructure, objectiveFormStructure, stringPropertyFor
 import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import objectiveApi from '@shared/api/statistic/ObjectiveApi';
 import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
-import * as React from 'react';
+import React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 import { numericPropertyColumns, objectiveColumns, stringPropertyColumns } from './entityTableResources';
 

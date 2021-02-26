@@ -1,6 +1,5 @@
 import { PropertiesHook, usePropertiesHook } from '@shared/hooks/propertiesHook';
-import * as React from 'react';
-import { createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
 export const PropertiesContext = createContext<PropertiesHook | null>(null);
 

@@ -4,7 +4,7 @@ import StringPropertySelect from '@component/FormComponent/StringPropertySelect/
 import { useMultiToggleHook } from '@shared/hooks/multiToggleHook';
 import { IRequirementStringProperties } from '@type/Requirement';
 import { IStringProperty } from '@type/statistics';
-import * as React from 'react';
+import React from 'react';
 
 type Props = {
   properties: IStringProperty[],

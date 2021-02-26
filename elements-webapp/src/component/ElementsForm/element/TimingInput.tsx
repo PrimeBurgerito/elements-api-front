@@ -2,7 +2,7 @@ import { Button, FormGroup, Intent, OL } from '@blueprintjs/core';
 import { TimePicker } from '@blueprintjs/datetime';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import { ITimeRange, ITiming } from '@type/Requirement';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import './element.scss';
 

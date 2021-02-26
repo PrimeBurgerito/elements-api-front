@@ -4,8 +4,7 @@ import { IconNames } from '@blueprintjs/icons';
 import locationApi from '@shared/api/LocationApi';
 import { useToggle } from '@shared/hooks/toggleHook';
 import { ILocation, ILocationCreate } from '@type/Location';
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import NearbyLocationSelect from './NearbyLocationSelect';
 
 type Props = {

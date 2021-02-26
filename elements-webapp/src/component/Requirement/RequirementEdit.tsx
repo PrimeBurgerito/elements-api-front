@@ -4,7 +4,7 @@ import RequirementObjectiveSelect from '@component/FormComponent/ObjectiveProper
 import RequirementStringPropertiesSelect from '@component/FormComponent/StringPropertySelect/RequirementStringPropertiesSelect';
 import { useProperties } from '@shared/context/PropertiesContext';
 import { IRequirement, IRequirementNumericProperties, IRequirementStringProperties } from '@type/Requirement';
-import * as React from 'react';
+import React from 'react';
 import { useState } from 'react';
 
 type Props = {

@@ -1,21 +1,20 @@
 import { NodeType } from '@shared/diagram/DiagramUtils';
-import * as React from 'react';
+import React, { DragEventHandler } from 'react';
 import './event-component.scss';
 
-export interface ITrayItemWidgetProps {
+type Props = {
   model: { type: NodeType };
   color?: string;
   name: string;
-}
+};
 
-const TrayItemWidget = (props: ITrayItemWidgetProps) => {
+const TrayItemWidget: React.FC<Props> = props => {
+  const handleDragStart: DragEventHandler = event => {
+    event.dataTransfer.setData('storm-diagram-node', JSON.stringify(props.model));
+  };
+
   return (
-    <div
-      style={{ borderColor: props.color }}
-      draggable={true}
-      onDragStart={(event) => event.dataTransfer.setData('storm-diagram-node', JSON.stringify(props.model))}
-      className="tray-item"
-    >
+    <div style={{borderColor: props.color}} draggable={true} onDragStart={handleDragStart} className="tray-item">
       {props.name}
     </div>
   );

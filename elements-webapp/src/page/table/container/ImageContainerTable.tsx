@@ -1,6 +1,6 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import ImageContainerApi from '@shared/api/container/ImageContainerApi';
-import * as React from 'react';
+import React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const keyContainerColumns = [

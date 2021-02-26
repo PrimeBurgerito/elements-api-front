@@ -1,7 +1,6 @@
 import { ControlGroup, NumericInput } from '@blueprintjs/core';
 import { INumericProperty } from '@type/statistics';
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 type Props = {
   property: INumericProperty;

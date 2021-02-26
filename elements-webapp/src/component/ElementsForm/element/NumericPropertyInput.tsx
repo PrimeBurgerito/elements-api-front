@@ -2,7 +2,7 @@ import { Button, ControlGroup, FormGroup, Menu, NumericInput, Popover, Position 
 import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
 import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import { INumericProperty } from '@type/statistics';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import './element.scss';
 

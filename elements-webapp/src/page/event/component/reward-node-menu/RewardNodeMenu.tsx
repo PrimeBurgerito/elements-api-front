@@ -3,7 +3,7 @@ import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import RewardNodeModel from '@shared/diagram/reward/RewardNodeModel';
 import { ISceneReward } from '@type/Event';
-import * as React from 'react';
+import React from 'react';
 import { ReactElement } from 'react';
 import './reward-node-menu.scss';
 

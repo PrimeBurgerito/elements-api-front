@@ -2,7 +2,7 @@ import { MenuItem } from '@blueprintjs/core';
 import { IItemRendererProps, ItemPredicate, ItemRenderer, MultiSelect } from '@blueprintjs/select';
 import locationApi from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 interface ILocationInputProps {

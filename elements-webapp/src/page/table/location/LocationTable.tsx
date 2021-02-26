@@ -1,8 +1,7 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import locationApi from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const locationColumns = [

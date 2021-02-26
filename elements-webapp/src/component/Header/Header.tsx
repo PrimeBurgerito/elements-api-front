@@ -10,7 +10,7 @@ import {
   OBJECTIVE_PATH,
   PROPERTY_PATH,
 } from '@constant/paths';
-import * as React from 'react';
+import React from 'react';
 import { view } from 'react-easy-state';
 import { useHistory } from 'react-router-dom';
 

@@ -41,7 +41,10 @@ const prod = {
   ],
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
+    minimizer: [
+      new TerserPlugin(),
+      new OptimizeCSSAssetsPlugin()
+    ],
   },
 };
 

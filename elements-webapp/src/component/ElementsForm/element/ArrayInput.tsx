@@ -1,7 +1,7 @@
 import { Button, Divider, FormGroup } from '@blueprintjs/core';
 import { chooseFieldByType } from '@component/ElementsForm/element/FormElementFields';
 import { FormComponentProps, FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import * as React from 'react';
+import React from 'react';
 import { ReactElement, useEffect, useState } from 'react';
 
 type Props = {

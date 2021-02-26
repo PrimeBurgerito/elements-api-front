@@ -1,7 +1,7 @@
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
 import { IRequirement } from '@type/Requirement';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
 const requirementFormStructure: IFormStructure<IRequirement> = {

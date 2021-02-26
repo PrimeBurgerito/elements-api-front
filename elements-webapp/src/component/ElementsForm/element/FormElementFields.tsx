@@ -24,7 +24,7 @@ import {
   FormText,
   FormTimingSelect
 } from '@component/ElementsForm/ElementsFormResource';
-import * as React from 'react';
+import React from 'react';
 import MultiStringSelect from './MultiStringSelect';
 import StringSelect from './StringSelect';
 

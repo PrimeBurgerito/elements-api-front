@@ -7,8 +7,7 @@ import { useArraySelectHook } from '@shared/hooks/arraySelectHook';
 import { useToggle } from '@shared/hooks/toggleHook';
 import { errorNotice } from '@shared/notice/notices';
 import { IConditionalImage } from '@type/image';
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import LocationImageAdd from './LocationImageAdd';
 
 type Props = {

@@ -7,7 +7,7 @@ import { POST_LOADING } from '@shared/api/request-template/requests';
 import { LoadingStore } from '@shared/store/LoadingStore';
 import { IConditionalImageDto, IImageDto } from '@type/image';
 import 'cropperjs/dist/cropper.css';
-import * as React from 'react';
+import React from 'react';
 import { ReactElement, useRef, useState } from 'react';
 import Cropper from 'react-cropper';
 import './imageAddingDialog.scss';

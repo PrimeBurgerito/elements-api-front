@@ -1,8 +1,8 @@
 const {join} = require('path');
-const webpack = require('webpack');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const resolveTsconfigPathsToAlias = require('./resolve-tsconfig-path-to-webpack-alias');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const MAIN_PATH = join(__dirname, '..');
 const SRC_PATH = join(MAIN_PATH, 'src');
@@ -56,6 +56,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: join(SRC_PATH, 'assets', 'index.html'),
     }),
+    new ForkTsCheckerWebpackPlugin(),
   ],
   stats: {
     colors: true

@@ -2,7 +2,7 @@ import { Button, Classes, Drawer, MenuItem, Position } from '@blueprintjs/core';
 import { ItemRenderer, Select } from '@blueprintjs/select';
 import { MEDIA_URL } from '@constant/paths';
 import { IConditionalImage, IImage } from '@type/image';
-import * as React from 'react';
+import React from 'react';
 import { useState } from 'react';
 
 type BaseProps = {

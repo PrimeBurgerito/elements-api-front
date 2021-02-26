@@ -3,7 +3,7 @@ import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
 import { IPopoverProps } from '@blueprintjs/core/src/components/popover/popover';
 import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { IStringProperty } from '@type/statistics';
-import * as React from 'react';
+import React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import './element.scss';
 

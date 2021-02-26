@@ -1,5 +1,5 @@
 import { SceneType } from '@type/Event';
-import * as React from 'react';
+import React from 'react';
 import { AbstractNodeFactory, DiagramEngine } from 'storm-react-diagrams';
 import RewardNodeModel from './RewardNodeModel';
 import RewardNodeWidget from './RewardNodeWidget';
