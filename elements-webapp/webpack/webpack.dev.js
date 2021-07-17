@@ -3,21 +3,17 @@ const webpack = require('webpack');
 const {merge} = require('webpack-merge');
 const common = require('./webpack.common.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const MAIN_PATH = join(__dirname, '..');
 const SRC_PATH = join(MAIN_PATH, 'src');
 
 const dev = {
   entry: {
-    main: ['babel-polyfill', 'react-hot-loader/patch', join(SRC_PATH, 'main.tsx')]
+    main: ['babel-polyfill', join(SRC_PATH, 'main.tsx')]
   },
   mode: 'development',
   devtool: 'inline-source-map',
-  resolve: {
-    alias: {
-      'react-dom': '@hot-loader/react-dom'
-    },
-  },
   devServer: require('./devServer.js'),
   module: {
     rules: [
@@ -39,6 +35,7 @@ const dev = {
     ],
   },
   plugins: [
+    new ReactRefreshWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'

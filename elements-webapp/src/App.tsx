@@ -3,9 +3,8 @@ import Header from '@component/Header/Header';
 import PrivateRoute from '@component/PrivateRoute';
 import LoginDialog from '@modal/Login/LoginDialog';
 import { ApplicationContextProvider, useAppContext } from '@shared/context/ApplicationContext';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { view } from 'react-easy-state';
-import { hot } from 'react-hot-loader/root';
 import { Route } from 'react-router';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { protectedPages } from './page/pages';
@@ -15,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const Home: React.FC = () => {
-  const {auth} = useAppContext();
+  const { auth } = useAppContext();
 
   return (
     <div>{auth.authenticated ? `Welcome ${auth.user.username}` : 'Not allowed'}</div>
@@ -23,13 +22,15 @@ const Home: React.FC = () => {
 };
 
 const Routes = view(() => (
-  <Switch>
-    <Route path="/" exact component={Home} />
-    <PrivateRoute>
-      {protectedPages.map(page => <Route key={`route-${page.path}`} path={page.path} component={page.component} />)}
-    </PrivateRoute>
-    <Route render={() => <div>Not found</div>} />
-  </Switch>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Switch>
+      <Route path="/" exact component={Home} />
+      <PrivateRoute>
+        {protectedPages.map(page => <Route key={`route-${page.path}`} path={page.path} component={page.component} />)}
+      </PrivateRoute>
+      <Route render={() => <div>Not found</div>} />
+    </Switch>
+  </Suspense>
 ));
 
 const App: React.FC = () => {
@@ -46,4 +47,4 @@ const App: React.FC = () => {
   );
 };
 
-export default hot(App);
+export default App;

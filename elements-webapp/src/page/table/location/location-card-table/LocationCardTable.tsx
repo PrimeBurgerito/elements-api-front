@@ -1,4 +1,3 @@
-import { Spinner } from '@blueprintjs/core';
 import locationApi from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
 import React, { useEffect, useState } from 'react';
@@ -30,7 +29,7 @@ const LocationCardTable: React.FC = () => {
   return (
     <div className="container">
       {locations && <LocationCreateCard allLocations={locations} onChange={getLocations} />}
-      {locations ? locations.map(renderCard) : <Spinner />}
+      {locations ? locations.map(renderCard) : <div>Loading...</div>}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import { errorNotice } from '@shared/notice/notices';
 import { IScene } from '@type/Event';
 import React, { ClipboardEventHandler, useEffect, useMemo, useState } from 'react';
+import { v4 } from 'uuid';
 import './scene-node-menu.scss';
 
 const sceneForm: IFormStructure = {
@@ -36,9 +37,10 @@ const SceneNodeMenu: React.FC<Props> = props => {
   };
 
   const onImagePaste: ClipboardEventHandler = e => {
-    const file = e.clipboardData.files.length === 1 && e.clipboardData.files[0];
+    let file = e.clipboardData.files.length === 1 && e.clipboardData.files[0];
     if (file) {
       if (file.type.startsWith('image')) {
+        file = new File([file], `${v4()}-${file.name}`);
         setPasteInputText(file.name);
         setImageFile(file);
         props.node.image = file;
@@ -55,7 +57,8 @@ const SceneNodeMenu: React.FC<Props> = props => {
   return (
     <>
       <div className="scene-header">
-        <Button onClick={() => console.log(props.node.scene)}>Test node</Button>
+        {/* tslint:disable-next-line:no-console */}
+        <Button onClick={() => console.info(props.node.scene)}>Test node</Button>
         <H2>Scene Configuration</H2>
       </div>
       <ElementsForm key="default-scene" formValue={props.node.scene} formStructure={sceneForm} onChange={handleChange} />

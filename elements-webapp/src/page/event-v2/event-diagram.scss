@@ -1,0 +1,71 @@
+.diagram-container {
+  display: flex;
+  flex-flow: row;
+  height: calc(100vh - 50px);
+}
+
+.diagram-body {
+  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  background-color: #202b33;
+  min-height: 500px;
+  min-width: 66vw;
+
+  .header {
+    display: flex;
+    background: rgb(30, 30, 30);
+    flex-grow: 0;
+    flex-shrink: 0;
+    color: white;
+    padding: 10px;
+
+    hr {
+      border: none;
+      border-left: 1px solid hsla(200, 10%, 50%, 100);
+      height: 30px;
+      width: 1px;
+      margin: 0 20px;
+    }
+
+    button {
+      margin-right: 10px;
+    }
+
+    > * {
+      align-self: center;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-grow: 1;
+
+    .diagram-layer {
+      position: relative;
+      flex-grow: 1;
+
+      > div {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .tray {
+      min-width: 200px;
+      background: rgb(20, 20, 20);
+      flex-grow: 0;
+      flex-shrink: 0;
+
+      .tray-item {
+        color: white;
+        padding: 5px;
+        border: solid 1px;
+        border-radius: 5px;
+        margin: 0 10px 2px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+

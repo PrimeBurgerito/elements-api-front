@@ -47,7 +47,8 @@ const Header: React.FC = () => {
   const renderNewApiMenu = (): React.ReactElement => {
     const menu = (): React.ReactElement =>
       <Menu>
-        <Menu.Item text="Location" onClick={() => history.push(`${LOCATION_PATH}/v2`)} shouldDismissPopover={true} />
+        <Menu.Item text="Location" onClick={() => history.push(`${LOCATION_PATH}/v2`)} shouldDismissPopover />
+        <Menu.Item text="Event" onClick={() => history.push(`${EVENT_PATH}/v2`)} shouldDismissPopover />
       </Menu>;
 
 

@@ -12,13 +12,15 @@ import { PropertiesContextProvider } from '@shared/context/PropertiesContext';
 import React from 'react';
 import { Route } from 'react-router';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import EventPage from './event/EventPage';
-import CharacterTemplateTable from './table/character-template/CharacterTemplateTable';
-import ImageContainerTable from './table/container/ImageContainerTable';
-import KeyContainerTable from './table/container/KeyContainerTable';
+import EventV2Page from './event-v2/EventV2Page';
 import { AttributeTable, ObjectiveTable, PropertyTable } from './table/entities/entityTables';
-import LocationCardTable from './table/location/location-card-table/LocationCardTable';
-import LocationTable from './table/location/LocationTable';
+
+const CharacterTemplateTable = React.lazy(() => import('./table/character-template/CharacterTemplateTable'));
+const ImageContainerTable = React.lazy(() => import('./table/container/ImageContainerTable'));
+const EventPage = React.lazy(() => import('./event/EventPage'));
+const KeyContainerTable = React.lazy(() => import('./table/container/KeyContainerTable'));
+const LocationCardTable = React.lazy(() => import('./table/location/location-card-table/LocationCardTable'));
+const LocationTable = React.lazy(() => import('./table/location/LocationTable'));
 
 interface ISinglePage {
   path: string;
@@ -62,7 +64,21 @@ export const protectedPages: ISinglePage[] = [
   },
   {
     path: EVENT_PATH,
-    component: EventPage,
+    component: () => {
+      const {path} = useRouteMatch();
+      return (
+        <Switch>
+          <Route exact path={path}>
+            <EventPage />
+          </Route>
+          <Route path={`${path}/v2`}>
+            <PropertiesContextProvider>
+              <EventV2Page />
+            </PropertiesContextProvider>
+          </Route>
+        </Switch>
+      );
+    },
   },
   {
     path: KEY_CONTAINER_PATH,
