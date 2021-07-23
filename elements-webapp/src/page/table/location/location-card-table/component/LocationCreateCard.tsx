@@ -14,12 +14,12 @@ type Props = {
 
 const LocationCreateCard: React.FC<Props> = props => {
   const [dirty, toggleDirty] = useToggle(false);
-  const [location, setLocation] = useState<ILocationCreate>({nearbyLocations: []});
+  const [location, setLocation] = useState<ILocationCreate>({ nearbyLocations: [] });
 
   const onCreate = async (): Promise<void> => {
     await locationApi.post(location);
     toggleDirty();
-    setLocation({nearbyLocations: []});
+    setLocation({ nearbyLocations: [] });
     props.onChange();
   };
 
@@ -27,14 +27,14 @@ const LocationCreateCard: React.FC<Props> = props => {
     if (!dirty) {
       toggleDirty();
     }
-    setLocation({...location, nearbyLocations: names});
+    setLocation({ ...location, nearbyLocations: names });
   };
 
   const onNameChange = (name: string) => {
     if (!dirty) {
       toggleDirty();
     }
-    setLocation({...location, name});
+    setLocation({ ...location, name });
   };
 
   return (
@@ -43,7 +43,7 @@ const LocationCreateCard: React.FC<Props> = props => {
         <div className="c-item">
           <H5>
             <EditableText onChange={onNameChange} />
-            <ButtonGroup style={{float: 'right'}}>
+            <ButtonGroup style={{ float: 'right' }}>
               <Button intent={Intent.WARNING} onClick={() => console.log(location)} text="Test" />
             </ButtonGroup>
           </H5>
@@ -53,7 +53,7 @@ const LocationCreateCard: React.FC<Props> = props => {
           selected={location.nearbyLocations}
           onChange={onNearbyLocationsChange}
         />
-        <Button disabled={!dirty} intent={Intent.SUCCESS} icon={IconNames.PLUS} onClick={onCreate} />
+        <Button disabled={!dirty} intent={Intent.SUCCESS} icon={IconNames.Plus} onClick={onCreate} />
       </div>
     </Card>
   );

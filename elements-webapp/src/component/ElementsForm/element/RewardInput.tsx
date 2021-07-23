@@ -1,5 +1,5 @@
 import { Button, Divider, FormGroup, MenuItem, NumericInput, Switch } from '@blueprintjs/core';
-import { IItemRendererProps, ItemRenderer, Select } from '@blueprintjs/select';
+import { ItemRendererProps, ItemRenderer, Select } from '@blueprintjs/select';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import objectiveApi from '@shared/api/statistic/ObjectiveApi';
@@ -41,7 +41,7 @@ const RewardInput: React.FC<Props> = (props) => {
   const [selectedStringPropReward, setSelectedStringPropReward] = useState<IStringPropertyReward>(null);
   const [selectedNumericPropReward, setSelectedNumericPropReward] = useState<INumericPropertyReward>(null);
   const [selectedObjectiveReward, setSelectedObjectiveReward] = useState<IObjectiveReward>(null);
-  const [reward, setReward] = useState<IReward>({numericProperties: [], objectives: [], stringProperties: []});
+  const [reward, setReward] = useState<IReward>({ numericProperties: [], objectives: [], stringProperties: [] });
 
   const PropertySelect = Select.ofType<IStringProperty>();
   const NumericPropertySelect = Select.ofType<INumericProperty>();
@@ -53,12 +53,22 @@ const RewardInput: React.FC<Props> = (props) => {
     }
   }, [props.rewardValue]);
 
-  const renderSelectItem = <T extends IProperty<any>>(): ItemRenderer<T> => (item: T, itemProps: IItemRendererProps) => {
-    return <MenuItem active={itemProps.modifiers.active} key={item.key} text={item.name} onClick={itemProps.handleClick} />;
+  const renderSelectItem = <T extends IProperty<any>>(): ItemRenderer<T> => (item: T, itemProps: ItemRendererProps) => {
+    return <MenuItem
+      active={itemProps.modifiers.active}
+      key={item.key}
+      text={item.name}
+      onClick={itemProps.handleClick}
+    />;
   };
 
-  const renderSelectObjective: ItemRenderer<IObjective> = (item: IObjective, itemProps: IItemRendererProps) => {
-    return <MenuItem active={itemProps.modifiers.active} key={item.id} text={item.value} onClick={itemProps.handleClick} />;
+  const renderSelectObjective: ItemRenderer<IObjective> = (item: IObjective, itemProps: ItemRendererProps) => {
+    return <MenuItem
+      active={itemProps.modifiers.active}
+      key={item.id}
+      text={item.value}
+      onClick={itemProps.handleClick}
+    />;
   };
 
   const renderPropertyReward = (): ReactElement => {
@@ -67,27 +77,37 @@ const RewardInput: React.FC<Props> = (props) => {
       value: property.type === StringPropertyType.MULTIPLE ? property.value : [property.value[0]],
       type: 'ADD'
     });
-    const onTypeChange = ({target}) => setSelectedStringPropReward({
+    const onTypeChange = ({ target }) => setSelectedStringPropReward({
       ...selectedStringPropReward,
       type: target['checked'] ? 'ADD' : 'REMOVE'
     });
     const addNewProperty = () => {
-      const newReward: IReward = {...reward, stringProperties: [...reward.stringProperties, selectedStringPropReward]};
+      const newReward: IReward = {
+        ...reward,
+        stringProperties: [...reward.stringProperties, selectedStringPropReward]
+      };
       setReward(newReward);
       props.onChange(newReward);
     };
     const selectables = selectedStringPropReward ? stringProperties.find((p) => p.key === selectedStringPropReward.propertyKey).value : [];
     return (
       <FormGroup label="Property">
-        <PropertySelect items={stringProperties} itemRenderer={renderSelectItem<IStringProperty>()} onItemSelect={setSelectedPropertyReward}
-                        noResults={<MenuItem disabled={true} text="No results." />} filterable={false}>
-          <Button text={selectedStringPropReward ? selectedStringPropReward.value : '(No selection)'} rightIcon="double-caret-vertical" />
+        <PropertySelect
+          items={stringProperties}
+          itemRenderer={renderSelectItem<IStringProperty>()}
+          onItemSelect={setSelectedPropertyReward}
+          noResults={<MenuItem disabled={true} text="No results." />}
+          filterable={false}>
+          <Button
+            text={selectedStringPropReward ? selectedStringPropReward.value : '(No selection)'}
+            rightIcon="double-caret-vertical"
+          />
         </PropertySelect>
         <Switch disabled={!selectedStringPropReward} label="Add / Remove" onChange={onTypeChange} />
         <MultiStringSelect
           selectableValues={selectables}
           values={selectedStringPropReward?.value || []}
-          onChange={(item: string[]) => setSelectedStringPropReward({...selectedStringPropReward, value: item})}
+          onChange={(item: string[]) => setSelectedStringPropReward({ ...selectedStringPropReward, value: item })}
         />
         <Button disabled={!selectedStringPropReward} onClick={addNewProperty}>Add property reward</Button>
       </FormGroup>
@@ -100,38 +120,57 @@ const RewardInput: React.FC<Props> = (props) => {
       value: property.min,
       type: 'ADD'
     });
-    const valueChange = (value: number) => setSelectedNumericPropReward({...selectedNumericPropReward, value});
+    const valueChange = (value: number) => setSelectedNumericPropReward({ ...selectedNumericPropReward, value });
     const addNewAttribute = () => {
-      const newReward: IReward = {...reward, numericProperties: [...reward.numericProperties, selectedNumericPropReward]};
+      const newReward: IReward = {
+        ...reward,
+        numericProperties: [...reward.numericProperties, selectedNumericPropReward]
+      };
       setReward(newReward);
       props.onChange(newReward);
     };
     const buttonText = selectedNumericPropReward ? selectedNumericPropReward.propertyKey : '(No selection)';
     return (
       <FormGroup label="Attribute">
-        <NumericPropertySelect filterable={false} items={numericProperties} itemRenderer={renderSelectItem<INumericProperty>()}
-                               onItemSelect={selectNumericProperty}>
+        <NumericPropertySelect
+          filterable={false}
+          items={numericProperties}
+          itemRenderer={renderSelectItem<INumericProperty>()}
+          onItemSelect={selectNumericProperty}>
           <Button text={buttonText} rightIcon="double-caret-vertical" />
         </NumericPropertySelect>
-        <NumericInput disabled={!selectedNumericPropReward} value={selectedNumericPropReward ? selectedNumericPropReward.value : 0}
-                      onValueChange={valueChange} />
+        <NumericInput
+          disabled={!selectedNumericPropReward}
+          value={selectedNumericPropReward ? selectedNumericPropReward.value : 0}
+          onValueChange={valueChange}
+        />
         <Button disabled={!selectedNumericPropReward} onClick={addNewAttribute}>Add attribute reward</Button>
       </FormGroup>
     );
   };
 
   const renderObjectiveReward = (): ReactElement => {
-    const selectObjective = (objective: IObjective) => setSelectedObjectiveReward({objectiveKey: objective.value, type: 'ADD'});
-    const onTypeChange = ({target}) => setSelectedObjectiveReward({...selectedObjectiveReward, type: target['checked'] ? 'ADD' : 'REMOVE'});
+    const selectObjective = (objective: IObjective) => setSelectedObjectiveReward({
+      objectiveKey: objective.value,
+      type: 'ADD'
+    });
+    const onTypeChange = ({ target }) => setSelectedObjectiveReward({
+      ...selectedObjectiveReward,
+      type: target['checked'] ? 'ADD' : 'REMOVE'
+    });
     const addNewObjective = () => {
-      const newReward: IReward = {...reward, objectives: [...reward.objectives, selectedObjectiveReward]};
+      const newReward: IReward = { ...reward, objectives: [...reward.objectives, selectedObjectiveReward] };
       setReward(newReward);
       props.onChange(newReward);
     };
     const buttonText = selectedObjectiveReward ? selectedObjectiveReward.objectiveKey : '(No selection)';
     return (
       <FormGroup label="Objective">
-        <ObjectiveSelect filterable={false} items={objectives} itemRenderer={renderSelectObjective} onItemSelect={selectObjective}>
+        <ObjectiveSelect
+          filterable={false}
+          items={objectives}
+          itemRenderer={renderSelectObjective}
+          onItemSelect={selectObjective}>
           <Button text={buttonText} rightIcon="double-caret-vertical" />
         </ObjectiveSelect>
         <Switch disabled={!selectedObjectiveReward} label="Add / Remove" onChange={onTypeChange} />

@@ -1,4 +1,4 @@
-import { Button, Menu, Navbar } from '@blueprintjs/core';
+import { Button, Menu, MenuItem, Navbar } from '@blueprintjs/core';
 import { Popover2 } from '@blueprintjs/popover2';
 import {
   ATTRIBUTE_PATH,
@@ -20,16 +20,22 @@ const Header: React.FC = () => {
   const renderApiMenu = (): React.ReactElement => {
     const menu = (): React.ReactElement =>
       <Menu>
-        <Menu.Item text="Event" onClick={() => history.push(EVENT_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Character template" onClick={() => history.push(CHARACTER_TEMPLATE_PATH)}
-          shouldDismissPopover={true} />
-        <Menu.Item text="Location" onClick={() => history.push(LOCATION_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Attribute" onClick={() => history.push(ATTRIBUTE_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Property" onClick={() => history.push(PROPERTY_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Objective" onClick={() => history.push(OBJECTIVE_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Key container" onClick={() => history.push(KEY_CONTAINER_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Image container" onClick={() => history.push(IMAGE_CONTAINER_PATH)}
-          shouldDismissPopover={true} />
+        <MenuItem text="Event" onClick={() => history.push(EVENT_PATH)} shouldDismissPopover={true} />
+        <MenuItem
+          text="Character template"
+          onClick={() => history.push(CHARACTER_TEMPLATE_PATH)}
+          shouldDismissPopover={true}
+        />
+        <MenuItem text="Location" onClick={() => history.push(LOCATION_PATH)} shouldDismissPopover={true} />
+        <MenuItem text="Attribute" onClick={() => history.push(ATTRIBUTE_PATH)} shouldDismissPopover={true} />
+        <MenuItem text="Property" onClick={() => history.push(PROPERTY_PATH)} shouldDismissPopover={true} />
+        <MenuItem text="Objective" onClick={() => history.push(OBJECTIVE_PATH)} shouldDismissPopover={true} />
+        <MenuItem text="Key container" onClick={() => history.push(KEY_CONTAINER_PATH)} shouldDismissPopover={true} />
+        <MenuItem
+          text="Image container"
+          onClick={() => history.push(IMAGE_CONTAINER_PATH)}
+          shouldDismissPopover={true}
+        />
       </Menu>;
 
 
@@ -40,7 +46,7 @@ const Header: React.FC = () => {
         placement="bottom"
         hasBackdrop={false}
         renderTarget={({ isOpen, ref, ...p }) => (
-          <Button {...p} active={isOpen} elementRef={ref} minimal text="API" />
+          <Button {...p} active={isOpen} ref={ref} minimal text="API" />
         )}
       />
     );
@@ -49,9 +55,13 @@ const Header: React.FC = () => {
   const renderNewApiMenu = (): React.ReactElement => {
     const menu = (): React.ReactElement =>
       <Menu>
-        <Menu.Item text="Location" onClick={() => history.push(`${LOCATION_PATH}/v2`)} shouldDismissPopover />
-        <Menu.Item text="Event" onClick={() => history.push(`${EVENT_PATH}/v2`)} shouldDismissPopover />
-        <Menu.Item text="Character Template" onClick={() => history.push(`${CHARACTER_TEMPLATE_PATH}/v2`)} shouldDismissPopover />
+        <MenuItem text="Location" onClick={() => history.push(`${LOCATION_PATH}/v2`)} shouldDismissPopover />
+        <MenuItem text="Event" onClick={() => history.push(`${EVENT_PATH}/v2`)} shouldDismissPopover />
+        <MenuItem
+          text="Character Template"
+          onClick={() => history.push(`${CHARACTER_TEMPLATE_PATH}/v2`)}
+          shouldDismissPopover
+        />
       </Menu>;
 
 
@@ -62,7 +72,7 @@ const Header: React.FC = () => {
         placement="bottom"
         hasBackdrop={false}
         renderTarget={({ isOpen, ref, ...p }) => (
-          <Button {...p} active={isOpen} elementRef={ref} minimal text="API V2" />
+          <Button {...p} active={isOpen} ref={ref} minimal text="API V2" />
         )}
       />
     );

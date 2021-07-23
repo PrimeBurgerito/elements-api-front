@@ -1,7 +1,6 @@
 import { Button, ButtonGroup, Card } from '@blueprintjs/core';
 import { ICharacterTemplate, ICharacterTemplateCreate } from '@type/Character';
 import React, { useState } from 'react';
-import './character-template-card.scss';
 import CharacterTemplateCardImages from './CharacterTemplateCardImages';
 import CharacterTemplateCardProperties from './CharacterTemplateCardProperties';
 import { Intent } from '@blueprintjs/core/lib/esnext';
@@ -37,22 +36,20 @@ const CharacterTemplateCard: React.FC<Props> = props => {
 
   return (
     <Card className="c-item">
-      <div className="character-template-card-container">
-        <ButtonGroup style={{ float: 'right' }}>
-          <Button
-            disabled={!dirty}
-            intent={Intent.PRIMARY}
-            text="Update"
-            icon={IconNames.REFRESH}
-            onClick={onUpdate}
-            loading={updating}
-          />
-          <Button intent={Intent.WARNING} onClick={() => console.log(value)} text="Test" />
-          <Button intent={Intent.DANGER} icon={IconNames.TRASH} loading={updating} />
-        </ButtonGroup>
-        <CharacterTemplateCardProperties properties={properties} onChange={onPropsChange} />
-        <CharacterTemplateCardImages images={props.template.images} />
-      </div>
+      <ButtonGroup style={{ float: 'right' }}>
+        <Button
+          disabled={!dirty}
+          intent={Intent.PRIMARY}
+          text="Update"
+          icon={IconNames.Refresh}
+          onClick={onUpdate}
+          loading={updating}
+        />
+        <Button intent={Intent.WARNING} onClick={() => console.log(value)} text="Test" />
+        <Button intent={Intent.DANGER} icon={IconNames.Trash} loading={updating} />
+      </ButtonGroup>
+      <CharacterTemplateCardProperties properties={value} onChange={onPropsChange} />
+      <CharacterTemplateCardImages images={props.template.images} entityId={props.template.id} />
     </Card>
   );
 }

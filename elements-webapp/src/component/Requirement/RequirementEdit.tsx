@@ -1,7 +1,9 @@
 import { H3, H6 } from '@blueprintjs/core';
-import RequirementNumericPropertySelect from '@component/FormComponent/NumericPropertySelect/RequirementNumericPropertySelect';
+import RequirementNumericPropertySelect
+  from '@component/FormComponent/NumericPropertySelect/RequirementNumericPropertySelect';
 import RequirementObjectiveSelect from '@component/FormComponent/ObjectivePropertySelect/RequirementObjectiveSelect';
-import RequirementStringPropertiesSelect from '@component/FormComponent/StringPropertySelect/RequirementStringPropertiesSelect';
+import RequirementStringPropertiesSelect
+  from '@component/FormComponent/StringPropertySelect/RequirementStringPropertiesSelect';
 import { useProperties } from '@shared/context/PropertiesContext';
 import { IRequirement, IRequirementNumericProperties, IRequirementStringProperties } from '@type/Requirement';
 import React from 'react';
@@ -17,19 +19,19 @@ const RequirementEdit: React.FC<Props> = props => {
   const [requirement, setRequirement] = useState<IRequirement>(props.value);
 
   const onStringPropertyChange = (stringProperties: IRequirementStringProperties) => {
-    const newRequirement = {...requirement, properties: {...requirement.properties, stringProperties}};
+    const newRequirement = { ...requirement, properties: { ...requirement.properties, stringProperties } };
     setRequirement(newRequirement);
     props.onChange(newRequirement);
   };
 
   const onNumericPropertyChange = (numericProperties: IRequirementNumericProperties) => {
-    const newRequirement = {...requirement, properties: {...requirement.properties, numericProperties}};
+    const newRequirement = { ...requirement, properties: { ...requirement.properties, numericProperties } };
     setRequirement(newRequirement);
     props.onChange(newRequirement);
   };
 
   const onObjectiveChange = (objectives: string[]) => {
-    const newRequirement = {...requirement, objectives};
+    const newRequirement = { ...requirement, objectives };
     setRequirement(newRequirement);
     props.onChange(newRequirement);
   };
@@ -50,7 +52,11 @@ const RequirementEdit: React.FC<Props> = props => {
         value={props.value.properties.numericProperties || {}}
       />
       <H6>Objectives</H6>
-      <RequirementObjectiveSelect objectives={properties.objectives} onChange={onObjectiveChange} value={props.value.objectives || []} />
+      <RequirementObjectiveSelect
+        objectives={properties.objectives}
+        onChange={onObjectiveChange}
+        value={props.value.objectives || []}
+      />
     </>
   );
 };

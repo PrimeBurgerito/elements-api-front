@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { ICharacterProperties, ICharacterTemplateCreate } from '@type/Character';
+import { ICharacterTemplateCreate } from '@type/Character';
 import { Callout, H5 } from '@blueprintjs/core';
 import { useProperties } from '@shared/context/PropertiesContext';
 import StringPropertyInputV2 from '@component/ElementsForm/element/StringPropertyInputV2';
 import NumericPropertyInputV2 from '@component/ElementsForm/element/NumericPropertyInputV2';
 
 type Props = {
-  properties: ICharacterProperties,
+  properties: ICharacterTemplateCreate,
   onChange: (newProps: ICharacterTemplateCreate) => void,
 }
 
 const CharacterTemplateCardProperties: React.FC<Props> = props => {
   const { stringProperties, numericProperties } = useProperties();
   const [value, setValue] = useState<ICharacterTemplateCreate>({
-    numericProperties: props.properties.numericPropertyKeyToValue,
-    stringProperties: props.properties.stringPropertyKeyToValue,
+    numericProperties: props.properties.numericProperties,
+    stringProperties: props.properties.stringProperties,
   });
 
   const onStringPropertyChange = (properties: Record<string, string[]>) => {
@@ -35,14 +35,14 @@ const CharacterTemplateCardProperties: React.FC<Props> = props => {
       <H5>Numeric</H5>
       {numericProperties?.length && <NumericPropertyInputV2
         allProperties={numericProperties}
-        initialValue={props.properties.numericPropertyKeyToValue}
+        initialValue={props.properties.numericProperties}
         onChange={onNumericPropertyChange}
       />}
       <br />
       <H5>String</H5>
       {stringProperties?.length && <StringPropertyInputV2
         allProperties={stringProperties}
-        initialValue={props.properties.stringPropertyKeyToValue}
+        initialValue={props.properties.stringProperties}
         onChange={onStringPropertyChange}
       />}
     </Callout>

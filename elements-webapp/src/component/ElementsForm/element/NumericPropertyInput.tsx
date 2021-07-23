@@ -1,4 +1,14 @@
-import { Button, ControlGroup, FormGroup, Menu, MenuProps, NumericInput, Popover, Position } from '@blueprintjs/core';
+import {
+  Button,
+  ControlGroup,
+  FormGroup,
+  Menu,
+  MenuItem,
+  MenuProps,
+  NumericInput,
+  Popover,
+  Position
+} from '@blueprintjs/core';
 import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import { INumericProperty } from '@type/statistics';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -35,7 +45,7 @@ const AttributeSelector: React.FC<AttributeSelectorProps> = props => {
     return (
       <Menu>
         {props.properties.map((attr: INumericProperty) =>
-          <Menu.Item key={`${ITEM_KEY}-${attr.id}`} text={attr.name} onClick={() => onClick(attr)} />
+          <MenuItem key={`${ITEM_KEY}-${attr.id}`} text={attr.name} onClick={() => onClick(attr)} />
         )}
       </Menu>
     );

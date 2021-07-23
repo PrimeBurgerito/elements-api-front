@@ -1,10 +1,48 @@
-.container {
+.character-template-container {
   display: grid;
-  grid-auto-rows: 1fr;
+  grid-auto-rows: auto;
   grid-template-columns: 1fr 1fr;
+  grid-gap: 2em;
+  padding: 2em;
+
+  > .c-item-new {
+    display: grid;
+    align-content: start;
+    grid-template-rows: auto 1fr;
+    grid-row-gap: 10px;
+
+    .bp4-popover-target > div {
+      width: 100%;
+    }
+  }
 
   > .c-item {
-    width: 100%;
-    max-width: 90%;
+    display: grid;
+    align-content: start;
+    grid-template-rows: auto auto 50vh;
+    grid-row-gap: 10px;
+
+    .c-properties {
+      display: inline-grid;
+      margin-top: 0.5rem;
+    }
+
+    .c-item-image {
+      display: grid;
+      align-content: start;
+      grid-template-rows: auto minmax(0, 1fr);
+
+      > .image {
+        > img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+
+    .bp4-popover-target > div {
+      width: 100%;
+    }
   }
 }

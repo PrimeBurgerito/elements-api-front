@@ -7,6 +7,7 @@ type Props = {
   value?: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  fill?: boolean;
 };
 
 const TypedStringSelect = Select.ofType<string>();
@@ -23,7 +24,7 @@ const StringSelect: React.FC<Props> = (props) => {
     handleValueSelect(props.value || props.selectableValues[0]);
   }, []);
 
-  const valueRenderer: ItemRenderer<string> = (value, { modifiers, handleClick }) => {
+  const valueRenderer: ItemRenderer<string> = (value: string, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {
       return null;
     }
@@ -42,7 +43,7 @@ const StringSelect: React.FC<Props> = (props) => {
     noResults={<MenuItem disabled={true} text="No results." />}
     filterable={false}
   >
-    <Button text={selected ? selected : '(No selection)'} rightIcon="double-caret-vertical" />
+    <Button fill={props.fill} text={selected ? selected : '(No selection)'} rightIcon="double-caret-vertical" />
   </TypedStringSelect>;
 
 };

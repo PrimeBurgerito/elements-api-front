@@ -1,6 +1,6 @@
 import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance';
 import { DELETE, GET, POST, PUT } from '@shared/api/request-template/requests';
-import { IConditionalImage, IConditionalImageDto, IImageDto } from '@type/image';
+import { IConditionalImage, IConditionalImageDto, IImage, IImageDto } from '@type/image';
 import { AxiosResponse } from 'axios';
 
 const FORM_DATA_FILE = 'file';
@@ -62,6 +62,26 @@ export default abstract class BaseApi<T, C = any> {
   };
 
   private getImageForm = (dto: object, file: File): FormData => {
+    const formData = new FormData();
+    formData.append(FORM_DATA_FILE, file);
+    formData.append(FORM_DATA_IMAGE_DTO, new Blob([JSON.stringify(dto)], APPLICATION_JSON_OPTION));
+    return formData;
+  };
+}
+
+export class BaseApiMethods {
+  public static putImage = async (imageDto: IImageDto, imageFile: File, path: string): Promise<IImage | IConditionalImage> => {
+    const formData = BaseApiMethods.getImageForm(imageDto, imageFile);
+    const response: AxiosResponse = await PUT(`${path}/image`, formData, { headers: { 'Content-Type': undefined } });
+    return await response ? response.data : null;
+  };
+
+  public static removeImage = async (id: string, imageKey: string, path: string): Promise<boolean> => {
+    const response: AxiosResponse<boolean> = await DELETE(`${path}/image/${id}/${imageKey}`);
+    return await response ? response.data : false;
+  };
+
+  private static getImageForm = (dto: IImageDto | IConditionalImageDto, file: File): FormData => {
     const formData = new FormData();
     formData.append(FORM_DATA_FILE, file);
     formData.append(FORM_DATA_IMAGE_DTO, new Blob([JSON.stringify(dto)], APPLICATION_JSON_OPTION));

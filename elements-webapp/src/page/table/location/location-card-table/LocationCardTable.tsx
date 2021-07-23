@@ -27,7 +27,7 @@ const LocationCardTable: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="location-container">
       {locations && <LocationCreateCard allLocations={locations} onChange={getLocations} />}
       {locations ? locations.map(renderCard) : <div>Loading...</div>}
     </div>

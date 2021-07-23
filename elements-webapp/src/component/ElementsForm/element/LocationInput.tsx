@@ -1,9 +1,8 @@
 import { MenuItem } from '@blueprintjs/core';
-import { IItemRendererProps, ItemPredicate, ItemRenderer, MultiSelect } from '@blueprintjs/select';
+import { ItemPredicate, ItemRenderer, ItemRendererProps, MultiSelect } from '@blueprintjs/select';
 import locationApi from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface ILocationInputProps {
   onChange: (locationIds: string[]) => void;
@@ -40,7 +39,7 @@ const LocationInput = (props: ILocationInputProps) => {
     props.onChange(newLocations.map((l) => l.id));
   };
 
-  const renderLocationItem: ItemRenderer<ILocation> = (location: ILocation, itemProps: IItemRendererProps) => {
+  const renderLocationItem: ItemRenderer<ILocation> = (location: ILocation, itemProps: ItemRendererProps) => {
     if (!itemProps.modifiers.matchesPredicate) {
       return null;
     }

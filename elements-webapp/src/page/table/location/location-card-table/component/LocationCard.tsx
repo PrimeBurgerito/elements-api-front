@@ -27,6 +27,11 @@ const LocationCard: React.FC<Props> = props => {
     props.onChange();
   };
 
+  const onDelete = async (): Promise<void> => {
+    await locationApi.delete(location.id);
+    props.onChange();
+  }
+
   const onNearbyLocationsChange = (names: string[]) => {
     if (!dirty) {
       toggleDirty();
@@ -44,11 +49,11 @@ const LocationCard: React.FC<Props> = props => {
               disabled={!dirty}
               intent={Intent.PRIMARY}
               text="Update"
-              icon={IconNames.REFRESH}
+              icon={IconNames.Refresh}
               onClick={onUpdate}
             />
             <Button intent={Intent.WARNING} onClick={() => console.log(location)} text="Test" />
-            <Button intent={Intent.DANGER} icon={IconNames.TRASH} />
+            <Button intent={Intent.DANGER} icon={IconNames.Trash} onClick={onDelete} />
           </ButtonGroup>
         </H5>
         <NearbyLocationSelect

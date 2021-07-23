@@ -1,33 +1,29 @@
-import { Button, Card, Classes, H2, Overlay } from '@blueprintjs/core';
-import { Intent } from '@blueprintjs/core/lib/esnext';
-import RequirementEdit from '@component/Requirement/RequirementEdit';
-import locationApi from '@shared/api/LocationApi';
-import { IConditionalImage, IConditionalImageDto } from '@type/image';
-import { defaultRequirement, IRequirement } from '@type/Requirement';
-import React, { useState } from 'react';
+import React from 'react';
 import { useImageAddHook } from '@component/ImageAdd/imageAddHook';
 import ImageAdd from '@component/ImageAdd/ImageAdd';
+import { Button, Card, Classes, H2, Overlay } from '@blueprintjs/core';
+import { IImage, IImageDto } from '@type/image';
+import { Intent } from '@blueprintjs/core/lib/esnext';
+import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
+
+const OVERLAY_CLASS = [Classes.DARK, 'absolute-center'].join(' ');
 
 type Props = {
   entityId: string;
   open: boolean;
-  onAdd: (img: IConditionalImage) => void;
+  onAdd: (img: IImage) => void;
   onClose: () => void;
 };
 
-const OVERLAY_CLASS = [Classes.DARK, 'absolute-center'].join(' ');
-
-const LocationImageAdd: React.FC<Props> = props => {
+export const CharacterTemplateImageAdd: React.FC<Props> = props => {
   const { handleImage, image } = useImageAddHook();
-  const [requirement, setRequirement] = useState<IRequirement>(defaultRequirement());
 
   const onAdd = async (): Promise<void> => {
-    const imageDto: IConditionalImageDto = {
+    const imageDto: IImageDto = {
       entityId: props.entityId,
       imageKey: image.key,
-      requirement,
     };
-    const imageResponse = await locationApi.putConditionalImage(imageDto, image.file);
+    const imageResponse = await CharacterTemplateV2Api.putImage(imageDto, image.file);
     if (imageResponse) {
       props.onAdd(imageResponse);
       onClose();
@@ -51,7 +47,6 @@ const LocationImageAdd: React.FC<Props> = props => {
         </div>
         <div className={Classes.DIALOG_BODY}>
           <ImageAdd hook={{ handleImage, image }} />
-          <RequirementEdit value={requirement} onChange={setRequirement} />
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -62,6 +57,6 @@ const LocationImageAdd: React.FC<Props> = props => {
       </Card>
     </Overlay>
   );
-};
+}
 
-export default LocationImageAdd;
+export default CharacterTemplateImageAdd;

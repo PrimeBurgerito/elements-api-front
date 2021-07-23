@@ -27,16 +27,18 @@ const StringPropertyInputV2: React.FC<Props> = props => {
   }
 
   const renderPropertyValueSelector = (): React.ReactElement => {
-    if (!Object.keys(value).includes(active.key)) {
+    const templateHasProperty = Object.keys(value).includes(active.key);
+    if (!templateHasProperty) {
       return <Button
         intent={Intent.SUCCESS}
-        icon={IconNames.ADD}
+        icon={IconNames.Add}
         onClick={() => onValueChange([active.possibleValues[0]])}
       />
     }
     const selectedValues = value[active.key];
     if (active.type === StringPropertyType.SINGLE) {
       return <StringSelect
+        fill
         selectableValues={active.possibleValues}
         value={selectedValues?.length ? selectedValues[0] : null}
         onChange={newValue => onValueChange([newValue])}

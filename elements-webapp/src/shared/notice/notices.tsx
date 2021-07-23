@@ -1,12 +1,12 @@
-import { Intent, Position, Toaster } from '@blueprintjs/core';
+import { Intent, OverlayToaster, Position } from '@blueprintjs/core';
 import { AxiosError } from 'axios';
 import React from 'react';
 
-const Notice = Toaster.create({
+const Notice = OverlayToaster.create({
   position: Position.TOP,
 });
 
-export const requestErrorNotice = (e: AxiosError) => Notice.show({
+export const requestErrorNotice = (e: AxiosError): string => Notice.show({
   message: (
     <>
       <p>{e.message}</p>
@@ -19,7 +19,7 @@ export const requestErrorNotice = (e: AxiosError) => Notice.show({
   timeout: 30000,
 });
 
-export const errorNotice = (message: string) => Notice.show({
+export const errorNotice = (message: string): string => Notice.show({
   message: (<>{message}</>),
   intent: Intent.DANGER,
   icon: 'warning-sign',

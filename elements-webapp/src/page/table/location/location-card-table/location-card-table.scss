@@ -1,4 +1,4 @@
-.container {
+.location-container {
   display: grid;
   grid-auto-rows: 1fr;
   grid-template-columns: 1fr 1fr;
@@ -6,5 +6,8 @@
   > .c-item {
     width: 100%;
     max-width: 90%;
+    justify-self: center;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
   }
 }

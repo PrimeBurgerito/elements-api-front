@@ -39,11 +39,11 @@ const LocationImages: React.FC<Props> = props => {
       <H6>
         Images
         <ButtonGroup style={{ float: 'right' }}>
-          <Button intent={Intent.SUCCESS} icon={IconNames.ADD} onClick={toggleImageAdd} />
+          <Button intent={Intent.SUCCESS} icon={IconNames.Add} onClick={toggleImageAdd} />
           {/*<Button intent={Intent.WARNING} icon={IconNames.EDIT} disabled={!images.length} onClick={toggleImageEdit} />*/}
           <Button
             intent={Intent.DANGER}
-            icon={IconNames.TRASH}
+            icon={IconNames.Trash}
             disabled={!images.length}
             onClick={onImageRemove}
             loading={removing}
@@ -53,7 +53,7 @@ const LocationImages: React.FC<Props> = props => {
       <div className="location-image-container">
         <Button
           className="btn-left"
-          icon={IconNames.ARROW_LEFT}
+          icon={IconNames.ArrowLeft}
           large
           outlined
           onClick={images.previous}
@@ -64,7 +64,7 @@ const LocationImages: React.FC<Props> = props => {
         </div>
         <Button
           className="btn-right"
-          icon={IconNames.ARROW_RIGHT}
+          icon={IconNames.ArrowRight}
           large
           outlined
           onClick={images.next}

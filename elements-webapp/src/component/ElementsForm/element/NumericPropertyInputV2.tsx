@@ -28,7 +28,7 @@ const NumericPropertyInputV2: React.FC<Props> = props => {
     if (!Object.keys(value).includes(active.key)) {
       return <Button
         intent={Intent.SUCCESS}
-        icon={IconNames.ADD}
+        icon={IconNames.Add}
         onClick={() => onValueChange(active.min)}
       />
     }

@@ -3,6 +3,7 @@ import { ICharacterTemplate } from '@type/Character';
 import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
 import './character-template-card-table.scss';
 import CharacterTemplateCard from './component/CharacterTemplateCard';
+import CharacterTemplateCreateCard from './component/CharacterTemplateCreateCard';
 
 const CharacterTemplateCardTable: React.FC = () => {
   const [templates, setTemplates] = useState<ReadonlyArray<ICharacterTemplate>>(null)
@@ -24,7 +25,8 @@ const CharacterTemplateCardTable: React.FC = () => {
   }
 
   return (
-    <div className="container">
+    <div className="character-template-container">
+      <CharacterTemplateCreateCard onCreate={getNewTemplates} />
       {templates ? templates.map(renderCard) : <div>Loading...</div>}
     </div>
   );

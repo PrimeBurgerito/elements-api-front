@@ -1,5 +1,14 @@
-import { Button, ControlGroup, FormGroup, Menu, MenuProps, Popover, Position } from '@blueprintjs/core';
-import { IPopoverProps } from '@blueprintjs/core/src/components/popover/popover';
+import {
+  Button,
+  ControlGroup,
+  FormGroup,
+  Menu,
+  MenuItem,
+  MenuProps,
+  Popover,
+  PopoverProps,
+  Position
+} from '@blueprintjs/core';
 import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { IStringProperty } from '@type/statistics';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -20,7 +29,7 @@ type PropertySelectorProps = {
 const PropertySelector: React.FC<PropertySelectorProps> = props => {
   const [selected, setSelected] = useState<IStringProperty>(null);
 
-  const renderNewPropertyValuesSelector = (): React.ReactElement<IPopoverProps> => {
+  const renderNewPropertyValuesSelector = (): React.ReactElement<PopoverProps> => {
     const onClick = (value: string) => {
       setSelected({ ...selected, value: [value] });
     };
@@ -28,7 +37,7 @@ const PropertySelector: React.FC<PropertySelectorProps> = props => {
     const renderPropertyValues = (): React.ReactElement =>
       <Menu>
         {selected.possibleValues.map((value: string, index: number) =>
-          <Menu.Item key={`prop-value-${selected.key}-${index}`} text={value} onClick={() => onClick(value)} />)}
+          <MenuItem key={`prop-value-${selected.key}-${index}`} text={value} onClick={() => onClick(value)} />)}
       </Menu>;
 
     return (
@@ -49,7 +58,7 @@ const PropertySelector: React.FC<PropertySelectorProps> = props => {
     return (
       <Menu>
         {props.properties.map((prop: IStringProperty) =>
-          <Menu.Item key={`prop-select-${prop.key}`} text={prop.name} onClick={() => selectProperty(prop)} />)}
+          <MenuItem key={`prop-select-${prop.key}`} text={prop.name} onClick={() => selectProperty(prop)} />)}
       </Menu>
     );
   };
@@ -91,7 +100,7 @@ const StringPropertyInput: React.FC<Props> = props => {
 
   const renderPropertyChanger = (prop: IStringProperty) => {
     const onClick = (newValue: string) => setInputValue({ ...inputValue, [prop.key]: [newValue] });
-    const menuItem = (value: string) => <Menu.Item
+    const menuItem = (value: string) => <MenuItem
       key={`added-${prop.key}-${value}`}
       text={value}
       onClick={() => onClick(value)}

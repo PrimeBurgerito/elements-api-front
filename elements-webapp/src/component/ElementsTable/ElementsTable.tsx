@@ -1,4 +1,4 @@
-import { Cell, Column, IRegion, JSONFormat, SelectionModes, Table } from '@blueprintjs/table';
+import { Cell, Column, JSONFormat, Region, SelectionModes, Table } from '@blueprintjs/table';
 import { IColumnModel, IElementsTableProps } from '@component/ElementsTable/ElementsTableResource';
 import React from 'react';
 import { view } from 'react-easy-state';
@@ -17,7 +17,7 @@ const ElementsTable: React.FC<IElementsTableProps> = (props) => {
     return <Column key={`column-${column.key}`} name={column.name} cellRenderer={renderCell} />;
   };
 
-  const tableSelection = (selection: IRegion[]) => {
+  const tableSelection = (selection: Region[]) => {
     if (props.onSelect && selection.length && 'rows' in selection[0]) {
       const entityIdx = selection[0].rows[0];
       props.onSelect(props.data[entityIdx]);
