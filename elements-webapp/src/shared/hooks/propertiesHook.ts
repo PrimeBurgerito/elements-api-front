@@ -17,6 +17,7 @@ export const usePropertiesHook = (): PropertiesHook => {
   const [objectives, setObjectives] = useState<IObjective[]>([]);
 
   useEffect(() => {
+    console.log('Loading props from hook...');
     loadProperties();
   }, []);
 

@@ -31,22 +31,26 @@ const LocationCard: React.FC<Props> = props => {
     if (!dirty) {
       toggleDirty();
     }
-    setLocation({...location, nearbyLocations: names});
+    setLocation({ ...location, nearbyLocations: names });
   };
 
   return (
     <Card className="c-item">
       <div className="location-card-container">
-        <div className="c-item">
-          <H5>
-            {location.name}
-            <ButtonGroup style={{float: 'right'}}>
-              <Button disabled={!dirty} intent={Intent.PRIMARY} text="Update" icon={IconNames.REFRESH} onClick={onUpdate} />
-              <Button intent={Intent.WARNING} onClick={() => console.log(location)} text="Test" />
-              <Button intent={Intent.DANGER} icon={IconNames.TRASH} />
-            </ButtonGroup>
-          </H5>
-        </div>
+        <H5>
+          {location.name}
+          <ButtonGroup style={{ float: 'right' }}>
+            <Button
+              disabled={!dirty}
+              intent={Intent.PRIMARY}
+              text="Update"
+              icon={IconNames.REFRESH}
+              onClick={onUpdate}
+            />
+            <Button intent={Intent.WARNING} onClick={() => console.log(location)} text="Test" />
+            <Button intent={Intent.DANGER} icon={IconNames.TRASH} />
+          </ButtonGroup>
+        </H5>
         <NearbyLocationSelect
           locations={props.allLocations.filter(l => l.name !== location.name)}
           selected={location.nearbyLocations}

@@ -17,11 +17,11 @@ const RequirementStringPropertiesSelect: React.FC<Props> = props => {
   const getPropertiesWithCorrectValues = (): IStringProperty[] => {
     return Object.entries(props.value).map(([key, value]) => {
       const property = props.properties.find(p => p.key === key);
-      return {...property, value: [...value]};
+      return { ...property, value: [...value] };
     });
   };
 
-  const {selected, toggle, replace} = useMultiToggleHook<IStringProperty>(getPropertiesWithCorrectValues(), 'key');
+  const { selected, toggle, replace } = useMultiToggleHook<IStringProperty>(getPropertiesWithCorrectValues(), 'key');
 
   const onToggle = (property: IStringProperty) => {
     onChange(toggle(property));
@@ -39,7 +39,7 @@ const RequirementStringPropertiesSelect: React.FC<Props> = props => {
     props.onChange(reqProp);
   };
 
-  const valueRenderer: ItemRenderer<IStringProperty> = (property, {modifiers, handleClick}) => {
+  const valueRenderer: ItemRenderer<IStringProperty> = (property, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {
       return null;
     }

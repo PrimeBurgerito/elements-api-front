@@ -1,7 +1,6 @@
 import { Button, MenuItem } from '@blueprintjs/core';
 import { ItemRenderer, Select } from '@blueprintjs/select';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
   selectableValues: string[];
@@ -24,7 +23,7 @@ const StringSelect: React.FC<Props> = (props) => {
     handleValueSelect(props.value || props.selectableValues[0]);
   }, []);
 
-  const valueRenderer: ItemRenderer<string> = (value, {modifiers, handleClick}) => {
+  const valueRenderer: ItemRenderer<string> = (value, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {
       return null;
     }

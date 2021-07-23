@@ -1,0 +1,10 @@
+.container {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+
+  > .c-item {
+    width: 100%;
+    max-width: 90%;
+  }
+}

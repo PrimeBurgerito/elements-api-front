@@ -1,20 +1,15 @@
-import { Button, ControlGroup, FormGroup, Menu, Popover, Position } from '@blueprintjs/core';
-import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
+import { Button, ControlGroup, FormGroup, Menu, MenuProps, Popover, Position } from '@blueprintjs/core';
 import { IPopoverProps } from '@blueprintjs/core/src/components/popover/popover';
 import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { IStringProperty } from '@type/statistics';
-import React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './element.scss';
-
-interface IPropertiesForm {
-  [k: string]: string[];
-}
 
 type Props = {
   id?: string;
-  initialValue?: IPropertiesForm;
-  onChange: (properties: IPropertiesForm) => void;
+  initialValue?: Record<string, string[]>;
+  allProperties?: IStringProperty[];
+  onChange: (properties: Record<string, string[]>) => void;
 };
 
 type PropertySelectorProps = {
@@ -27,7 +22,7 @@ const PropertySelector: React.FC<PropertySelectorProps> = props => {
 
   const renderNewPropertyValuesSelector = (): React.ReactElement<IPopoverProps> => {
     const onClick = (value: string) => {
-      setSelected({...selected, value: [value]});
+      setSelected({ ...selected, value: [value] });
     };
 
     const renderPropertyValues = (): React.ReactElement =>
@@ -48,8 +43,8 @@ const PropertySelector: React.FC<PropertySelectorProps> = props => {
     setSelected(null);
   };
 
-  const renderPropertyMenu = (): React.ReactElement<IMenuProps> => {
-    const selectProperty = (prop: IStringProperty) => setSelected({...prop, value: [prop.possibleValues[0]]});
+  const renderPropertyMenu = (): React.ReactElement<MenuProps> => {
+    const selectProperty = (prop: IStringProperty) => setSelected({ ...prop, value: [prop.possibleValues[0]] });
 
     return (
       <Menu>
@@ -72,7 +67,7 @@ const PropertySelector: React.FC<PropertySelectorProps> = props => {
 
 // TODO: support for SINGLE and MULTIPLE properties
 const StringPropertyInput: React.FC<Props> = props => {
-  const [inputValue, setInputValue] = useState<IPropertiesForm>(props.initialValue);
+  const [inputValue, setInputValue] = useState<Record<string, string[]>>(props.initialValue);
 
   const [properties, setProperties] = useState<IStringProperty[]>([]);
   const [unusedProperties, usedProperties] = useMemo<[IStringProperty[], IStringProperty[]]>(() => {
@@ -87,12 +82,20 @@ const StringPropertyInput: React.FC<Props> = props => {
   }, [inputValue]);
 
   useEffect(() => {
-    stringPropertyApi.find().then((res: IStringProperty[]) => setProperties(res));
+    if (props.allProperties) {
+      setProperties(props.allProperties);
+    } else {
+      stringPropertyApi.find().then((res: IStringProperty[]) => setProperties(res));
+    }
   }, []);
 
   const renderPropertyChanger = (prop: IStringProperty) => {
-    const onClick = (newValue: string) => setInputValue({...inputValue, [prop.key]: [newValue]});
-    const menuItem = (value: string) => <Menu.Item key={`added-${prop.key}-${value}`} text={value} onClick={() => onClick(value)} />;
+    const onClick = (newValue: string) => setInputValue({ ...inputValue, [prop.key]: [newValue] });
+    const menuItem = (value: string) => <Menu.Item
+      key={`added-${prop.key}-${value}`}
+      text={value}
+      onClick={() => onClick(value)}
+    />;
 
     return (
       <FormGroup className="statistic-changer" key={`added-${prop.key}`} labelFor={prop.key} label={prop.name}>
@@ -104,7 +107,7 @@ const StringPropertyInput: React.FC<Props> = props => {
   };
 
   const onPropertySelect = (property: IStringProperty) => {
-    setInputValue(!inputValue ? {[property.key]: property.value} : {...inputValue, [property.key]: property.value});
+    setInputValue(!inputValue ? { [property.key]: property.value } : { ...inputValue, [property.key]: property.value });
   };
 
   return (

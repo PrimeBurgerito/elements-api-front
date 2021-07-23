@@ -27,13 +27,13 @@ export default abstract class BaseApi<T, C = any> {
 
   public putConditionalImage = async (conditionalImageDto: IConditionalImageDto, imageFile: File): Promise<IConditionalImage> => {
     const formData = this.getImageForm(conditionalImageDto, imageFile);
-    const response: AxiosResponse<IConditionalImage> = await PUT(`${this.PATH}/image`, formData, {headers: {'Content-Type': undefined}});
+    const response: AxiosResponse<IConditionalImage> = await PUT(`${this.PATH}/image`, formData, { headers: { 'Content-Type': undefined } });
     return await response ? response.data : null;
   };
 
   public putImage = async (imageDto: IImageDto, imageFile: File): Promise<any> => {
     const formData = this.getImageForm(imageDto, imageFile);
-    const response: AxiosResponse = await PUT(`${this.PATH}/image`, formData, {headers: {'Content-Type': undefined}});
+    const response: AxiosResponse = await PUT(`${this.PATH}/image`, formData, { headers: { 'Content-Type': undefined } });
     return await response ? response.data : null;
   };
 

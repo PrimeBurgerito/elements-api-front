@@ -4,8 +4,8 @@ import React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const templateColumns = [
-  {name: 'Properties', key: 'properties'},
-  {name: 'Images', key: 'images'},
+  { name: 'Properties', key: 'properties' },
+  { name: 'Images', key: 'images' },
 ];
 
 const characterForm: IFormStructure = {

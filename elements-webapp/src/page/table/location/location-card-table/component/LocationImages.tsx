@@ -38,18 +38,38 @@ const LocationImages: React.FC<Props> = props => {
     <Callout className="c-item-image">
       <H6>
         Images
-        <ButtonGroup style={{float: 'right'}}>
+        <ButtonGroup style={{ float: 'right' }}>
           <Button intent={Intent.SUCCESS} icon={IconNames.ADD} onClick={toggleImageAdd} />
           {/*<Button intent={Intent.WARNING} icon={IconNames.EDIT} disabled={!images.length} onClick={toggleImageEdit} />*/}
-          <Button intent={Intent.DANGER} icon={IconNames.TRASH} disabled={!images.length} onClick={onImageRemove} loading={removing} />
+          <Button
+            intent={Intent.DANGER}
+            icon={IconNames.TRASH}
+            disabled={!images.length}
+            onClick={onImageRemove}
+            loading={removing}
+          />
         </ButtonGroup>
       </H6>
       <div className="location-image-container">
-        <Button className="btn-left" icon={IconNames.ARROW_LEFT} large outlined onClick={images.previous} disabled={!canSelectImages()} />
+        <Button
+          className="btn-left"
+          icon={IconNames.ARROW_LEFT}
+          large
+          outlined
+          onClick={images.previous}
+          disabled={!canSelectImages()}
+        />
         <div className="location-image">
           {images.selectedItem && <img src={`${MEDIA_URL}/${images.selectedItem.image.fileName}`} alt="None" />}
         </div>
-        <Button className="btn-right" icon={IconNames.ARROW_RIGHT} large outlined onClick={images.next} disabled={!canSelectImages()} />
+        <Button
+          className="btn-right"
+          icon={IconNames.ARROW_RIGHT}
+          large
+          outlined
+          onClick={images.next}
+          disabled={!canSelectImages()}
+        />
       </div>
       <LocationImageAdd open={imageAddOpen} onClose={toggleImageAdd} entityId={props.entityId} onAdd={images.add} />
     </Callout>

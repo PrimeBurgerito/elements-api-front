@@ -21,13 +21,15 @@ const Header: React.FC = () => {
     const menu = (): React.ReactElement =>
       <Menu>
         <Menu.Item text="Event" onClick={() => history.push(EVENT_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Character template" onClick={() => history.push(CHARACTER_TEMPLATE_PATH)} shouldDismissPopover={true} />
+        <Menu.Item text="Character template" onClick={() => history.push(CHARACTER_TEMPLATE_PATH)}
+          shouldDismissPopover={true} />
         <Menu.Item text="Location" onClick={() => history.push(LOCATION_PATH)} shouldDismissPopover={true} />
         <Menu.Item text="Attribute" onClick={() => history.push(ATTRIBUTE_PATH)} shouldDismissPopover={true} />
         <Menu.Item text="Property" onClick={() => history.push(PROPERTY_PATH)} shouldDismissPopover={true} />
         <Menu.Item text="Objective" onClick={() => history.push(OBJECTIVE_PATH)} shouldDismissPopover={true} />
         <Menu.Item text="Key container" onClick={() => history.push(KEY_CONTAINER_PATH)} shouldDismissPopover={true} />
-        <Menu.Item text="Image container" onClick={() => history.push(IMAGE_CONTAINER_PATH)} shouldDismissPopover={true} />
+        <Menu.Item text="Image container" onClick={() => history.push(IMAGE_CONTAINER_PATH)}
+          shouldDismissPopover={true} />
       </Menu>;
 
 
@@ -37,7 +39,7 @@ const Header: React.FC = () => {
         content={menu()}
         placement="bottom"
         hasBackdrop={false}
-        renderTarget={({isOpen, ref, ...p}) => (
+        renderTarget={({ isOpen, ref, ...p }) => (
           <Button {...p} active={isOpen} elementRef={ref} minimal text="API" />
         )}
       />
@@ -49,6 +51,7 @@ const Header: React.FC = () => {
       <Menu>
         <Menu.Item text="Location" onClick={() => history.push(`${LOCATION_PATH}/v2`)} shouldDismissPopover />
         <Menu.Item text="Event" onClick={() => history.push(`${EVENT_PATH}/v2`)} shouldDismissPopover />
+        <Menu.Item text="Character Template" onClick={() => history.push(`${CHARACTER_TEMPLATE_PATH}/v2`)} shouldDismissPopover />
       </Menu>;
 
 
@@ -58,7 +61,7 @@ const Header: React.FC = () => {
         content={menu()}
         placement="bottom"
         hasBackdrop={false}
-        renderTarget={({isOpen, ref, ...p}) => (
+        renderTarget={({ isOpen, ref, ...p }) => (
           <Button {...p} active={isOpen} elementRef={ref} minimal text="API V2" />
         )}
       />

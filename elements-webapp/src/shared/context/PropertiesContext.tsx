@@ -12,4 +12,4 @@ export const PropertiesContextProvider: React.FC = props => {
   );
 };
 
-export const useProperties = () => useContext(PropertiesContext);
+export const useProperties = (): PropertiesHook => useContext(PropertiesContext);

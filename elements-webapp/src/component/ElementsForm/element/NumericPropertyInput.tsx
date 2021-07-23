@@ -1,13 +1,12 @@
-import { Button, ControlGroup, FormGroup, Menu, NumericInput, Popover, Position } from '@blueprintjs/core';
-import { IMenuProps } from '@blueprintjs/core/src/components/menu/menu';
+import { Button, ControlGroup, FormGroup, Menu, MenuProps, NumericInput, Popover, Position } from '@blueprintjs/core';
 import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import { INumericProperty } from '@type/statistics';
-import React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './element.scss';
 
 type Props = {
   id?: string;
+  allProperties?: INumericProperty[];
   initialValues?: { [k: string]: number };
   onChange: (attributes: { [k: string]: number }) => void;
 };
@@ -27,10 +26,10 @@ const AttributeSelector: React.FC<AttributeSelectorProps> = props => {
     setSelected(null);
   };
 
-  const onValueChange = (value: number) => setSelected({...selected, value});
-  const renderAttributeMenu = (): React.ReactElement<IMenuProps> => {
+  const onValueChange = (value: number) => setSelected({ ...selected, value });
+  const renderAttributeMenu = (): React.ReactElement<MenuProps> => {
     const onClick = (attr: INumericProperty) => {
-      setSelected({...attr, value: attr.value || attr.min});
+      setSelected({ ...attr, value: attr.value || attr.min });
     };
 
     return (
@@ -73,15 +72,19 @@ const NumericPropertyInput: React.FC<Props> = props => {
   }, [inputValue]);
 
   useEffect(() => {
-    numericPropertyApi.find().then((res: INumericProperty[]) => {
-      if (res?.length) {
-        setProperties(res);
-      }
-    });
+    if (props.allProperties) {
+      setProperties(props.allProperties);
+    } else {
+      numericPropertyApi.find().then((res: INumericProperty[]) => {
+        if (res?.length) {
+          setProperties(res);
+        }
+      });
+    }
   }, []);
 
   const renderPropertyChanger = (key: string): React.ReactElement => {
-    const changeHandler = (newValue: number) => setInputValue({...inputValue, [key]: newValue});
+    const changeHandler = (newValue: number) => setInputValue({ ...inputValue, [key]: newValue });
     const property: INumericProperty = properties.find((a: INumericProperty) => a.key === key);
     return (
       <FormGroup className="statistic-changer" label={property.name} labelFor={property.key} key={`${key}-for-group`}>
@@ -98,7 +101,7 @@ const NumericPropertyInput: React.FC<Props> = props => {
   };
 
   const onPropertySelect = (property: INumericProperty) => {
-    setInputValue(!inputValue ? {[property.key]: property.value} : {...inputValue, [property.key]: property.value});
+    setInputValue(!inputValue ? { [property.key]: property.value } : { ...inputValue, [property.key]: property.value });
   };
 
   return (

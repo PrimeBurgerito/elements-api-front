@@ -10,7 +10,15 @@
         "SwitchCase": 1
       }
     ],
-    "object-curly-spacing": ["error", "always"]
+    "object-curly-spacing": ["error", "always"],
+    "quotes": ["error", "single"],
+    "react/prop-types": "off",
+    "react/jsx-indent": [
+      2, 2, {
+        "checkAttributes": true
+      }
+    ],
+    "react/jsx-indent-props": ["error", "first"]
   },
   "extends": [
     "eslint:recommended",

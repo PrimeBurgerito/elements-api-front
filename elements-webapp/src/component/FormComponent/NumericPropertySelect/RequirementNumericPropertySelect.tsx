@@ -1,6 +1,7 @@
 import { FormGroup, MenuItem } from '@blueprintjs/core';
 import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
-import RequirementNumericPropertyValueInput from '@component/FormComponent/NumericPropertySelect/RequirementNumericPropertyValueInput';
+import RequirementNumericPropertyValueInput
+  from '@component/FormComponent/NumericPropertySelect/RequirementNumericPropertyValueInput';
 import { useNumericPropertyRequirementHook } from '@shared/hooks/requirementHooks';
 import { IRequirementNumericProperties } from '@type/Requirement';
 import { INumericProperty } from '@type/statistics';
@@ -14,7 +15,7 @@ type Props = {
 
 const PropertySelect = MultiSelect.ofType<INumericProperty>();
 const RequirementNumericPropertySelect: React.FC<Props> = props => {
-  const {value, toggle, setRequirement} = useNumericPropertyRequirementHook(props.value);
+  const { value, toggle, setRequirement } = useNumericPropertyRequirementHook(props.value);
   const selectedProperties = useMemo<INumericProperty[]>(() => props.properties.filter(p => Object.keys(value).includes(p.key)),
     [value]);
 
@@ -22,7 +23,7 @@ const RequirementNumericPropertySelect: React.FC<Props> = props => {
     props.onChange(toggle(property));
   };
 
-  const valueRenderer: ItemRenderer<INumericProperty> = (property, {modifiers, handleClick}) => {
+  const valueRenderer: ItemRenderer<INumericProperty> = (property, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {
       return null;
     }
