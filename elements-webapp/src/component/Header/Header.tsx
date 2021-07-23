@@ -1,5 +1,4 @@
-import { Button, Menu, MenuItem, Navbar } from '@blueprintjs/core';
-import { Popover2 } from '@blueprintjs/popover2';
+import { Button, Menu, MenuItem, Navbar, Popover } from '@blueprintjs/core';
 import {
   ATTRIBUTE_PATH,
   CHARACTER_TEMPLATE_PATH,
@@ -40,7 +39,8 @@ const Header: React.FC = () => {
 
 
     return (
-      <Popover2
+      <Popover
+        usePortal={false}
         enforceFocus={false}
         content={menu()}
         placement="bottom"
@@ -66,7 +66,8 @@ const Header: React.FC = () => {
 
 
     return (
-      <Popover2
+      <Popover
+        usePortal={false}
         enforceFocus={false}
         content={menu()}
         placement="bottom"
