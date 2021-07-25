@@ -36,13 +36,12 @@ const CharacterTemplateCardImages: React.FC<Props> = props => {
     const key = recordState.selected.key;
     const success = CharacterTemplateV2Api.removeImage(props.entityId, key);
     if (success) {
-      recordState.remove(key)
+      recordState.remove(key, true)
     }
   }
 
   const onAdd = (img: IImage) => {
-    recordState.add(img.key, img);
-    recordState.select(img.key);
+    recordState.add(img.key, img, true);
   }
 
   return (

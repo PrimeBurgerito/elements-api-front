@@ -1,38 +1,47 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 type RecordSelectHook<T> = {
   record: Record<string, T>,
   selected?: T,
-  add: (key: string, value: T) => void,
-  remove: (key: keyof RecordSelectHook<T>['record']) => void,
+  add: (key: string, value: T, select?: boolean) => void,
+  remove: (key: keyof RecordSelectHook<T>['record'], reSelect?: boolean) => void,
   select: (key: keyof RecordSelectHook<T>['record']) => void,
 }
 
-const getFirstKey = <T>(initialValues?: Record<string, T>) => {
-  const keys = initialValues && Object.keys(initialValues)
-  if (keys?.length) {
-    return keys[0];
+const getFirst = <T>(initialValues?: Record<string, T>): T => {
+  const values = initialValues && Object.values(initialValues)
+  if (values?.length) {
+    return values[0];
   }
   return null;
 }
 
 export const useRecordSelectHook = <T>(initialValues?: Record<string, T>): RecordSelectHook<T> => {
   const [record, setRecord] = useState<Record<string, T>>(initialValues || {})
-  const [selectedKey, setSelectedKey] = useState<string>(getFirstKey(initialValues));
-  const selected = useMemo(() => selectedKey && record[selectedKey], [selectedKey])
+  const [selected, setSelected] = useState<T>(getFirst(initialValues));
 
-  const add = (key: string, value: T) => {
+  const add = (key: string, value: T, select = false) => {
     setRecord({ ...record, [key]: value })
+    if (select) {
+      setSelected(value);
+    }
   }
 
-  const remove = (key: keyof typeof record) => {
+  const remove = (key: keyof typeof record, reSelect = false) => {
+    if (reSelect) {
+      const keys = Object.keys(record);
+      const previousIndex = keys.indexOf(key) - 1;
+      if (previousIndex >= 0) {
+        setSelected(record[keys[previousIndex]])
+      }
+    }
     const newRecord = { ...record };
     delete newRecord[key];
     setRecord(newRecord);
   }
 
   const select = (key: keyof typeof record) => {
-    setSelectedKey(key);
+    setSelected(record[key]);
   }
 
   return {
