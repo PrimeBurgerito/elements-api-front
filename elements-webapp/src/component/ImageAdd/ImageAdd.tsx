@@ -1,6 +1,7 @@
 import React from 'react';
 import { FileInput, FormGroup, InputGroup } from '@blueprintjs/core';
 import { ImageAddHook } from '@component/ImageAdd/imageAddHook';
+import ImageRenderer from '@component/ImageAdd/ImageRenderer';
 
 type Props = {
   hook: ImageAddHook,
@@ -11,7 +12,7 @@ const ImageAdd: React.FC<Props> = props => {
 
   return (
     <>
-      <FormGroup label="Image name" labelFor="image-name">
+      <FormGroup label="Image name" labelFor="image-name" labelInfo="(required)">
         <InputGroup id="image-name" placeholder="Insert image..." onChange={handleImage.onKeyChange} />
       </FormGroup>
       <FormGroup label="Add image" labelFor="image-input">
@@ -28,9 +29,7 @@ const ImageAdd: React.FC<Props> = props => {
           onPaste={handleImage.onPaste}
         />
       </FormGroup>
-      <div style={{ textAlign: 'center' }}>
-        {!!image.file && <img src={image.src} alt="No image" />}
-      </div>
+      {!!image.file && <ImageRenderer src={image.src} setCrop={handleImage.setCrop} />}
     </>
   );
 }

@@ -15,14 +15,14 @@ import './imageAddingDialog.scss';
 
 const defaultStructure: IFormStructure = {
   formElements: {
-    imageKey: {label: 'Unique image key', type: FormElementType.TEXT},
+    imageKey: { label: 'Unique image key', type: FormElementType.TEXT },
   },
 };
 
 const conditionalStructure: IFormStructure = {
   formElements: {
-    imageKey: {label: 'Unique image key', type: FormElementType.TEXT},
-    requirement: {label: 'Image requirement', type: FormElementType.REQUIREMENT},
+    imageKey: { label: 'Unique image key', type: FormElementType.TEXT },
+    requirement: { label: 'Image requirement', type: FormElementType.REQUIREMENT },
   },
 };
 
@@ -37,7 +37,10 @@ type Props = {
 };
 
 const ImageAddingDrawer: React.FC<Props> = (props) => {
-  const [imageDto, setImageDto] = useState<IImageDto | IConditionalImageDto>({entityId: props.entityId, imageKey: ''});
+  const [imageDto, setImageDto] = useState<IImageDto | IConditionalImageDto>({
+    entityId: props.entityId,
+    imageKey: ''
+  });
   const [imageFile, setImageFile] = useState<File>(null);
   const [imageSrc, setImageSrc] = useState<string>(null);
   const [saveCropped, setSaveCropped] = useState<boolean>(false);
@@ -62,22 +65,22 @@ const ImageAddingDrawer: React.FC<Props> = (props) => {
   };
 
   const onDialogClose = () => {
-    setImageDto({entityId: props.entityId, imageKey: ''});
+    setImageDto({ entityId: props.entityId, imageKey: '' });
     setImageFile(null);
     setImageSrc(null);
     props.onClose();
   };
 
-  const onFileAdd = ({target}) => {
+  const onFileAdd = ({ target }) => {
     setImageFile(target.files[0]);
     setImageSrc(URL.createObjectURL(target.files[0]));
   };
 
   const handleFormChange = (change: object) => {
-    setImageDto({...imageDto, ...change});
+    setImageDto({ ...imageDto, ...change });
   };
 
-  const onCropDtoChange = (e: CustomEvent): void => setImageDto({...imageDto, crops: {avatar: e.detail}});
+  const onCropDtoChange = (e: CustomEvent): void => setImageDto({ ...imageDto, crops: { avatar: e.detail } });
   const renderImage = (): ReactElement => {
     if (props.type !== 'avatar') {
       if (saveCropped) {
@@ -97,12 +100,12 @@ const ImageAddingDrawer: React.FC<Props> = (props) => {
     text="Create"
   />;
   const renderSaveCroppedImageToggle = (): ReactElement => props.type !== 'avatar' && <Checkbox
-    checked={saveCropped} label="Save cropped image?" onChange={({target}) => setSaveCropped(target['checked'])} />;
+    checked={saveCropped} label="Save cropped image?" onChange={({ target }) => setSaveCropped(target['checked'])} />;
 
   return (
     <Drawer
       className={Classes.DARK}
-      style={{overflow: 'auto'}}
+      style={{ overflow: 'auto' }}
       position={Position.LEFT}
       title={props.label}
       isOpen={props.isOpen}
@@ -119,7 +122,7 @@ const ImageAddingDrawer: React.FC<Props> = (props) => {
         {imageFile && renderImage()}
       </div>
       <div className={Classes.DIALOG_FOOTER}>
-        <div className={Classes.DIALOG_FOOTER_ACTIONS} style={{marginBottom: 10}}>
+        <div className={Classes.DIALOG_FOOTER_ACTIONS} style={{ marginBottom: 10 }}>
           <Button large intent="warning" onClick={() => console.log(imageDto)}>Test</Button>
           {renderCreateButton()}
         </div>

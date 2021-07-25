@@ -40,6 +40,11 @@ const CharacterTemplateCardImages: React.FC<Props> = props => {
     }
   }
 
+  const onAdd = (img: IImage) => {
+    recordState.add(img.key, img);
+    recordState.select(img.key);
+  }
+
   return (
     <Callout className="c-item-image">
       <H5>Images
@@ -71,7 +76,7 @@ const CharacterTemplateCardImages: React.FC<Props> = props => {
         open={imageAddOpen}
         onClose={toggleImageAdd}
         entityId={props.entityId}
-        onAdd={img => recordState.add(img.key, img)}
+        onAdd={onAdd}
       />
     </Callout>
   );
