@@ -1,22 +1,24 @@
 import React, { useRef, useState } from 'react';
-import { Button, FormGroup, InputGroup, Switch, Tooltip } from '@blueprintjs/core';
+import { Button, ControlGroup, FormGroup, HTMLSelect, InputGroup, Switch, Tooltip } from '@blueprintjs/core';
 import { useToggle } from '@shared/hooks/toggleHook';
 import Cropper, { ReactCropperElement } from 'react-cropper';
-import { ImageAddHook } from '@component/ImageAdd/imageAddHook';
+import { IImageCrop } from '@type/image';
+import { RecordSelectHook } from '@shared/hooks/recordSelectHook';
 
 type Props = {
   src: string,
-  setCrop?: ImageAddHook['handleImage']['setCrop'],
+  crops?: RecordSelectHook<IImageCrop>
 }
 
 const ImageRenderer: React.FC<Props> = props => {
-  const [cropActive, toggleCrop] = useToggle(false);
   const cropperRef = useRef<ReactCropperElement>();
+  const [cropActive, toggleCrop] = useToggle(false);
   const [cropKey, setCropKey] = useState('');
+  const cropKeys = Object.keys(props.crops.record);
 
   const setCrop = (): void => {
     if (cropKey) {
-      props.setCrop(cropKey, cropperRef.current.cropper.getData())
+      props.crops.set(cropKey, cropperRef.current.cropper.getData(), true)
     }
   };
 
@@ -33,28 +35,37 @@ const ImageRenderer: React.FC<Props> = props => {
     />
   }
 
+  const onCropChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    const crop = props.crops.select(e.target.value);
+    cropperRef.current.cropper.setData(crop);
+  }
+
   const renderCropForm = (): React.ReactElement => {
     return (
-      <>
-        <FormGroup label="Crop key" labelFor="crop-key" labelInfo="(required)">
+      <FormGroup label="Add new crop" labelFor="crop-key" labelInfo="(required)">
+        <ControlGroup id="crop-key">
+          <HTMLSelect
+            options={cropKeys.length ? cropKeys : ['(none)']}
+            disabled={!cropKeys.length}
+            onChange={onCropChange}
+          />
           <InputGroup
-            id="crop-key"
-            placeholder="Set key for cropping..."
+            placeholder="Insert key..."
             value={cropKey}
             onChange={e => setCropKey(e.target.value)}
             type="text"
           />
-        </FormGroup>
-        <Tooltip content="Crop key can't be empty!" disabled={!!cropKey}>
-          <Button text="Set crop" disabled={!cropKey} onClick={setCrop} />
-        </Tooltip>
-      </>
+          <Tooltip content="Crop key can't be empty!" disabled={!!cropKey}>
+            <Button text="Add" disabled={!cropKey} onClick={setCrop} />
+          </Tooltip>
+        </ControlGroup>
+      </FormGroup>
     );
   }
 
   return (
     <>
-      {props.setCrop && <Switch checked={cropActive} label="Crop" onChange={toggleCrop} />}
+      {props.crops && <Switch checked={cropActive} label="Crop" onChange={toggleCrop} />}
       {cropActive && renderCropForm()}
       <br />
       <div style={{ textAlign: 'center' }}>

@@ -41,7 +41,7 @@ const CharacterTemplateCardImages: React.FC<Props> = props => {
   }
 
   const onAdd = (img: IImage) => {
-    recordState.add(img.key, img, true);
+    recordState.set(img.key, img, true);
   }
 
   return (

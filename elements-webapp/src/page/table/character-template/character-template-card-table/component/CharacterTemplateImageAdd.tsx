@@ -2,9 +2,10 @@ import React, { useMemo } from 'react';
 import { useImageAddHook } from '@component/ImageAdd/imageAddHook';
 import ImageAdd from '@component/ImageAdd/ImageAdd';
 import { Button, Card, Classes, H2, Overlay, Tooltip } from '@blueprintjs/core';
-import { IImage, IImageDto } from '@type/image';
+import { IImage, IImageCrop, IImageDto } from '@type/image';
 import { Intent } from '@blueprintjs/core/lib/esnext';
 import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
+import { useRecordSelectHook } from '@shared/hooks/recordSelectHook';
 
 const OVERLAY_CLASS = [Classes.DARK, 'absolute-center'].join(' ');
 
@@ -17,18 +18,19 @@ type Props = {
 
 export const CharacterTemplateImageAdd: React.FC<Props> = props => {
   const { handleImage, image } = useImageAddHook();
+  const imageCrop = useRecordSelectHook<IImageCrop>();
 
   const isValidImage = useMemo(() => {
-    const cropKeys = Object.keys(image.crops);
+    const cropKeys = Object.keys(imageCrop.record);
     const validCropKeys = !cropKeys.length || cropKeys.every(Boolean);
     return !!image.file && !!image.key && validCropKeys;
-  }, [image.file, image.key, image.crops])
+  }, [image.file, image.key, imageCrop.record])
 
   const onAdd = async (): Promise<void> => {
     const imageDto: IImageDto = {
       entityId: props.entityId,
       imageKey: image.key,
-      crops: image.crops,
+      crops: imageCrop.record,
     };
     const imageResponse = await CharacterTemplateV2Api.putImage(imageDto, image.file);
     if (imageResponse) {
@@ -49,7 +51,7 @@ export const CharacterTemplateImageAdd: React.FC<Props> = props => {
           <H2>New Image</H2>
         </div>
         <div className={Classes.DIALOG_BODY}>
-          <ImageAdd hook={{ handleImage, image }} />
+          <ImageAdd hook={{ handleImage, image }} cropsHook={imageCrop} />
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>

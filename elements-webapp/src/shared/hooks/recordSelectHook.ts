@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-type RecordSelectHook<T> = {
+export type RecordSelectHook<T> = {
   record: Record<string, T>,
   selected?: T,
-  add: (key: string, value: T, select?: boolean) => void,
+  set: (key: string, value: T, select?: boolean) => void,
   remove: (key: keyof RecordSelectHook<T>['record'], reSelect?: boolean) => void,
-  select: (key: keyof RecordSelectHook<T>['record']) => void,
+  select: (key: keyof RecordSelectHook<T>['record']) => T,
 }
 
 const getFirst = <T>(initialValues?: Record<string, T>): T => {
@@ -20,7 +20,7 @@ export const useRecordSelectHook = <T>(initialValues?: Record<string, T>): Recor
   const [record, setRecord] = useState<Record<string, T>>(initialValues || {})
   const [selected, setSelected] = useState<T>(getFirst(initialValues));
 
-  const add = (key: string, value: T, select = false) => {
+  const set = (key: string, value: T, select = false) => {
     setRecord({ ...record, [key]: value })
     if (select) {
       setSelected(value);
@@ -40,14 +40,16 @@ export const useRecordSelectHook = <T>(initialValues?: Record<string, T>): Recor
     setRecord(newRecord);
   }
 
-  const select = (key: keyof typeof record) => {
-    setSelected(record[key]);
+  const select = (key: keyof typeof record): T => {
+    const selectedRecord = record[key];
+    setSelected(selectedRecord);
+    return selectedRecord;
   }
 
   return {
     record,
     selected,
-    add,
+    set,
     remove,
     select,
   }

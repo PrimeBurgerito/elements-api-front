@@ -2,9 +2,12 @@ import React from 'react';
 import { FileInput, FormGroup, InputGroup } from '@blueprintjs/core';
 import { ImageAddHook } from '@component/ImageAdd/imageAddHook';
 import ImageRenderer from '@component/ImageAdd/ImageRenderer';
+import { IImageCrop } from '@type/image';
+import { RecordSelectHook } from '@shared/hooks/recordSelectHook';
 
 type Props = {
   hook: ImageAddHook,
+  cropsHook?: RecordSelectHook<IImageCrop>,
 }
 
 const ImageAdd: React.FC<Props> = props => {
@@ -29,7 +32,7 @@ const ImageAdd: React.FC<Props> = props => {
           onPaste={handleImage.onPaste}
         />
       </FormGroup>
-      {!!image.file && <ImageRenderer src={image.src} setCrop={handleImage.setCrop} />}
+      {!!image.file && <ImageRenderer src={image.src} crops={props.cropsHook} />}
     </>
   );
 }
