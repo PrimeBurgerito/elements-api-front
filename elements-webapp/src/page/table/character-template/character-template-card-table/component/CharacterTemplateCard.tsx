@@ -36,18 +36,21 @@ const CharacterTemplateCard: React.FC<Props> = props => {
 
   return (
     <Card className="c-item">
-      <ButtonGroup style={{ float: 'right' }}>
-        <Button
-          disabled={!dirty}
-          intent={Intent.PRIMARY}
-          text="Update"
-          icon={IconNames.Refresh}
-          onClick={onUpdate}
-          loading={updating}
-        />
-        <Button intent={Intent.WARNING} onClick={() => console.log(value)} text="Test" />
-        <Button intent={Intent.DANGER} icon={IconNames.Trash} loading={updating} />
-      </ButtonGroup>
+      <div>
+
+        <ButtonGroup>
+          <Button
+            disabled={!dirty}
+            intent={Intent.PRIMARY}
+            text="Update"
+            icon={IconNames.Refresh}
+            onClick={onUpdate}
+            loading={updating}
+          />
+          <Button intent={Intent.WARNING} onClick={() => console.log(value)} text="Test" />
+        </ButtonGroup>
+        <Button intent={Intent.DANGER} icon={IconNames.Trash} loading={updating} style={{ float: 'right' }} />
+      </div>
       <CharacterTemplateCardProperties properties={value} onChange={onPropsChange} />
       <CharacterTemplateCardImages images={props.template.images} entityId={props.template.id} />
     </Card>

@@ -1,7 +1,7 @@
 .location-container {
   display: grid;
   grid-auto-rows: 1fr;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 
   > .c-item {
     width: 100%;

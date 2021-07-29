@@ -18,10 +18,7 @@ const CharacterTemplateCardTable: React.FC = () => {
   }
 
   const renderCard = (template: ICharacterTemplate): React.ReactElement => {
-    return <CharacterTemplateCard
-      key={template.id}
-      template={template}
-    />
+    return <CharacterTemplateCard key={template.id} template={template} />
   }
 
   return (

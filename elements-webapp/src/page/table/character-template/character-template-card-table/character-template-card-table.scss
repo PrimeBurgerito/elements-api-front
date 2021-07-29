@@ -1,7 +1,7 @@
 .character-template-container {
   display: grid;
   grid-auto-rows: auto;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   grid-gap: 2em;
   padding: 2em;
 
