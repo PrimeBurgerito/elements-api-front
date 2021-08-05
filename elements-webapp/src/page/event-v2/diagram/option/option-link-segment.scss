@@ -1,0 +1,18 @@
+@keyframes link-selected {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.option-link-segment {
+  fill: none;
+  pointer-events: auto;
+
+  &.selected {
+    stroke-dasharray: 10, 2;
+    animation: link-selected 1s linear infinite;
+  }
+}

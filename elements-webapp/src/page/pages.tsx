@@ -81,12 +81,13 @@ export const protectedPages: ISinglePage[] = [
     path: EVENT_PATH,
     component: () => {
       const { path } = useRouteMatch();
+
       return (
         <Switch>
           <Route exact path={path}>
             <EventPage />
           </Route>
-          <Route path={`${path}/v2`}>
+          <Route path={[`${path}/v2/:id`, `${path}/v2`]}>
             <PropertiesContextProvider>
               <EventV2Page />
             </PropertiesContextProvider>

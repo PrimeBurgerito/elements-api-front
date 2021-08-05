@@ -73,10 +73,10 @@ class EventEngine {
       .forEach((node: BaseNodeModel, imageIndex: number) => {
         formData.append(EventEngine.FORM_DATA_FILES, node.image);
         const sceneIndex = scenes.indexOf(node.scene);
-        imageToSceneMap.push({imageIndex, sceneIndex});
+        imageToSceneMap.push({ imageIndex, sceneIndex });
       });
 
-    const eventDto: IEventDto = {...rest, scenes};
+    const eventDto: IEventDto = { ...rest, scenes };
     formData.append(EventEngine.FORM_DATA_IMAGE_TO_SCENE, new Blob([JSON.stringify(imageToSceneMap)], APPLICATION_JSON_OPTION));
     formData.append(EventEngine.FORM_DATA_EVENT_DTO, new Blob([JSON.stringify(eventDto)], APPLICATION_JSON_OPTION));
     return formData;
@@ -101,7 +101,7 @@ export const useEventEngineHook = (): Hook => {
     node.x = points.x;
     node.y = points.y;
     node.addListener({
-      selectionChanged: ({entity}) => setSelectedNode(entity as BaseNodeModel),
+      selectionChanged: ({ entity }) => setSelectedNode(entity as BaseNodeModel),
     });
     eventEngine.model.addNode(node);
   };

@@ -20,34 +20,40 @@ export interface IOption {
   requirement?: IRequirement;
 }
 
-export type SceneType = 'DEFAULT' | 'OPTION' | 'REWARD';
-
-export interface IScene extends ISceneImage {
-  next: number;
-  image?: IImage;
+export enum SceneType {
+  DEFAULT = 'DEFAULT',
+  OPTION = 'OPTION',
+  REWARD = 'REWARD',
 }
 
-export interface ISceneOption extends ISceneImage {
-  image?: IImage;
-  options?: IOption[];
+export interface ISceneBase<T extends SceneType = SceneType> {
+  type: T;
 }
 
-export interface ISceneImage extends ISceneBase {
+export interface ISceneImage<T extends SceneType> extends ISceneBase<T> {
   text: string;
   image?: IImage;
 }
 
-export interface ISceneReward extends ISceneBase {
+export interface IScene extends ISceneImage<SceneType.DEFAULT> {
   next: number;
-  reward: IReward;
+  image?: IImage;
+  type: SceneType.DEFAULT;
 }
 
-export interface ISceneBase {
-  type?: SceneType;
+export interface ISceneOption extends ISceneImage<SceneType.OPTION> {
+  image?: IImage;
+  options?: IOption[];
+  type: SceneType.OPTION;
+}
+
+export interface ISceneReward extends ISceneBase<SceneType.REWARD> {
+  next: number;
+  reward: IReward;
+  type: SceneType.REWARD;
 }
 
 export interface IImageToSceneMap {
   imageIndex: number;
   sceneIndex: number;
 }
-

@@ -1,11 +1,11 @@
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
-import { ISceneOption } from '@type/Event';
+import { ISceneOption, SceneType } from '@type/Event';
 
 export default class OptionNodeModel extends BaseNodeModel {
   public scene: ISceneOption;
 
-  constructor(name: string = 'Option', index: number = 0) {
-    super('OPTION', index);
+  constructor(name = 'Option', index = 0) {
+    super(SceneType.OPTION, index);
     this.name = name;
     this.color = 'rgb(0,192,255)';
     this.scene.options = [];

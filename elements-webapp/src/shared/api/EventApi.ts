@@ -11,7 +11,7 @@ export default class EventApi {
   };
   public static post = async (body: FormData): Promise<IEvent> => {
     const response: AxiosResponse = await POST(EVENT_API_PATH + '/new', body,
-      {headers: {'Content-Type': undefined}});
+      { headers: { 'Content-Type': undefined } });
     return await response ? response.data : null;
   };
 }

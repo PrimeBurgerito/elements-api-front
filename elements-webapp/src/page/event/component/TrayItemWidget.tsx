@@ -14,7 +14,7 @@ const TrayItemWidget: React.FC<Props> = props => {
   };
 
   return (
-    <div style={{borderColor: props.color}} draggable={true} onDragStart={handleDragStart} className="tray-item">
+    <div style={{ borderColor: props.color }} draggable={true} onDragStart={handleDragStart} className="tray-item">
       {props.name}
     </div>
   );

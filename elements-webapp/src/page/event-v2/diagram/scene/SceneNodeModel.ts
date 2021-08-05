@@ -1,23 +1,36 @@
-import { DefaultLinkModel, DefaultPortModel } from '@projectstorm/react-diagrams';
 import EventNodeModel from '../EventNodeModel';
+import { IScene, SceneType } from '@type/Event';
+import { DefaultPortModel } from '@projectstorm/react-diagrams';
 
 export class SceneNodeModel extends EventNodeModel {
-  private static readonly OUT_PORT_NAME = 'next';
-  private static readonly IN_PORT_NAME = 'previous';
+  private _text = '';
 
-  constructor(first = false) {
-    super('DEFAULT', 'Scene');
-    const outPort = new DefaultPortModel(false, SceneNodeModel.OUT_PORT_NAME);
-    this.addPort(outPort);
-    if (!first) {
-      const inPort = new DefaultPortModel(true, SceneNodeModel.IN_PORT_NAME);
-      this.addPort(inPort);
+  constructor(first = false, scene?: IScene) {
+    super(SceneType.DEFAULT, 'Scene', first);
+    if (scene) {
+      this._text = scene.text;
     }
   }
 
-  public setNextScene = (sceneNode: SceneNodeModel): DefaultLinkModel => {
-    const thisScenePort = this.getPort(SceneNodeModel.OUT_PORT_NAME);
-    const nextScenePort = sceneNode.getPort(SceneNodeModel.IN_PORT_NAME);
-    return thisScenePort.link(nextScenePort);
-  };
+  protected addOutPort(): void {
+    const outPort = new DefaultPortModel({ in: false, name: EventNodeModel.OUT_PORT_NAME, maximumLinks: 1 });
+    this.addPort(outPort);
+  }
+
+  public setSceneText = (text: string): void => {
+    this._text = text;
+  }
+
+  public get text(): string {
+    return this._text;
+  }
+
+  public getDto(): IScene {
+    const targetPort = (Object.values(this.outPort.links))[0]?.getTargetPort();
+    return {
+      text: this._text,
+      next: targetPort && (targetPort.getNode() as EventNodeModel).getIndex(),
+      type: SceneType.DEFAULT,
+    };
+  }
 }

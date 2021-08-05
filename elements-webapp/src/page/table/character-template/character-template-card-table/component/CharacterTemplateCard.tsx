@@ -37,7 +37,6 @@ const CharacterTemplateCard: React.FC<Props> = props => {
   return (
     <Card className="c-item">
       <div>
-
         <ButtonGroup>
           <Button
             disabled={!dirty}

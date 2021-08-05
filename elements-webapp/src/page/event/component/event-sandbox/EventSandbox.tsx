@@ -1,7 +1,7 @@
 import { Button } from '@blueprintjs/core';
 import EventApi from '@shared/api/EventApi';
 import { useToggle } from '@shared/hooks/toggleHook';
-import { IEventDto } from '@type/Event';
+import { IEventDto, SceneType } from '@type/Event';
 import React, { DragEventHandler, useState } from 'react';
 import { DiagramWidget } from 'storm-react-diagrams';
 import '../event-component.scss';
@@ -41,7 +41,7 @@ const EventSandbox: React.FC = () => {
   };
 
   const handleEventConfigurationChange = (value: PartialEventDto): void => {
-    setEventFormState({...eventFormState, ...value});
+    setEventFormState({ ...eventFormState, ...value });
   };
 
   const onNodeDrop: DragEventHandler = event => {
@@ -62,9 +62,9 @@ const EventSandbox: React.FC = () => {
           </div>
           <div className="content">
             <TrayWidget>
-              <TrayItemWidget model={{type: 'DEFAULT'}} name="Scene" color="rgb(192,255,0)" />
-              <TrayItemWidget model={{type: 'OPTION'}} name="Option" color="rgb(0,192,255)" />
-              <TrayItemWidget model={{type: 'REWARD'}} name="Reward" color="rgb(192,100,0)" />
+              <TrayItemWidget model={{ type: SceneType.DEFAULT }} name="Scene" color="rgb(192,255,0)" />
+              <TrayItemWidget model={{ type: SceneType.OPTION }} name="Option" color="rgb(0,192,255)" />
+              <TrayItemWidget model={{ type: SceneType.REWARD }} name="Reward" color="rgb(192,100,0)" />
             </TrayWidget>
             <div className="diagram-layer" onDrop={onNodeDrop} onDragOver={event => event.preventDefault()}>
               <DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={eventEngine.engine} />
@@ -73,7 +73,11 @@ const EventSandbox: React.FC = () => {
         </div>
         <SelectedNode node={selectedNode} />
       </div>
-      <EventConfiguration isOpen={configurationOpen} onClose={toggleConfiguration} onChange={handleEventConfigurationChange} />
+      <EventConfiguration
+        isOpen={configurationOpen}
+        onClose={toggleConfiguration}
+        onChange={handleEventConfigurationChange}
+      />
     </>
   );
 };
