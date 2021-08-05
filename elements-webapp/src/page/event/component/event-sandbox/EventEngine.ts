@@ -1,4 +1,3 @@
-import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance';
 import BaseNodeModel from '@shared/diagram/BaseNodeModel';
 import DiagramUtils, { NodeType } from '@shared/diagram/DiagramUtils';
 import OptionNodeFactory from '@shared/diagram/option/OptionNodeFactory';
@@ -7,14 +6,11 @@ import SceneNodeFactory from '@shared/diagram/scene/SceneNodeFactory';
 import { IEventDto, IImageToSceneMap, IScene, ISceneBase, ISceneOption, ISceneReward } from '@type/Event';
 import { DragEventHandler, useState } from 'react';
 import { DiagramEngine, DiagramModel, LinkModel } from 'storm-react-diagrams';
+import { EventSave } from '@shared/api/EventApi';
 
 type PartialEventDto = Pick<IEventDto, 'requirement' | 'name'>;
 
 class EventEngine {
-  private static readonly FORM_DATA_FILES = 'files';
-  private static readonly FORM_DATA_IMAGE_TO_SCENE = 'imageToSceneMap';
-  private static readonly FORM_DATA_EVENT_DTO = 'eventDto';
-
   private diagramEngine = new DiagramEngine();
 
   constructor() {
@@ -64,22 +60,23 @@ class EventEngine {
     return nodes.map(([, node]) => node.scene);
   };
 
-  public collectFormData = (rest: PartialEventDto): FormData => {
-    const formData = new FormData();
+  public collectFormData = (rest: PartialEventDto): EventSave => {
     const scenes = this.collectScenes();
     const imageToSceneMap: IImageToSceneMap[] = [];
-    Object.values(this.model.getNodes())
+    const files = Object.values(this.model.getNodes())
       .filter((node: BaseNodeModel) => node.image)
-      .forEach((node: BaseNodeModel, imageIndex: number) => {
-        formData.append(EventEngine.FORM_DATA_FILES, node.image);
+      .map((node: BaseNodeModel, imageIndex: number) => {
         const sceneIndex = scenes.indexOf(node.scene);
         imageToSceneMap.push({ imageIndex, sceneIndex });
+        return node.image;
       });
 
     const eventDto: IEventDto = { ...rest, scenes };
-    formData.append(EventEngine.FORM_DATA_IMAGE_TO_SCENE, new Blob([JSON.stringify(imageToSceneMap)], APPLICATION_JSON_OPTION));
-    formData.append(EventEngine.FORM_DATA_EVENT_DTO, new Blob([JSON.stringify(eventDto)], APPLICATION_JSON_OPTION));
-    return formData;
+    return {
+      dto: eventDto,
+      imageToSceneMap,
+      images: files,
+    };
   };
 }
 

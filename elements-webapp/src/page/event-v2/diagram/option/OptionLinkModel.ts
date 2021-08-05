@@ -13,6 +13,10 @@ class OptionLinkModel extends DefaultLinkModel {
   public get sceneOption(): IOption {
     return this._option;
   }
+
+  public set sceneOption(option: IOption) {
+    this._option = option;
+  }
 }
 
 export default OptionLinkModel;

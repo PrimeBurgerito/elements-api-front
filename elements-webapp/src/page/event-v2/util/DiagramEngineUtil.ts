@@ -1,6 +1,6 @@
-import createEngine, { DiagramModel } from '@projectstorm/react-diagrams';
+import createEngine, { DiagramModel, PathFindingLinkFactory } from '@projectstorm/react-diagrams';
 import { DefaultDiagramState, DiagramEngine, LinkModel } from '@projectstorm/react-diagrams-core';
-import { IEvent, IImageToSceneMap, IScene, ISceneBase, ISceneOption, SceneType } from '@type/Event';
+import { IEvent, IEventDto, IScene, ISceneBase, ISceneOption, SceneType } from '@type/Event';
 import EventNodeModel from '../diagram/EventNodeModel';
 import OptionNodeFactory from '../diagram/option/OptionNodeFactory';
 import { OptionNodeModel } from '../diagram/option/OptionNodeModel';
@@ -10,10 +10,22 @@ import SceneNodeFactory from '../diagram/scene/SceneNodeFactory';
 import { SceneNodeModel } from '../diagram/scene/SceneNodeModel';
 import OptionLinkFactory from '../diagram/option/OptionLinkFactory';
 import { BaseEntityEvent } from '@projectstorm/react-canvas-core';
-import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance';
 import { Point } from '@projectstorm/geometry';
+import { DagreEngine } from '@projectstorm/react-diagrams-routing';
+import OptionLinkModel from '../diagram/option/OptionLinkModel';
 
 export default class DiagramEngineUtil {
+  private static dagreEngine: DagreEngine = new DagreEngine({
+    graph: {
+      rankdir: 'LR',
+      ranker: 'longest-path',
+      marginx: 100,
+      marginy: 100,
+      ranksep: 100,
+    },
+    includeLinks: false,
+  });
+
   public static createEngine = (): DiagramEngine => {
     const newEngine: DiagramEngine = createEngine();
     newEngine.maxNumberPointsPerLink = 0;
@@ -53,47 +65,54 @@ export default class DiagramEngineUtil {
     }
   }
 
-  public static getDto = (engine: DiagramEngine): FormData => {
+  public static getDto = (engine: DiagramEngine): IEventDto => {
     const nodes = engine.getModel().getNodes() as EventNodeModel[];
-    const formData = new FormData();
-    const imageToSceneMap: IImageToSceneMap[] = [];
-    const event = {
+    return {
       name: 'test',
       scenes: nodes.map(n => n.getDto()),
       requirement: {}
     };
-    formData.append('imageToSceneMap', new Blob([JSON.stringify(imageToSceneMap)], APPLICATION_JSON_OPTION));
-    formData.append('eventDto', new Blob([JSON.stringify(event)], APPLICATION_JSON_OPTION));
-    console.log(event);
-    console.log(nodes);
-    return formData;
   }
 
-  public static updateFromEvent = (engine: DiagramEngine) => (event: IEvent): void => {
+  public static organize = (engine: DiagramEngine): void => {
+    DiagramEngineUtil.dagreEngine.redistribute(engine.getModel());
+    engine.getLinkFactories()
+      .getFactory<PathFindingLinkFactory>(PathFindingLinkFactory.NAME)
+      .calculateRoutingMatrix();
+    engine.repaintCanvas();
+  }
+
+  public static updateFromEvent = (engine: DiagramEngine) => async (event: IEvent): Promise<void> => {
     const model = new DiagramModel();
     const nodes: EventNodeModel[] = event.scenes.map((scene, index) => {
-      const node = DiagramEngineUtil.createNode(scene.type, !index);
+      const node = DiagramEngineUtil.createNode(scene.type, !index, scene);
       node.setPosition(new Point(500, 500));
       return node;
     });
 
-    const links = nodes.reduce<LinkModel[]>((result: LinkModel[], curr: EventNodeModel, index: number, all: EventNodeModel[]) => {
-      if (curr instanceof OptionNodeModel) {
-        const option = event.scenes[index] as ISceneOption;
-        const nextLinks = option.options.map(o => curr.outPort.link(all[o.next].inPort));
-        return [...result, ...nextLinks]
-      } else {
-        const scene = event.scenes[index] as IScene;
-        if (scene.next !== undefined && scene.next != null) {
-          return [...result, curr.outPort.link(all[scene.next].inPort)];
-        }
-      }
-      return result;
-    }, []);
-
+    const links = nodes.reduce<LinkModel[]>(DiagramEngineUtil.getLinks(event), []);
 
     model.addAll(...nodes, ...links);
     engine.setModel(model);
-    engine.repaintCanvas();
+    await engine.repaintCanvas(true);
+    DiagramEngineUtil.organize(engine);
   }
+
+  private static getLinks = (event: IEvent) => (result: LinkModel[], curr: EventNodeModel, index: number, all: EventNodeModel[]) => {
+    if (curr instanceof OptionNodeModel) {
+      const option = event.scenes[index] as ISceneOption;
+      const nextLinks = option.options.map(o => {
+        const link = curr.outPort.link(all[o.next].inPort) as OptionLinkModel;
+        link.sceneOption = o;
+        return link;
+      });
+      return [...result, ...nextLinks]
+    } else {
+      const scene = event.scenes[index] as IScene;
+      if (scene.next !== undefined && scene.next != null) {
+        return [...result, curr.outPort.link(all[scene.next].inPort)];
+      }
+    }
+    return result;
+  };
 }

@@ -1,22 +1,22 @@
+import React from 'react';
 import { H6, MenuItem } from '@blueprintjs/core';
 import { ItemRenderer, MultiSelect } from '@blueprintjs/select';
-import { useMultiToggleHook } from '@shared/hooks/multiToggleHook';
 import { ILocation } from '@type/Location';
-import React from 'react';
-
+import { useMultiToggleHook } from '@shared/hooks/multiToggleHook';
 
 type Props = {
-  locations: ReadonlyArray<ILocation>,
-  selected: string[],
-  onChange: (names: string[]) => void,
-};
+  locations: ILocation[],
+  locationIds: string[],
+  onChange: (locationIds: string[]) => void,
+}
 
-const NearbyLocationSelectTyped = MultiSelect.ofType<ILocation>();
-const NearbyLocationSelect: React.FC<Props> = props => {
+const LocationSelectTyped = MultiSelect.ofType<ILocation>();
+
+const LocationIdSelect: React.FC<Props> = props => {
   const {
     selected,
-    toggle
-  } = useMultiToggleHook<ILocation>(props.selected.map(name => props.locations.find(l => l.name === name)));
+    toggle,
+  } = useMultiToggleHook<ILocation>(props.locationIds.map(id => props.locations.find(l => l.id === id)));
 
   const valueRenderer: ItemRenderer<ILocation> = (location, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {
@@ -26,7 +26,7 @@ const NearbyLocationSelect: React.FC<Props> = props => {
       <MenuItem
         active={modifiers.active}
         icon={selected.includes(location) ? 'tick' : 'blank'}
-        key={`nearby-loc-menu-item-${location.id}`}
+        key={`loc-menu-item-${location.id}`}
         text={location.name}
         onClick={handleClick}
       />
@@ -35,22 +35,23 @@ const NearbyLocationSelect: React.FC<Props> = props => {
 
   const onChange = (location: ILocation) => {
     const newSelection = toggle(location);
-    props.onChange(newSelection.map(l => l.name));
+    props.onChange(newSelection.map(l => l.id));
   };
 
   return (
-    <div className="c-item">
-      <H6>Nearby Locations</H6>
-      <NearbyLocationSelectTyped
+    <>
+      <H6>Locations</H6>
+      <LocationSelectTyped
         fill
-        items={[...new Set(props.locations)]}
+        items={props.locations}
         tagRenderer={l => l.name}
         itemRenderer={valueRenderer}
         selectedItems={selected}
         onItemSelect={onChange}
       />
-    </div>
+      <br />
+    </>
   );
-};
+}
 
-export default NearbyLocationSelect;
+export default LocationIdSelect;

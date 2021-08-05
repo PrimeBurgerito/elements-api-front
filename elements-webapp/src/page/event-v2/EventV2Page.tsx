@@ -1,50 +1,74 @@
-import { Button } from '@blueprintjs/core';
+import { Button, H5 } from '@blueprintjs/core';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TrayItemWidget from '../event/component/TrayItemWidget';
-import TrayWidget from '../event/component/TrayWidget';
 import './event-diagram.scss';
 import { useEventHook } from './hook/eventEngineHook';
-import { SceneType } from '@type/Event';
+import { IEventDto, SceneType } from '@type/Event';
 import EventApi from '@shared/api/EventApi';
 import { useParams } from 'react-router-dom';
 import DiagramEngineUtil from './util/DiagramEngineUtil';
+import { IRequirement } from '@type/Requirement';
+import RequirementDialog from './component/RequirementDialog';
 
 const EventV2Page: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
-  const eventHook = useEventHook();
+  const { engine, handleNodeDrop, selectedNode } = useEventHook();
+  const [requirement, setRequirement] = useState<IRequirement>({});
 
   useEffect(() => {
     if (id) {
-      EventApi.get(id).then(DiagramEngineUtil.updateFromEvent(eventHook.engine));
+      EventApi.get(id).then(e => {
+        DiagramEngineUtil.updateFromEvent(engine)(e)
+        setRequirement(e.requirement);
+      });
     }
-  }, [eventHook.engine, id])
+  }, [engine, id])
 
   const onSubmit = (): void => {
-    EventApi.post(DiagramEngineUtil.getDto(eventHook.engine));
+    void EventApi.save({
+      id,
+      dto: getDto(),
+      imageToSceneMap: [],
+      images: [],
+    });
+  }
+
+  const organize = (): void => {
+    DiagramEngineUtil.organize(engine);
+  }
+
+  const getDto = (): IEventDto => {
+    return {
+      ...DiagramEngineUtil.getDto(engine),
+      requirement: { ...requirement },
+    }
   }
 
   return (
     <div className="diagram-container">
-      <div className="diagram-body">
+      <div className="diagram-body-v2">
         <div className="header">
           <div className="title">Elements Event Diagram</div>
           <hr />
           <Button intent="primary" onClick={onSubmit}>Submit</Button>
-          <Button>Event Configuration</Button>
-          <Button onClick={() => console.log(DiagramEngineUtil.getDto(eventHook.engine))}>Test</Button>
+          <Button onClick={organize}>Organize</Button>
+          <Button onClick={() => console.log(getDto())}>Test</Button>
         </div>
         <div className="content">
-          <TrayWidget>
+          <div className="tray">
+            <H5>Scenes <span className="bp4-text-small bp4-text-muted">(Drag and drop)</span></H5>
             <TrayItemWidget model={{ type: SceneType.DEFAULT }} name="Scene" color="rgb(192,255,0)" />
             <TrayItemWidget model={{ type: SceneType.OPTION }} name="Option" color="rgb(0,192,255)" />
             <TrayItemWidget model={{ type: SceneType.REWARD }} name="Reward" color="rgb(192,100,0)" />
-          </TrayWidget>
-          <div className="diagram-layer" onDrop={eventHook.handleNodeDrop} onDragOver={e => e.preventDefault()}>
-            {eventHook.engine && <CanvasWidget className="diagram-container" engine={eventHook.engine} />}
+            <H5>Configure</H5>
+            <RequirementDialog value={requirement} onChange={setRequirement} />
+          </div>
+          <div className="diagram-layer" onDrop={handleNodeDrop} onDragOver={e => e.preventDefault()}>
+            {engine && <CanvasWidget className="diagram-container" engine={engine} />}
           </div>
         </div>
-        {JSON.stringify(eventHook.selectedNode?.serialize(), null, 2)}
+        {JSON.stringify(selectedNode?.serialize(), null, 2)}
       </div>
     </div>
   );

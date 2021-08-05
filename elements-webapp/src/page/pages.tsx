@@ -8,7 +8,7 @@ import {
   OBJECTIVE_PATH,
   PROPERTY_PATH,
 } from '@constant/paths';
-import { PropertiesContextProvider } from '@shared/context/PropertiesContext';
+import { DataContextProvider } from '@shared/context/DataContext';
 import React from 'react';
 import { Route } from 'react-router';
 import { Switch, useRouteMatch } from 'react-router-dom';
@@ -39,9 +39,9 @@ export const protectedPages: ISinglePage[] = [
             <CharacterTemplateTable />
           </Route>
           <Route path={`${path}/v2`}>
-            <PropertiesContextProvider>
+            <DataContextProvider>
               <CharacterTemplateCardTable />
-            </PropertiesContextProvider>
+            </DataContextProvider>
           </Route>
         </Switch>
       );
@@ -69,9 +69,9 @@ export const protectedPages: ISinglePage[] = [
             <LocationTable />
           </Route>
           <Route path={`${path}/v2`}>
-            <PropertiesContextProvider>
+            <DataContextProvider>
               <LocationCardTable />
-            </PropertiesContextProvider>
+            </DataContextProvider>
           </Route>
         </Switch>
       );
@@ -88,9 +88,11 @@ export const protectedPages: ISinglePage[] = [
             <EventPage />
           </Route>
           <Route path={[`${path}/v2/:id`, `${path}/v2`]}>
-            <PropertiesContextProvider>
+            <DataContextProvider fetch={{
+              locations: true,
+            }}>
               <EventV2Page />
-            </PropertiesContextProvider>
+            </DataContextProvider>
           </Route>
         </Switch>
       );

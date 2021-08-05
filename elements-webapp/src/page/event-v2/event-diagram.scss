@@ -3,7 +3,7 @@
   flex-flow: row;
 }
 
-.diagram-body {
+.diagram-body-v2 {
   flex-grow: 2;
   display: flex;
   flex-direction: column;
@@ -55,13 +55,14 @@
       background: rgb(20, 20, 20);
       flex-grow: 0;
       flex-shrink: 0;
+      padding: 0.5em;
 
       .tray-item {
         color: white;
         padding: 5px;
         border: solid 1px;
         border-radius: 5px;
-        margin: 0 10px 2px;
+        margin: 0 10px 5px;
         cursor: pointer;
       }
     }

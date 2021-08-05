@@ -37,7 +37,7 @@ const EventSandbox: React.FC = () => {
 
   const handleSubmit = () => {
     const eventDto = eventEngine.collectFormData(eventFormState);
-    EventApi.post(eventDto).then(console.log);
+    EventApi.save(eventDto).then(console.log);
   };
 
   const handleEventConfigurationChange = (value: PartialEventDto): void => {

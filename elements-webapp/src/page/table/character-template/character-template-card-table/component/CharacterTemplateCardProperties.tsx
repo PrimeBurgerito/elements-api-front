@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ICharacterTemplateCreate } from '@type/Character';
 import { Callout, H5 } from '@blueprintjs/core';
-import { useProperties } from '@shared/context/PropertiesContext';
+import { useData } from '@shared/context/DataContext';
 import StringPropertyInputV2 from '@component/ElementsForm/element/StringPropertyInputV2';
 import NumericPropertyInputV2 from '@component/ElementsForm/element/NumericPropertyInputV2';
 
@@ -11,7 +11,7 @@ type Props = {
 }
 
 const CharacterTemplateCardProperties: React.FC<Props> = props => {
-  const { stringProperties, numericProperties } = useProperties();
+  const { stringProperties, numericProperties } = useData();
   const [value, setValue] = useState<ICharacterTemplateCreate>({
     numericProperties: props.properties.numericProperties,
     stringProperties: props.properties.stringProperties,
