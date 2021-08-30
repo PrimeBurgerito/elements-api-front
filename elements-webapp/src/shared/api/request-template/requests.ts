@@ -8,9 +8,9 @@ export const POST_LOADING = 'POST_LOADING';
 export const PUT_LOADING = 'PUT_LOADING';
 export const DELETE_LOADING = 'DELETE_LOADING';
 
-export const GET = async (path: string, config?: AxiosRequestConfig, disableNotice?: boolean): Promise<AxiosResponse> => {
+export const GET = async <T>(path: string, config?: AxiosRequestConfig, disableNotice?: boolean): Promise<AxiosResponse<T>> => {
   LoadingStore.addRequest(GET_LOADING);
-  return await API().get(path, config)
+  return await API().get<T>(path, config)
     .finally(() => LoadingStore.endRequest(GET_LOADING))
     .catch((e: AxiosError) => {
       if (!disableNotice) {
@@ -22,9 +22,9 @@ export const GET = async (path: string, config?: AxiosRequestConfig, disableNoti
 
 };
 
-export const POST = async (path: string, body = {}, config: AxiosRequestConfig = {}): Promise<AxiosResponse> => {
+export const POST = async <T>(path: string, body = {}, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T>> => {
   LoadingStore.addRequest(POST_LOADING);
-  return await API().post(path, body, config)
+  return await API().post<T>(path, body, config)
     .finally(() => LoadingStore.endRequest(POST_LOADING))
     .catch((e: AxiosError) => {
       requestErrorNotice(e);
@@ -33,9 +33,9 @@ export const POST = async (path: string, body = {}, config: AxiosRequestConfig =
     });
 };
 
-export const PUT = async (path: string, body: any, config?: AxiosRequestConfig): Promise<AxiosResponse> => {
+export const PUT = async <T>(path: string, body: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
   LoadingStore.addRequest(PUT_LOADING);
-  return await API().put(path, body, config)
+  return await API().put<T>(path, body, config)
     .finally(() => LoadingStore.endRequest(PUT_LOADING))
     .catch((e: AxiosError) => {
       requestErrorNotice(e);
@@ -44,9 +44,9 @@ export const PUT = async (path: string, body: any, config?: AxiosRequestConfig):
     });
 };
 
-export const DELETE = async (path: string, config?: AxiosRequestConfig): Promise<AxiosResponse> => {
+export const DELETE = async <T>(path: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
   LoadingStore.addRequest(DELETE_LOADING);
-  return await API().delete(path, config)
+  return await API().delete<T>(path, config)
     .finally(() => LoadingStore.endRequest(DELETE_LOADING))
     .catch((e: AxiosError) => {
       requestErrorNotice(e);

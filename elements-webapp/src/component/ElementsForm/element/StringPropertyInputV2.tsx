@@ -10,7 +10,7 @@ import { IconNames } from '@blueprintjs/icons';
 
 type Props = {
   initialValue?: Record<string, string[]>;
-  allProperties: IStringProperty[];
+  allProperties: ReadonlyArray<IStringProperty>;
   onChange: (properties: Record<string, string[]>) => void;
 };
 
@@ -68,7 +68,7 @@ const StringPropertyInputV2: React.FC<Props> = props => {
       <PropertySelect
         filterable={false}
         itemRenderer={valueRenderer}
-        items={props.allProperties}
+        items={props.allProperties as IStringProperty[]}
         onItemSelect={setActive}>
         <Button fill text={active ? active.name : '(No selection)'} rightIcon="double-caret-vertical" />
       </PropertySelect>

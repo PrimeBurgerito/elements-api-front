@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import TrayItemWidget from '../event/component/TrayItemWidget';
 import './event-diagram.scss';
 import { useEventHook } from './hook/eventEngineHook';
-import { IEventDto, SceneType } from '@type/Event';
-import EventApi from '@shared/api/EventApi';
+import { SceneType } from '@type/Event';
+import EventApi, { EventSave } from '@shared/api/EventApi';
 import { useParams } from 'react-router-dom';
 import DiagramEngineUtil from './util/DiagramEngineUtil';
 import { IRequirement } from '@type/Requirement';
@@ -26,23 +26,13 @@ const EventV2Page: React.FC = () => {
   }, [engine, id])
 
   const onSubmit = (): void => {
-    void EventApi.save({
-      id,
-      dto: getDto(),
-      imageToSceneMap: [],
-      images: [],
-    });
+    void EventApi.save({ ...getDto(), id });
   }
 
-  const organize = (): void => {
-    DiagramEngineUtil.organize(engine);
-  }
-
-  const getDto = (): IEventDto => {
-    return {
-      ...DiagramEngineUtil.getDto(engine),
-      requirement: { ...requirement },
-    }
+  const getDto = (): EventSave => {
+    const toSave = DiagramEngineUtil.getEntityToSave(engine);
+    toSave.dto.requirement = requirement;
+    return toSave;
   }
 
   return (
@@ -52,7 +42,7 @@ const EventV2Page: React.FC = () => {
           <div className="title">Elements Event Diagram</div>
           <hr />
           <Button intent="primary" onClick={onSubmit}>Submit</Button>
-          <Button onClick={organize}>Organize</Button>
+          <Button onClick={() => DiagramEngineUtil.organize(engine)}>Organize</Button>
           <Button onClick={() => console.log(getDto())}>Test</Button>
         </div>
         <div className="content">

@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Card, EditableText, H5 } from '@blueprintjs/core';
 import { Intent } from '@blueprintjs/core/lib/esnext';
 import { IconNames } from '@blueprintjs/icons';
-import locationApi from '@shared/api/LocationApi';
+import { locationRealmApi } from '@shared/api/LocationApi';
 import { useToggle } from '@shared/hooks/toggleHook';
 import { ILocation, ILocationCreate } from '@type/Location';
 import React, { useState } from 'react';
@@ -17,7 +17,7 @@ const LocationCreateCard: React.FC<Props> = props => {
   const [location, setLocation] = useState<ILocationCreate>({ nearbyLocations: [] });
 
   const onCreate = async (): Promise<void> => {
-    await locationApi.post(location);
+    await locationRealmApi.post(location);
     toggleDirty();
     setLocation({ nearbyLocations: [] });
     props.onChange();

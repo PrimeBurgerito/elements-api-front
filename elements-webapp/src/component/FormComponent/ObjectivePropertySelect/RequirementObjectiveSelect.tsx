@@ -5,20 +5,20 @@ import { IObjective } from '@type/statistics';
 import React from 'react';
 
 type Props = {
-  objectives: IObjective[];
+  objectives: ReadonlyArray<IObjective>;
   value: string[];
   onChange: (vale: string[]) => void;
 };
 
 const ObjectiveSelect = MultiSelect.ofType<string>();
 const RequirementObjectiveSelect: React.FC<Props> = props => {
-  const {selected, toggle} = useMultiToggleHook<string>(props.value);
+  const { selected, toggle } = useMultiToggleHook<string>(props.value);
 
   const onSelect = (value: string) => {
     props.onChange(toggle(value));
   };
 
-  const valueRenderer: ItemRenderer<string> = (value, {modifiers, handleClick}) => {
+  const valueRenderer: ItemRenderer<string> = (value, { modifiers, handleClick }) => {
     if (!modifiers.matchesPredicate) {
       return null;
     }

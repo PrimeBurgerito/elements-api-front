@@ -1,6 +1,6 @@
 import createEngine, { DiagramModel, PathFindingLinkFactory } from '@projectstorm/react-diagrams';
 import { DefaultDiagramState, DiagramEngine, LinkModel } from '@projectstorm/react-diagrams-core';
-import { IEvent, IEventDto, IScene, ISceneBase, ISceneOption, SceneType } from '@type/Event';
+import { IEvent, IScene, ISceneBase, ISceneOption, SceneType } from '@type/Event';
 import EventNodeModel from '../diagram/EventNodeModel';
 import OptionNodeFactory from '../diagram/option/OptionNodeFactory';
 import { OptionNodeModel } from '../diagram/option/OptionNodeModel';
@@ -13,6 +13,8 @@ import { BaseEntityEvent } from '@projectstorm/react-canvas-core';
 import { Point } from '@projectstorm/geometry';
 import { DagreEngine } from '@projectstorm/react-diagrams-routing';
 import OptionLinkModel from '../diagram/option/OptionLinkModel';
+import { EventSave } from '@shared/api/EventApi';
+import EventImageNodeModel from '../diagram/EventImageNodeModel';
 
 export default class DiagramEngineUtil {
   private static dagreEngine: DagreEngine = new DagreEngine({
@@ -65,13 +67,27 @@ export default class DiagramEngineUtil {
     }
   }
 
-  public static getDto = (engine: DiagramEngine): IEventDto => {
+  public static getEntityToSave = (engine: DiagramEngine): EventSave => {
     const nodes = engine.getModel().getNodes() as EventNodeModel[];
-    return {
-      name: 'test',
-      scenes: nodes.map(n => n.getDto()),
-      requirement: {}
+    const toSave: EventSave = {
+      dto: {
+        name: 'test',
+        scenes: [],
+        requirement: {}
+      },
+      imageToSceneMap: [],
+      images: [],
     };
+    nodes.forEach((node: EventNodeModel, index: number) => {
+      const dto = node.getDto();
+      toSave.dto.scenes.push(dto)
+      if (node instanceof EventImageNodeModel && node.image) {
+        const imageIndex = toSave.images.length;
+        toSave.images.push(node.image)
+        toSave.imageToSceneMap.push({ sceneIndex: index, imageIndex })
+      }
+    })
+    return toSave;
   }
 
   public static organize = (engine: DiagramEngine): void => {

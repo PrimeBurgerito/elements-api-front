@@ -5,7 +5,7 @@ import CharacterTemplateCardImages from './CharacterTemplateCardImages';
 import CharacterTemplateCardProperties from './CharacterTemplateCardProperties';
 import { Intent } from '@blueprintjs/core/lib/esnext';
 import { IconNames } from '@blueprintjs/icons';
-import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
+import { characterTemplateRealmApi } from '@shared/api/CharacterTemplateApi';
 
 type Props = {
   template: ICharacterTemplate;
@@ -29,7 +29,7 @@ const CharacterTemplateCard: React.FC<Props> = props => {
 
   const onUpdate = async () => {
     setUpdating(true);
-    const updatedValue = await CharacterTemplateV2Api.put(props.template.id, value);
+    const updatedValue = await characterTemplateRealmApi.put(props.template.id, value);
     setUpdating(false);
     setValue(updatedValue);
   }

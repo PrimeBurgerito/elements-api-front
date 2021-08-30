@@ -1,9 +1,6 @@
-import BaseApi from '@shared/api/BaseApi';
 import { IStringProperty } from '@type/statistics';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
+import { IRealmDocument } from '@type/Realm';
 
-class StringPropertyApi extends BaseApi<IStringProperty> {
-  protected PATH: string = '/property';
-}
-
-const stringPropertyApi = new StringPropertyApi();
+const stringPropertyApi = new RealmDocumentApi<IStringProperty, IStringProperty & IRealmDocument>('/property');
 export default stringPropertyApi;

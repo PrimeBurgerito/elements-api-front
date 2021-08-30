@@ -78,7 +78,7 @@ const PropertySelector: React.FC<PropertySelectorProps> = props => {
 const StringPropertyInput: React.FC<Props> = props => {
   const [inputValue, setInputValue] = useState<Record<string, string[]>>(props.initialValue);
 
-  const [properties, setProperties] = useState<IStringProperty[]>([]);
+  const [properties, setProperties] = useState<ReadonlyArray<IStringProperty>>([]);
   const [unusedProperties, usedProperties] = useMemo<[IStringProperty[], IStringProperty[]]>(() => {
     return properties.reduce<[IStringProperty[], IStringProperty[]]>(([unused, used], next) => {
       const isSelected = inputValue && Object.keys(inputValue).includes(next.key);
@@ -94,7 +94,7 @@ const StringPropertyInput: React.FC<Props> = props => {
     if (props.allProperties) {
       setProperties(props.allProperties);
     } else {
-      stringPropertyApi.find().then((res: IStringProperty[]) => setProperties(res));
+      stringPropertyApi.find().then((res: ReadonlyArray<IStringProperty>) => setProperties(res));
     }
   }, []);
 

@@ -1,13 +1,12 @@
 import { Button, Divider, FormGroup, MenuItem, NumericInput, Switch } from '@blueprintjs/core';
-import { ItemRendererProps, ItemRenderer, Select } from '@blueprintjs/select';
+import { ItemRenderer, ItemRendererProps, Select } from '@blueprintjs/select';
 import MultiStringSelect from '@component/ElementsForm/element/MultiStringSelect';
 import numericPropertyApi from '@shared/api/statistic/NumericPropertyApi';
 import objectiveApi from '@shared/api/statistic/ObjectiveApi';
 import stringPropertyApi from '@shared/api/statistic/StringPropertyApi';
 import { INumericPropertyReward, IObjectiveReward, IReward, IStringPropertyReward } from '@type/Reward';
 import { INumericProperty, IObjective, IProperty, IStringProperty, StringPropertyType } from '@type/statistics';
-import React from 'react';
-import { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import ReactJson from 'react-json-view';
 
 type Props = {
@@ -16,28 +15,30 @@ type Props = {
   onChange: (properties: IReward) => void;
 };
 
-const useGameProperties = (): [IStringProperty[], INumericProperty[], IObjective[]] => {
-  const [stringProperties, setStringProperties] = useState<IStringProperty[]>([]);
-  const [numericProperties, setNumericProperties] = useState<INumericProperty[]>([]);
-  const [objectives, setObjectives] = useState<IObjective[]>([]);
+type PropertyArray = [ReadonlyArray<INumericProperty>, ReadonlyArray<IStringProperty>, ReadonlyArray<IObjective>];
+
+const useGameProperties = (): PropertyArray => {
+  const [stringProperties, setStringProperties] = useState<ReadonlyArray<IStringProperty>>([]);
+  const [numericProperties, setNumericProperties] = useState<ReadonlyArray<INumericProperty>>([]);
+  const [objectives, setObjectives] = useState<ReadonlyArray<IObjective>>([]);
 
   useEffect(() => {
     Promise.all([
-      numericPropertyApi.find(true),
-      stringPropertyApi.find(true),
-      objectiveApi.find(true)
-    ]).then(([numericProps, stringProps, objective]: [INumericProperty[], IStringProperty[], IObjective[]]) => {
+      numericPropertyApi.find(),
+      stringPropertyApi.find(),
+      objectiveApi.find()
+    ]).then(([numericProps, stringProps, objective]: PropertyArray) => {
       setNumericProperties(numericProps);
       setStringProperties(stringProps);
       setObjectives(objective);
     });
   }, []);
 
-  return [stringProperties, numericProperties, objectives];
+  return [numericProperties, stringProperties, objectives];
 };
 
 const RewardInput: React.FC<Props> = (props) => {
-  const [stringProperties, numericProperties, objectives] = useGameProperties();
+  const [numericProperties, stringProperties, objectives] = useGameProperties();
   const [selectedStringPropReward, setSelectedStringPropReward] = useState<IStringPropertyReward>(null);
   const [selectedNumericPropReward, setSelectedNumericPropReward] = useState<INumericPropertyReward>(null);
   const [selectedObjectiveReward, setSelectedObjectiveReward] = useState<IObjectiveReward>(null);
@@ -93,7 +94,7 @@ const RewardInput: React.FC<Props> = (props) => {
     return (
       <FormGroup label="Property">
         <PropertySelect
-          items={stringProperties}
+          items={stringProperties as IStringProperty[]}
           itemRenderer={renderSelectItem<IStringProperty>()}
           onItemSelect={setSelectedPropertyReward}
           noResults={<MenuItem disabled={true} text="No results." />}
@@ -134,7 +135,7 @@ const RewardInput: React.FC<Props> = (props) => {
       <FormGroup label="Attribute">
         <NumericPropertySelect
           filterable={false}
-          items={numericProperties}
+          items={numericProperties as INumericProperty[]}
           itemRenderer={renderSelectItem<INumericProperty>()}
           onItemSelect={selectNumericProperty}>
           <Button text={buttonText} rightIcon="double-caret-vertical" />
@@ -168,7 +169,7 @@ const RewardInput: React.FC<Props> = (props) => {
       <FormGroup label="Objective">
         <ObjectiveSelect
           filterable={false}
-          items={objectives}
+          items={objectives as IObjective[]}
           itemRenderer={renderSelectObjective}
           onItemSelect={selectObjective}>
           <Button text={buttonText} rightIcon="double-caret-vertical" />

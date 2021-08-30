@@ -16,7 +16,7 @@ import './element.scss';
 
 type Props = {
   id?: string;
-  allProperties?: INumericProperty[];
+  allProperties?: ReadonlyArray<INumericProperty>;
   initialValues?: { [k: string]: number };
   onChange: (attributes: { [k: string]: number }) => void;
 };
@@ -71,7 +71,7 @@ const AttributeSelector: React.FC<AttributeSelectorProps> = props => {
 const NumericPropertyInput: React.FC<Props> = props => {
   const [inputValue, setInputValue] = useState<{ [k: string]: number }>(props.initialValues);
 
-  const [properties, setProperties] = useState<INumericProperty[]>([]);
+  const [properties, setProperties] = useState<ReadonlyArray<INumericProperty>>([]);
   const unusedProperties = useMemo<INumericProperty[]>(() => {
     const usedProperties = inputValue ? Object.keys(inputValue) : [];
     return properties.filter(p => !usedProperties.includes(p.key));
@@ -85,7 +85,7 @@ const NumericPropertyInput: React.FC<Props> = props => {
     if (props.allProperties) {
       setProperties(props.allProperties);
     } else {
-      numericPropertyApi.find().then((res: INumericProperty[]) => {
+      numericPropertyApi.find().then((res: ReadonlyArray<INumericProperty>) => {
         if (res?.length) {
           setProperties(res);
         }

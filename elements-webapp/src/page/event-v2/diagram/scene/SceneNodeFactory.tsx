@@ -5,6 +5,9 @@ import EventNodeWidget from '../EventNodeWidget';
 import { SceneNodeModel } from './SceneNodeModel';
 import { SceneNodeContent } from './SceneNodeContent';
 import { SceneType } from '@type/Event';
+import { Button, Intent, Popover } from '@blueprintjs/core';
+import { IconNames } from '@blueprintjs/icons';
+import SceneImageAdd from '../../component/SceneImageAdd';
 
 export default class SceneNodeFactory extends AbstractReactFactory<SceneNodeModel, DiagramEngine> {
   constructor() {
@@ -22,7 +25,16 @@ export default class SceneNodeFactory extends AbstractReactFactory<SceneNodeMode
         engine={this.engine}
         node={model}
         color="rgb(192,255,0)"
-        content={<SceneNodeContent node={model} />}
+        content={
+          <>
+            <Popover content={<SceneNodeContent node={model} />}>
+              <Button fill small rightIcon={IconNames.Edit} intent={Intent.PRIMARY}>Edit</Button>
+            </Popover>
+            <Popover popoverClassName="pr30" content={<SceneImageAdd model={model} />}>
+              <Button fill small rightIcon={IconNames.Media} intent={Intent.PRIMARY}>Image</Button>
+            </Popover>
+          </>
+        }
       />
     );
   };

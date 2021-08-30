@@ -4,7 +4,7 @@ import ImageAdd from '@component/ImageAdd/ImageAdd';
 import { Button, Card, Classes, H2, Overlay, Tooltip } from '@blueprintjs/core';
 import { IImage, IImageCrop, IImageDto } from '@type/image';
 import { Intent } from '@blueprintjs/core/lib/esnext';
-import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
+import { CharacterTemplateImageApi } from '@shared/api/CharacterTemplateApi';
 import { useRecordSelectHook } from '@shared/hooks/recordSelectHook';
 
 const OVERLAY_CLASS = [Classes.DARK, 'absolute-center'].join(' ');
@@ -32,7 +32,7 @@ export const CharacterTemplateImageAdd: React.FC<Props> = props => {
       imageKey: image.key,
       crops: imageCrop.record,
     };
-    const imageResponse = await CharacterTemplateV2Api.putImage(imageDto, image.file);
+    const imageResponse = await CharacterTemplateImageApi.putImage(imageDto, image.file);
     if (imageResponse) {
       props.onAdd(imageResponse);
       onClose();

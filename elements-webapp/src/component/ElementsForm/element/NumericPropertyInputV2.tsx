@@ -8,7 +8,7 @@ import { IconNames } from '@blueprintjs/icons';
 
 type Props = {
   initialValue?: Record<string, number>;
-  allProperties: INumericProperty[];
+  allProperties: ReadonlyArray<INumericProperty>;
   onChange: (properties: Record<string, number>) => void;
 };
 
@@ -53,7 +53,7 @@ const NumericPropertyInputV2: React.FC<Props> = props => {
       <PropertySelect
         filterable={false}
         itemRenderer={valueRenderer}
-        items={props.allProperties}
+        items={props.allProperties as INumericProperty[]}
         onItemSelect={setActive}>
         <Button fill text={active ? active.name : '(No selection)'} rightIcon="double-caret-vertical" />
       </PropertySelect>

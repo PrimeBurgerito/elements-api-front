@@ -1,18 +1,18 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import locationApi from '@shared/api/LocationApi';
+import { locationRealmApi } from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
 import React, { useEffect, useState } from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const locationColumns = [
-  {name: 'Name', key: 'name'},
-  {name: 'Nearby locations', key: 'nearbyLocations'},
+  { name: 'Name', key: 'name' },
+  { name: 'Nearby locations', key: 'nearbyLocations' },
 ];
 
 const locationFormStructure = (selectableValues: string[]): IFormStructure => ({
   formElements: {
-    name: {label: 'Name', type: FormElementType.TEXT},
-    nearbyLocations: {label: 'Nearby locations', type: FormElementType.MULTI_SELECT, selectableValues},
+    name: { label: 'Name', type: FormElementType.TEXT },
+    nearbyLocations: { label: 'Nearby locations', type: FormElementType.MULTI_SELECT, selectableValues },
   },
 });
 
@@ -20,7 +20,7 @@ const LocationTable: React.FC = () => {
   const [formStructure, setFormStructure] = useState<IFormStructure>(null);
 
   useEffect(() => {
-    locationApi.find().then((res: ILocation[]) => {
+    locationRealmApi.find().then((res: ILocation[]) => {
       setFormStructure(locationFormStructure(mapLocationNames(res)));
     });
   }, []);
@@ -36,7 +36,7 @@ const LocationTable: React.FC = () => {
   return formStructure && <BaseEntityTable
     title="Location"
     imageAdder="conditional"
-    api={locationApi}
+    api={locationRealmApi}
     columns={locationColumns}
     formStructure={formStructure}
     refreshOnEntityChange

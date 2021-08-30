@@ -1,7 +1,9 @@
+import { IRealmDocument } from '@type/Realm';
+
 export interface IElementsTableProps {
   columns: IColumnModel[];
-  data: object[];
-  onSelect?: (object: object) => void;
+  data: ReadonlyArray<IRealmDocument>;
+  onSelect?: (object: IRealmDocument) => void;
 }
 
 export interface IColumnModel {

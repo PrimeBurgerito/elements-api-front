@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { CSSProperties, useRef, useState } from 'react';
 import { Button, ControlGroup, FormGroup, HTMLSelect, InputGroup, Switch, Tooltip } from '@blueprintjs/core';
 import { useToggle } from '@shared/hooks/toggleHook';
 import Cropper, { ReactCropperElement } from 'react-cropper';
@@ -7,6 +7,7 @@ import { RecordSelectHook } from '@shared/hooks/recordSelectHook';
 
 type Props = {
   src: string,
+  maxWidth?: string | number,
   crops?: RecordSelectHook<IImageCrop>
 }
 
@@ -14,7 +15,7 @@ const ImageRenderer: React.FC<Props> = props => {
   const cropperRef = useRef<ReactCropperElement>();
   const [cropActive, toggleCrop] = useToggle(false);
   const [cropKey, setCropKey] = useState('');
-  const cropKeys = Object.keys(props.crops.record);
+  const cropKeys: string[] = props.crops ? Object.keys(props.crops.record) : null;
 
   const setCrop = (): void => {
     if (cropKey) {
@@ -24,7 +25,8 @@ const ImageRenderer: React.FC<Props> = props => {
 
   const renderImage = (): React.ReactElement => {
     if (!cropActive) {
-      return <img src={props.src} alt="None" />;
+      const style: CSSProperties = props.maxWidth ? { maxWidth: props.maxWidth } : {};
+      return <img src={props.src} alt="None" style={style} />;
     }
 
     return <Cropper

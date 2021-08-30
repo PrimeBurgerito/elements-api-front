@@ -3,8 +3,9 @@ import { ISceneOption, SceneType } from '@type/Event';
 import OptionPortModel from './OptionPortModel';
 import { DefaultPortModel } from '@projectstorm/react-diagrams';
 import OptionLinkModel from './OptionLinkModel';
+import EventImageNodeModel from '../EventImageNodeModel';
 
-export class OptionNodeModel extends EventNodeModel<DefaultPortModel, OptionPortModel> {
+export class OptionNodeModel extends EventImageNodeModel<DefaultPortModel, OptionPortModel> {
   private _text = '';
 
   constructor(first = false, scene?: ISceneOption) {

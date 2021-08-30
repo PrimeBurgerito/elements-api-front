@@ -16,10 +16,12 @@ export type ImageAddHook = {
   },
 };
 
-export const useImageAddHook = (): ImageAddHook => {
-  const [file, setFile] = useState<File>();
-  const [clipboardImageName, setClipboardImageName] = useState<string>('');
-  const [key, setKey] = useState<string>();
+export type ImageState = Partial<Omit<ImageAddHook['image'], 'src'>>;
+
+export const useImageAddHook = (initial?: ImageState): ImageAddHook => {
+  const [file, setFile] = useState<File>(initial?.file);
+  const [clipboardImageName, setClipboardImageName] = useState<string>(initial?.clipboardImageName || '');
+  const [key, setKey] = useState<string>(initial?.key);
   const src: string = useMemo<string>(
     () => file ? URL.createObjectURL(file) : '',
     [file],

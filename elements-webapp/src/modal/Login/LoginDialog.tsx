@@ -1,8 +1,7 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup } from '@blueprintjs/core';
-import { ApplicationContext } from '@shared/context/ApplicationContext';
+import { useAppContext } from '@shared/context/application/ApplicationContext';
 import { LoadingStore } from '@shared/store/LoadingStore';
-import React from 'react';
-import { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { view } from 'react-easy-state';
 
 const PASSWORD_ID = 'password-input';
@@ -10,7 +9,7 @@ const USERNAME_ID = 'username-input';
 
 const LoginDialog: React.FC = () => {
   const LOGIN_LOADING_KEY = 'LOGIN_LOADING_KEY';
-  const {auth, login} = useContext(ApplicationContext);
+  const { auth, login } = useAppContext();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -38,7 +37,7 @@ const LoginDialog: React.FC = () => {
               autoComplete="current-username"
               placeholder="Type username..."
               value={username}
-              onChange={({target}) => setUsername(target.value)}
+              onChange={({ target }) => setUsername(target.value)}
             />
           </FormGroup>
           <FormGroup label="Password" labelFor={PASSWORD_ID} labelInfo="(required)">
@@ -49,7 +48,7 @@ const LoginDialog: React.FC = () => {
               type="password"
               autoComplete="current-password"
               value={password}
-              onChange={({target}) => setPassword(target.value)}
+              onChange={({ target }) => setPassword(target.value)}
             />
           </FormGroup>
           <Button

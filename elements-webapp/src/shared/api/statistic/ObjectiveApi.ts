@@ -1,9 +1,6 @@
-import BaseApi from '@shared/api/BaseApi';
 import { IObjective } from '@type/statistics';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
+import { IRealmDocument } from '@type/Realm';
 
-class ObjectiveApi extends BaseApi<IObjective> {
-  protected PATH: string = '/objective';
-}
-
-const objectiveApi = new ObjectiveApi();
+const objectiveApi = new RealmDocumentApi<IObjective, IObjective & IRealmDocument>('/objective');
 export default objectiveApi;

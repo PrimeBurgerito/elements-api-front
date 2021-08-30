@@ -1,6 +1,4 @@
-import BaseApi from '@shared/api/BaseApi';
-import { IKeyContainerDto } from '@type/container';
+import { IKeyContainer, IKeyContainerDto } from '@type/container';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
 
-export default class KeyContainerApi extends BaseApi<IKeyContainerDto> {
-  protected PATH: string = '/key-container';
-}
+export const keyContainerRealmApi = new RealmDocumentApi<IKeyContainerDto, IKeyContainer>('/key-container');

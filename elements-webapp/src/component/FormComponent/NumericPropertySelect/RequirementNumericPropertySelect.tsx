@@ -8,7 +8,7 @@ import { INumericProperty } from '@type/statistics';
 import React, { useMemo } from 'react';
 
 type Props = {
-  properties: INumericProperty[],
+  properties: ReadonlyArray<INumericProperty>,
   value: IRequirementNumericProperties,
   onChange: (newValue: IRequirementNumericProperties) => void,
 };

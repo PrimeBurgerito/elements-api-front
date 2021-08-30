@@ -1,22 +1,22 @@
-import IDocumentBase from '@type/DocumentBase';
 import { IImage, IImageDto } from '@type/image';
+import { IRealmDocument, IRealmDocumentDto } from '@type/Realm';
 
-export interface IImageContainer extends IDocumentBase {
+export interface IImageContainer extends IRealmDocument {
   key: string;
   images: IImage[];
 }
 
-export interface IImageContainerDto {
+export interface IImageContainerDto extends IRealmDocumentDto {
   key: string;
   images: IImageDto[];
 }
 
-export interface IKeyContainer extends IDocumentBase {
+export interface IKeyContainer extends IRealmDocument {
   key: string;
   images: IImage[];
 }
 
-export interface IKeyContainerDto {
+export interface IKeyContainerDto extends IRealmDocumentDto {
   key: string;
   images: IKey[];
 }

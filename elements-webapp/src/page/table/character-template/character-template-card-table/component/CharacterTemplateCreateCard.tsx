@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import CharacterTemplateCardProperties from './CharacterTemplateCardProperties';
 import { Intent } from '@blueprintjs/core/lib/esnext';
 import { IconNames } from '@blueprintjs/icons';
-import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
+import { characterTemplateRealmApi } from '@shared/api/CharacterTemplateApi';
 import { errorNotice } from '@shared/notice/notices';
 
 type Props = {
@@ -29,7 +29,7 @@ const CharacterTemplateCreateCard: React.FC<Props> = props => {
 
   const onCreate = async () => {
     setCreating(true);
-    const updatedValue = await CharacterTemplateV2Api.create(value);
+    const updatedValue = await characterTemplateRealmApi.post(value);
     if (updatedValue) {
       props.onCreate();
     } else {

@@ -7,7 +7,7 @@ import { Intent } from '@blueprintjs/core/lib/esnext';
 import { IconNames } from '@blueprintjs/icons';
 import CharacterTemplateImageAdd from './CharacterTemplateImageAdd';
 import { useToggle } from '@shared/hooks/toggleHook';
-import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
+import { CharacterTemplateImageApi } from '@shared/api/CharacterTemplateApi';
 import { useRecordSelectHook } from '@shared/hooks/recordSelectHook';
 
 type Props = {
@@ -34,7 +34,7 @@ const CharacterTemplateCardImages: React.FC<Props> = props => {
 
   const onRemove = () => {
     const key = recordState.selected.key;
-    const success = CharacterTemplateV2Api.removeImage(props.entityId, key);
+    const success = CharacterTemplateImageApi.removeImage(props.entityId, key);
     if (success) {
       recordState.remove(key, true)
     }

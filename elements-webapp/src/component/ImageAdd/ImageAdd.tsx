@@ -7,17 +7,29 @@ import { RecordSelectHook } from '@shared/hooks/recordSelectHook';
 
 type Props = {
   hook: ImageAddHook,
+  maxWidth?: string | number,
   cropsHook?: RecordSelectHook<IImageCrop>,
+  onlyFile?: boolean,
 }
 
 const ImageAdd: React.FC<Props> = props => {
   const { handleImage, image } = props.hook;
 
-  return (
-    <>
+  const renderName = (): React.ReactElement => {
+    if (props.onlyFile) {
+      return;
+    }
+
+    return (
       <FormGroup label="Image name" labelFor="image-name" labelInfo="(required)">
         <InputGroup id="image-name" placeholder="Insert image..." onChange={handleImage.onKeyChange} />
       </FormGroup>
+    );
+  }
+
+  return (
+    <>
+      {renderName()}
       <FormGroup label="Add image" labelFor="image-input">
         <FileInput id="image-input" text="Choose file..." fill onInputChange={handleImage.onAdd} />
       </FormGroup>
@@ -32,7 +44,7 @@ const ImageAdd: React.FC<Props> = props => {
           onPaste={handleImage.onPaste}
         />
       </FormGroup>
-      {!!image.file && <ImageRenderer src={image.src} crops={props.cropsHook} />}
+      {!!image.file && <ImageRenderer src={image.src} crops={props.cropsHook} maxWidth={props.maxWidth} />}
     </>
   );
 }

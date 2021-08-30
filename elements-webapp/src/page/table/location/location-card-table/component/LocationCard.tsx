@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Card, H5 } from '@blueprintjs/core';
 import { Intent } from '@blueprintjs/core/lib/esnext';
 import { IconNames } from '@blueprintjs/icons';
-import locationApi from '@shared/api/LocationApi';
+import { locationRealmApi } from '@shared/api/LocationApi';
 import { useToggle } from '@shared/hooks/toggleHook';
 import { ILocation } from '@type/Location';
 import React, { useState } from 'react';
@@ -17,10 +17,10 @@ type Props = {
 
 const LocationCard: React.FC<Props> = props => {
   const [dirty, toggleDirty] = useToggle(false);
-  const [location, setLocation] = useState(props.location);
+  const [location, setLocation] = useState<ILocation>(props.location);
 
   const onUpdate = async (): Promise<void> => {
-    await locationApi.put(location.id, {
+    await locationRealmApi.put(location.id, {
       name: location.name,
       nearbyLocations: location.nearbyLocations,
     });
@@ -28,7 +28,7 @@ const LocationCard: React.FC<Props> = props => {
   };
 
   const onDelete = async (): Promise<void> => {
-    await locationApi.delete(location.id);
+    await locationRealmApi.delete(location.id);
     props.onChange();
   }
 

@@ -1,5 +1,5 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import CharacterTemplateApi from '@shared/api/CharacterTemplateApi';
+import { characterTemplateRealmApi } from '@shared/api/CharacterTemplateApi';
 import React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
@@ -22,13 +22,11 @@ const characterForm: IFormStructure = {
 };
 
 const CharacterTemplateTable: React.FC = () => {
-  const characterTemplateApi = new CharacterTemplateApi();
-
   return <BaseEntityTable
     title="Character template"
     imageAdder="avatar"
     formStructure={characterForm}
-    api={characterTemplateApi}
+    api={characterTemplateRealmApi}
     columns={templateColumns}
     imagePath={['images']}
   />;

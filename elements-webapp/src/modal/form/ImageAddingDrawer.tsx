@@ -2,15 +2,14 @@ import { Button, Checkbox, Classes, Drawer, FileInput, Position } from '@bluepri
 import { Intent } from '@blueprintjs/core/lib/esm/common/intent';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import BaseApi from '@shared/api/BaseApi';
 import { POST_LOADING } from '@shared/api/request-template/requests';
 import { LoadingStore } from '@shared/store/LoadingStore';
 import { IConditionalImageDto, IImageDto } from '@type/image';
 import 'cropperjs/dist/cropper.css';
-import React from 'react';
-import { ReactElement, useRef, useState } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 import Cropper from 'react-cropper';
 import './imageAddingDialog.scss';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
 
 
 const defaultStructure: IFormStructure = {
@@ -33,7 +32,7 @@ type Props = {
   type: 'default' | 'conditional' | 'avatar';
   onClose: () => void;
   onSuccess?: (res: any) => void;
-  api: BaseApi<any>;
+  api: RealmDocumentApi;
 };
 
 const ImageAddingDrawer: React.FC<Props> = (props) => {
@@ -54,7 +53,6 @@ const ImageAddingDrawer: React.FC<Props> = (props) => {
       saveImage(imageFile);
     }
   };
-
 
   const saveImage = (file: File): void => {
     if (props.type === 'conditional') {

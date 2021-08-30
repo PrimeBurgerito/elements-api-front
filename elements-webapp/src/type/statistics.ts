@@ -1,6 +1,6 @@
-import IDocumentBase from '@type/DocumentBase';
+import { IRealmDocument } from '@type/Realm';
 
-export interface IProperty<T> extends IDocumentBase {
+export interface IProperty<T> extends Partial<IRealmDocument> {
   name: string;
   key: string;
   value: T;
@@ -16,7 +16,7 @@ export interface IStringProperty extends IProperty<string[]> {
   type: StringPropertyType;
 }
 
-export interface IObjective extends IDocumentBase {
+export interface IObjective extends Partial<IRealmDocument> {
   value: string;
 }
 

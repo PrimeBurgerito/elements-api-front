@@ -1,4 +1,4 @@
-import locationApi from '@shared/api/LocationApi';
+import { locationRealmApi } from '@shared/api/LocationApi';
 import { ILocation } from '@type/Location';
 import React, { useEffect, useState } from 'react';
 import LocationCard from './component/LocationCard';
@@ -13,8 +13,8 @@ const LocationCardTable: React.FC = () => {
   }, []);
 
   const getLocations = async (): Promise<void> => {
-    const location = await locationApi.find();
-    setLocations(location);
+    const allLocations = await locationRealmApi.find();
+    setLocations(allLocations);
   };
 
   const renderCard = (location: ILocation): React.ReactElement => {

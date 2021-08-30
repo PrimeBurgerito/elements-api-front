@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem, Navbar, Popover } from '@blueprintjs/core';
+import { Alignment, Button, Navbar } from '@blueprintjs/core';
 import {
   ATTRIBUTE_PATH,
   CHARACTER_TEMPLATE_PATH,
@@ -9,87 +9,64 @@ import {
   OBJECTIVE_PATH,
   PROPERTY_PATH,
 } from '@constant/paths';
-import React from 'react';
+import React, { ComponentProps, useState } from 'react';
 import { view } from 'react-easy-state';
 import { useHistory } from 'react-router-dom';
+import RealmCreateDialog from '@component/Header/component/RealmCreateDialog';
+import HeaderMenu from '@component/Header/component/HeaderMenu';
+import RealmMenu from '@component/Header/component/RealmMenu';
+import { useAppContext } from '@shared/context/application/ApplicationContext';
+import { IconNames } from '@blueprintjs/icons';
+
+const API_MENU_ITEMS: ComponentProps<typeof HeaderMenu>['menuItems'] = [
+  { text: 'Location', path: LOCATION_PATH, icon: IconNames.MapMarker },
+  { text: 'Event', path: EVENT_PATH, icon: IconNames.DiagramTree },
+  { text: 'Character Template', path: CHARACTER_TEMPLATE_PATH, icon: IconNames.Mugshot },
+  { text: 'Attribute', path: ATTRIBUTE_PATH },
+  { text: 'Property', path: PROPERTY_PATH },
+  { text: 'Objective', path: OBJECTIVE_PATH },
+  { text: 'Key container', path: KEY_CONTAINER_PATH },
+  { text: 'Image container', path: IMAGE_CONTAINER_PATH },
+]
+
+const NEW_API_MENU_ITEMS: ComponentProps<typeof HeaderMenu>['menuItems'] = [
+  { text: 'Location', path: `${LOCATION_PATH}/v2`, icon: IconNames.MapMarker },
+  { text: 'Event', path: `${EVENT_PATH}/v2`, icon: IconNames.DiagramTree },
+  { text: 'Character Template', path: `${CHARACTER_TEMPLATE_PATH}/v2`, icon: IconNames.Mugshot },
+]
 
 const Header: React.FC = () => {
   const history = useHistory();
+  const { realm } = useAppContext();
+  const [showRealmDialog, setShowRealmDialog] = useState<boolean>(false);
 
-  const renderApiMenu = (): React.ReactElement => {
-    const menu = (): React.ReactElement =>
-      <Menu>
-        <MenuItem text="Event" onClick={() => history.push(EVENT_PATH)} shouldDismissPopover={true} />
-        <MenuItem
-          text="Character template"
-          onClick={() => history.push(CHARACTER_TEMPLATE_PATH)}
-          shouldDismissPopover={true}
-        />
-        <MenuItem text="Location" onClick={() => history.push(LOCATION_PATH)} shouldDismissPopover={true} />
-        <MenuItem text="Attribute" onClick={() => history.push(ATTRIBUTE_PATH)} shouldDismissPopover={true} />
-        <MenuItem text="Property" onClick={() => history.push(PROPERTY_PATH)} shouldDismissPopover={true} />
-        <MenuItem text="Objective" onClick={() => history.push(OBJECTIVE_PATH)} shouldDismissPopover={true} />
-        <MenuItem text="Key container" onClick={() => history.push(KEY_CONTAINER_PATH)} shouldDismissPopover={true} />
-        <MenuItem
-          text="Image container"
-          onClick={() => history.push(IMAGE_CONTAINER_PATH)}
-          shouldDismissPopover={true}
-        />
-      </Menu>;
-
-
-    return (
-      <Popover
-        usePortal={false}
-        enforceFocus={false}
-        content={menu()}
-        placement="bottom"
-        hasBackdrop={false}
-        renderTarget={({ isOpen, ref, ...p }) => (
-          <Button {...p} active={isOpen} ref={ref} minimal text="API" />
-        )}
-      />
-    );
-  };
-
-  const renderNewApiMenu = (): React.ReactElement => {
-    const menu = (): React.ReactElement =>
-      <Menu>
-        <MenuItem text="Location" onClick={() => history.push(`${LOCATION_PATH}/v2`)} shouldDismissPopover />
-        <MenuItem text="Event" onClick={() => history.push(`${EVENT_PATH}/v2`)} shouldDismissPopover />
-        <MenuItem
-          text="Character Template"
-          onClick={() => history.push(`${CHARACTER_TEMPLATE_PATH}/v2`)}
-          shouldDismissPopover
-        />
-      </Menu>;
-
-
-    return (
-      <Popover
-        usePortal={false}
-        enforceFocus={false}
-        content={menu()}
-        placement="bottom"
-        hasBackdrop={false}
-        renderTarget={({ isOpen, ref, ...p }) => (
-          <Button {...p} active={isOpen} ref={ref} minimal text="API V2" />
-        )}
-      />
-    );
-  };
+  const openRealmDialog = (): void => setShowRealmDialog(true);
+  const closeRealmDialog = (): void => setShowRealmDialog(false);
+  const goHome = (): void => history.push('/');
 
   return (
-    <Navbar>
-      <Navbar.Group>
-        <Navbar.Heading>Elements API</Navbar.Heading>
-        <Navbar.Divider />
-        <Button minimal icon="home" text="Home" onClick={() => history.push('/')} />
-        {renderApiMenu()}
-        {renderNewApiMenu()}
-      </Navbar.Group>
-
-    </Navbar>
+    <>
+      <Navbar>
+        <Navbar.Group align={Alignment.LEFT}>
+          <Navbar.Heading>Elements API</Navbar.Heading>
+          <Navbar.Divider />
+          <Button minimal icon="home" text="Home" onClick={goHome} />
+          <HeaderMenu disabled={!realm.current} text="API" menuItems={API_MENU_ITEMS} />
+          <HeaderMenu disabled={!realm.current} text="API V2" menuItems={NEW_API_MENU_ITEMS} />
+        </Navbar.Group>
+        <Navbar.Group align={Alignment.RIGHT}>
+          <span>Current Realm</span>
+          <Navbar.Divider />
+          <RealmMenu
+            realms={realm.realms}
+            selected={realm.current}
+            onClickRealm={newRealm => realm.setRealm(newRealm)}
+            onClickCreate={openRealmDialog}
+          />
+        </Navbar.Group>
+      </Navbar>
+      <RealmCreateDialog isOpen={showRealmDialog} onClose={closeRealmDialog} afterPost={realm.load} />
+    </>
   );
 };
 

@@ -1,8 +1,9 @@
 import EventNodeModel from '../EventNodeModel';
 import { IScene, SceneType } from '@type/Event';
 import { DefaultPortModel } from '@projectstorm/react-diagrams';
+import EventImageNodeModel from '../EventImageNodeModel';
 
-export class SceneNodeModel extends EventNodeModel {
+export class SceneNodeModel extends EventImageNodeModel {
   private _text = '';
 
   constructor(first = false, scene?: IScene) {

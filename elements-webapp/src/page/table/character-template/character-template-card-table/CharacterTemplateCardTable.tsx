@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ICharacterTemplate } from '@type/Character';
-import { CharacterTemplateV2Api } from '@shared/api/CharacterTemplateApi';
+import { characterTemplateRealmApi } from '@shared/api/CharacterTemplateApi';
 import './character-template-card-table.scss';
 import CharacterTemplateCard from './component/CharacterTemplateCard';
 import CharacterTemplateCreateCard from './component/CharacterTemplateCreateCard';
@@ -13,7 +13,7 @@ const CharacterTemplateCardTable: React.FC = () => {
   }, []);
 
   const getNewTemplates = async () => {
-    const newTemplates = await CharacterTemplateV2Api.getAll();
+    const newTemplates = await characterTemplateRealmApi.find();
     setTemplates(newTemplates);
   }
 

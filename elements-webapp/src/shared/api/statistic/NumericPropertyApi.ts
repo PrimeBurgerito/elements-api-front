@@ -1,9 +1,6 @@
-import BaseApi from '@shared/api/BaseApi';
 import { INumericProperty } from '@type/statistics';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
+import { IRealmDocument } from '@type/Realm';
 
-class NumericPropertyApi extends BaseApi<INumericProperty> {
-  protected PATH: string = '/attribute';
-}
-
-const numericPropertyApi = new NumericPropertyApi();
+const numericPropertyApi = new RealmDocumentApi<INumericProperty, INumericProperty & IRealmDocument>('/attribute');
 export default numericPropertyApi;

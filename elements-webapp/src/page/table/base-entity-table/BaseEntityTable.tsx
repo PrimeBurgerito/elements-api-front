@@ -5,25 +5,26 @@ import { IColumnModel } from '@component/ElementsTable/ElementsTableResource';
 import EntityFormDialog from '@modal/form/EntityFormDialog';
 import ImageAddingDrawer from '@modal/form/ImageAddingDrawer';
 import ImageEditDrawer from '@modal/form/ImageEditDrawer';
-import BaseApi from '@shared/api/BaseApi';
 import IDocumentBase from '@type/DocumentBase';
 import { IConditionalImage, IImage } from '@type/image';
 import React, { useEffect, useMemo, useState } from 'react';
 import './entity-table.scss';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
+import { IRealmDocument } from '@type/Realm';
 
 type Props = {
-  api: BaseApi<any>;
+  api: RealmDocumentApi;
   columns: IColumnModel[];
   title: string;
   formStructure?: IFormStructure;
   refreshOnEntityChange?: boolean;
   imageAdder?: 'default' | 'conditional' | 'avatar';
   imagePath?: string[];
-  onTableChange?: (entities: object[]) => void;
+  onTableChange?: (entities: ReadonlyArray<IRealmDocument>) => void;
 };
 
 const BaseEntityTable: React.FC<Props> = (props) => {
-  const [entities, setEntities] = useState<IDocumentBase[]>([]);
+  const [entities, setEntities] = useState<ReadonlyArray<IRealmDocument>>([]);
   const [selectedEntity, setSelectedEntity] = useState<IDocumentBase>(null);
   const [isFormOpen, setFormOpen] = useState<boolean>(false);
   const [isImageAdderOpen, setImageAdderOpen] = useState<boolean>(false);
@@ -55,8 +56,10 @@ const BaseEntityTable: React.FC<Props> = (props) => {
       <Tooltip disabled={!!isSelected} content="No item selected!">
         <Button disabled={!isSelected} onClick={openAdd} icon="media" intent={Intent.PRIMARY} text="Add image" />
       </Tooltip>
-      <Tooltip disabled={!disableImageEdit} content={!isSelected ? 'No item selected!' : 'Selected item has no images!'}>
-        <Button disabled={disableImageEdit} onClick={openEdit} icon="media" intent={Intent.PRIMARY} text="Edit images" />
+      <Tooltip disabled={!disableImageEdit}
+               content={!isSelected ? 'No item selected!' : 'Selected item has no images!'}>
+        <Button disabled={disableImageEdit} onClick={openEdit} icon="media" intent={Intent.PRIMARY}
+                text="Edit images" />
       </Tooltip>
     </ButtonGroup>;
   };
@@ -88,7 +91,7 @@ const BaseEntityTable: React.FC<Props> = (props) => {
     setSelectedEntity(entity);
   };
 
-  const onEntityAddSuccess = (newEntity: object) => {
+  const onEntityAddSuccess = (newEntity: IRealmDocument) => {
     if (props.refreshOnEntityChange) {
       props.api.find().then(setEntities);
     } else {
@@ -122,10 +125,19 @@ const BaseEntityTable: React.FC<Props> = (props) => {
   const renderImageEditDrawer = (): React.ReactElement => {
     const onClose = () => setImageEditOpen(false);
     // @ts-ignore
-    return <ImageEditDrawer images={selectedImages} type={props.imageAdder} isOpen={isImageEditOpen} onClose={onClose} />;
+    return <ImageEditDrawer
+      images={selectedImages}
+      type={props.imageAdder}
+      isOpen={isImageEditOpen}
+      onClose={onClose}
+    />;
   };
 
-  const memoizedTable = useMemo(() => <ElementsTable data={entities} columns={props.columns} onSelect={onEntitySelect} />,
+  const memoizedTable = useMemo(() => <ElementsTable
+      data={entities}
+      columns={props.columns}
+      onSelect={onEntitySelect}
+    />,
     [entities]);
 
   return (

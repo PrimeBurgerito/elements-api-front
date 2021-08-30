@@ -1,6 +1,4 @@
-import BaseApi from '@shared/api/BaseApi';
-import { IImageContainerDto } from '@type/container';
+import { IImageContainer, IImageContainerDto } from '@type/container';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
 
-export default class ImageContainerApi extends BaseApi<IImageContainerDto> {
-  protected PATH: string = '/image-container';
-}
+export const keyContainerRealmApi = new RealmDocumentApi<IImageContainerDto, IImageContainer>('/image-container');

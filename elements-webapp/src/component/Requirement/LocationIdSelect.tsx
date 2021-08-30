@@ -5,7 +5,7 @@ import { ILocation } from '@type/Location';
 import { useMultiToggleHook } from '@shared/hooks/multiToggleHook';
 
 type Props = {
-  locations: ILocation[],
+  locations: ReadonlyArray<ILocation>,
   locationIds: string[],
   onChange: (locationIds: string[]) => void,
 }
@@ -43,7 +43,7 @@ const LocationIdSelect: React.FC<Props> = props => {
       <H6>Locations</H6>
       <LocationSelectTyped
         fill
-        items={props.locations}
+        items={props.locations as ILocation[]}
         tagRenderer={l => l.name}
         itemRenderer={valueRenderer}
         selectedItems={selected}

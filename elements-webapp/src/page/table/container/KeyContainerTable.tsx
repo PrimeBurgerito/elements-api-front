@@ -1,11 +1,11 @@
 import { FormElementType, IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import KeyContainerApi from '@shared/api/container/KeyContainerApi';
+import { keyContainerRealmApi } from '@shared/api/container/KeyContainerApi';
 import React from 'react';
 import BaseEntityTable from '../base-entity-table/BaseEntityTable';
 
 const keyContainerColumns = [
-  {name: 'Key', key: 'key'},
-  {name: 'Keys', key: 'keys'},
+  { name: 'Key', key: 'key' },
+  { name: 'Keys', key: 'keys' },
 ];
 
 const keyContainerForm: IFormStructure = {
@@ -36,7 +36,7 @@ const keyContainerForm: IFormStructure = {
 
 const KeyContainerTable: React.FC = () => {
   return <BaseEntityTable
-    api={new KeyContainerApi()}
+    api={keyContainerRealmApi}
     columns={keyContainerColumns}
     formStructure={keyContainerForm}
     title={'Key container'}

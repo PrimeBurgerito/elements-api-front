@@ -7,7 +7,7 @@ import { IStringProperty } from '@type/statistics';
 import React from 'react';
 
 type Props = {
-  properties: IStringProperty[],
+  properties: ReadonlyArray<IStringProperty>,
   value: IRequirementStringProperties,
   onChange: (newValue: IRequirementStringProperties) => void,
 };

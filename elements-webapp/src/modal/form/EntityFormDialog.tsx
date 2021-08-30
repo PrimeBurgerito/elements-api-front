@@ -1,11 +1,10 @@
 import { Button, Classes, Dialog } from '@blueprintjs/core';
 import ElementsForm from '@component/ElementsForm/ElementsForm';
 import { IFormStructure } from '@component/ElementsForm/ElementsFormResource';
-import BaseApi from '@shared/api/BaseApi';
 import { POST_LOADING } from '@shared/api/request-template/requests';
 import { LoadingStore } from '@shared/store/LoadingStore';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import RealmDocumentApi from '@shared/api/RealmDocumentApi';
 
 interface IEntityFormDialogProps {
   isOpen: boolean;
@@ -13,7 +12,7 @@ interface IEntityFormDialogProps {
   formStructure: IFormStructure;
   onClose: () => void;
   onSuccess?: (res: any) => void;
-  api: BaseApi<any>;
+  api: RealmDocumentApi;
 }
 
 const EntityFormDialog = (props: IEntityFormDialogProps): JSX.Element => {
@@ -44,7 +43,8 @@ const EntityFormDialog = (props: IEntityFormDialogProps): JSX.Element => {
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
           <Button large intent="warning" onClick={() => console.log(formState)}>Test</Button>
-          <Button loading={LoadingStore.isLoading(POST_LOADING)} large intent="primary" onClick={clickCreate}>Create</Button>
+          <Button loading={LoadingStore.isLoading(POST_LOADING)} large intent="primary"
+                  onClick={clickCreate}>Create</Button>
         </div>
       </div>
     </Dialog>
