@@ -1,14 +1,15 @@
 import { IImage } from '@type/image';
 import { IRequirement } from '@type/Requirement';
 import { IReward } from './Reward';
+import { IRealmDocument, IRealmDocumentDto } from '@type/Realm';
 
-export interface IEvent {
+export interface IEvent extends IRealmDocument {
   name: string;
   scenes: ISceneBase[];
   requirement: IRequirement;
 }
 
-export interface IEventDto {
+export interface IEventDto extends IRealmDocumentDto {
   name: string;
   scenes: ISceneBase[];
   requirement: IRequirement;

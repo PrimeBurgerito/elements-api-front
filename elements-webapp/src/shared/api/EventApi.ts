@@ -2,6 +2,8 @@ import { GET, POST, PUT } from '@shared/api/request-template/requests';
 import { IEvent, IEventDto, IImageToSceneMap } from '@type/Event';
 import { AxiosResponse } from 'axios';
 import { APPLICATION_JSON_OPTION } from '@shared/api/request-template/AxiosInstance';
+import { SessionUtil } from '@shared/util/SessionUtil';
+import { IRealmDocumentDto } from '@type/Realm';
 
 const EVENT_API_PATH = '/event';
 
@@ -22,7 +24,12 @@ export default class EventApi {
     const response: AxiosResponse = await GET(`${EVENT_API_PATH}/${id}`);
     return await response ? response.data : null;
   };
+
   public static save = async (event: EventSave): Promise<IEvent> => {
+    const success = EventApi.setRealmId(event.dto);
+    if (!success) {
+      return Promise.reject<IEvent>('Can`t save without realm id');
+    }
     const formData = new FormData();
     formData.append(FORM_DATA_IMAGE_TO_SCENE, new Blob([JSON.stringify(event.imageToSceneMap)], APPLICATION_JSON_OPTION));
     formData.append(FORM_DATA_EVENT_DTO, new Blob([JSON.stringify(event.dto)], APPLICATION_JSON_OPTION));
@@ -36,4 +43,13 @@ export default class EventApi {
 
     return await response ? response.data : null;
   };
+
+  private static setRealmId = (dto: IRealmDocumentDto): boolean => {
+    const sessionRealm = SessionUtil.getRealm();
+    if (!sessionRealm?.id) {
+      return false;
+    }
+    dto.realmId = sessionRealm.id;
+    return true;
+  }
 }

@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { GET, POST } from '@shared/api/request-template/requests';
 import { IRealm, IRealmDto } from '@type/Realm';
 
-const PATH = 'realm';
+const PATH = '/realm';
 
 export default class RealmApi {
   public static get = async (id: string): Promise<IRealm> => {
