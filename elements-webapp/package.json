@@ -29,7 +29,7 @@
     "@projectstorm/react-diagrams-core": "^6.6.1",
     "@projectstorm/react-diagrams-defaults": "^6.6.1",
     "@projectstorm/react-diagrams-routing": "^6.6.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "closest": "^0.0.1",
     "dagre": "^0.8.5",
     "dexie": "^3.0.3",
